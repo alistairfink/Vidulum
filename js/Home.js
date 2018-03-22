@@ -4,9 +4,8 @@ import {
   View, 
   Text,
 } from 'react-native';
-import { 
-  StackNavigator,
-} from 'react-navigation';
+import Globals from './Globals';
+import CommonStylesheet from './Stylesheet';
 
 class HomeScreen extends React.Component {
   constructor(props){
@@ -14,8 +13,10 @@ class HomeScreen extends React.Component {
   }
   render() {
     return (
-      <View style={styles.container}>
-        <Text>Tes2t</Text>
+      <View style={[CommonStylesheet.pageBG, {backgroundColor: Globals.DefaultSettings.theme.backgroundColour}]}>
+        <View style={[CommonStylesheet.topBar, {backgroundColor: Globals.DefaultSettings.theme.primaryColour}]}>
+
+        </View>
       </View>
     );
   }
