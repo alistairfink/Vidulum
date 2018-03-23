@@ -14,6 +14,7 @@ import {
   AsyncStorage,
   TextInput,
   Linking,
+  StatusBar,
 } from 'react-native';
 import Globals from './Globals';
 import CommonStylesheet from './Stylesheet';
@@ -122,9 +123,9 @@ class Settings extends React.Component {
       default:
         this.userSettings.theme = {
           name: 'Light',
-          primaryColour: '#bdbdbd',
-          lightColour: '#efefef',
-          darkColour: '#8d8d8d',
+          primaryColour: '#e0e0e0',
+          lightColour: '#ffffff',
+          darkColour: '#aeaeae',
           backgroundColour: 'white',
           textColour: 'black',
         }
@@ -144,7 +145,16 @@ class Settings extends React.Component {
   render() {
     return (
 	    <View style={[CommonStylesheet.pageBG, {backgroundColor: Globals.DefaultSettings.theme.backgroundColour}]}>
+        <StatusBar
+          backgroundColor={Globals.DefaultSettings.theme.darkColour}
+        />
         <View style={[CommonStylesheet.topBar, {backgroundColor: Globals.DefaultSettings.theme.primaryColour}]}>
+          <TouchableOpacity
+            onPress={() => {this.props.navigation.navigate('DrawerOpen');}}
+          >
+            <Image source={require('../assets/menuIcon.png')} style={[CommonStylesheet.leftIcon, {tintColor: Globals.DefaultSettings.theme.textColour}]}/>
+          </TouchableOpacity>
+          <Text style={[CommonStylesheet.title, {color: Globals.DefaultSettings.theme.textColour}]}>Settings</Text>
 
         </View>
         <ScrollView>
@@ -159,12 +169,17 @@ class Settings extends React.Component {
           </View>
         </ScrollView>
         <View style={[styles.footer, {backgroundColor: Globals.DefaultSettings.theme.primaryColour}]}>
-          <TouchableOpacity style={styles.footerButton} onPress={() => {
-            this.props.navigation.goBack();
+          <TouchableOpacity style={styles.footerButton} 
+            onPress={() => {
+              this.props.navigation.goBack();
           }}>
             <Text style={[styles.footerText, {color: Globals.DefaultSettings.theme.textColour}]}>Cancel</Text>            
           </TouchableOpacity>
-          <TouchableOpacity style={styles.footerButton} onPress={this.save.bind(this)}>
+          <TouchableOpacity 
+            style={[styles.footerButton, 
+              {borderLeftColor: Globals.DefaultSettings.theme.darkColour, borderLeftWidth: 1}]
+            } 
+            onPress={this.save.bind(this)}>
             <Text style={[styles.footerText, {color: Globals.DefaultSettings.theme.textColour}]}>Save</Text>
           </TouchableOpacity>
         </View>

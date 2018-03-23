@@ -1,3 +1,7 @@
+import { 
+  AsyncStorage,
+} from 'react-native';
+
 module.exports = {
 	DefaultSettings: {
 		theme: {
