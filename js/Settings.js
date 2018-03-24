@@ -39,6 +39,8 @@ class Settings extends React.Component {
       test: '',
     };
     this.userSettings = '';
+    this.changeTheme = this.changeTheme.bind(this);
+    this.save = this.save.bind(this);
   }
   componentWillMount() {
     this.getSettings();
@@ -150,7 +152,7 @@ class Settings extends React.Component {
         />
         <View style={[CommonStylesheet.topBar, {backgroundColor: Globals.DefaultSettings.theme.primaryColour}]}>
           <TouchableOpacity
-            onPress={() => {this.props.navigation.navigate('DrawerOpen');}}
+            onPress={() => {this.props.navigation.navigate('DrawerOpen'); this.props.navigation.drawerBackground}}
           >
             <Image source={require('../assets/menuIcon.png')} style={[CommonStylesheet.leftIcon, {tintColor: Globals.DefaultSettings.theme.textColour}]}/>
           </TouchableOpacity>
@@ -163,7 +165,7 @@ class Settings extends React.Component {
               <Dropdown
                 label='Theme'
                 data={themeData}
-                onChangeText={this.changeTheme.bind(this)}
+                onChangeText={this.changeTheme}
               />
             </View>
           </View>
@@ -179,7 +181,7 @@ class Settings extends React.Component {
             style={[styles.footerButton, 
               {borderLeftColor: Globals.DefaultSettings.theme.darkColour, borderLeftWidth: 1}]
             } 
-            onPress={this.save.bind(this)}>
+            onPress={this.save}>
             <Text style={[styles.footerText, {color: Globals.DefaultSettings.theme.textColour}]}>Save</Text>
           </TouchableOpacity>
         </View>
