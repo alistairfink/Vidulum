@@ -20,5 +20,6 @@ module.exports = {
 	},
 	StorageNames: {
 		settings: 'Settings',
+		wallets: 'WalletList',
 	},
 };

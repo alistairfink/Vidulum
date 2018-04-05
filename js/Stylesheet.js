@@ -39,4 +39,31 @@ export default StyleSheet.create({
 	    marginTop: 10,
 	    marginRight: 18,
 	},
+	controlBackground: {
+		margin: 15,
+		marginTop: 10,
+		marginBottom: 10,
+		borderRadius: 5,
+		backgroundColor: 'white',
+	},
+	controlInner: {
+		marginRight: 5, 
+		marginLeft: 5,
+	},
+	textBlockBackground:{
+		margin: 15,
+		marginTop: 10,
+		marginBottom: 10,
+		borderBottomWidth: 2,
+	},
+	titleText: {
+		fontSize: 20,
+		marginBottom: 10,
+		fontWeight: 'bold',
+	},
+	normalText: {
+		fontSize: 15,
+		marginBottom: 15,
+		marginLeft: 0,
+	},
 });

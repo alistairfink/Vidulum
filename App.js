@@ -43,6 +43,7 @@ export default class App extends React.Component{
     this.state = {
       loading: true,
     };
+    this.refresh = this.refresh.bind(this);
   }
   componentDidMount() {
     this.retrieveSettings();
@@ -58,6 +59,9 @@ export default class App extends React.Component{
       console.log(error)
     }
   }
+  refresh(){
+    this.forceUpdate();
+  }
   render() {
     if(this.state.loading){
       return(
@@ -67,7 +71,7 @@ export default class App extends React.Component{
       );
     }
     return (
-      <RootStack />
+      <RootStack style={{backgroundColor: Globals.DefaultSettings.theme.darkColour}} />
     );
   }
 }

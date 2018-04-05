@@ -157,11 +157,10 @@ class Settings extends React.Component {
             <Image source={require('../assets/menuIcon.png')} style={[CommonStylesheet.leftIcon, {tintColor: Globals.DefaultSettings.theme.textColour}]}/>
           </TouchableOpacity>
           <Text style={[CommonStylesheet.title, {color: Globals.DefaultSettings.theme.textColour}]}>Settings</Text>
-
         </View>
         <ScrollView>
-          <View style={styles.controlBackground}>
-            <View style={{marginRight: 5, marginLeft: 5}}>
+          <View style={CommonStylesheet.controlBackground}>
+            <View style={CommonStylesheet.controlInner}>
               <Dropdown
                 label='Theme'
                 data={themeData}
@@ -204,12 +203,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center', 
-  },
-  controlBackground: {
-    marginRight: 15,
-    marginLeft: 15,
-    borderRadius: 5,
-    backgroundColor: 'white',
   },
 });
 
