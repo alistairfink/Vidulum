@@ -18,6 +18,8 @@ import {
   Alert,
   AsyncStorage,
   FlatList,
+  NetInfo,
+  ToastAndroid,
 } from 'react-native';
 import Globals from './Globals';
 import CommonStylesheet from './Stylesheet';
@@ -296,8 +298,12 @@ class HomeScreen extends React.Component {
     this.state = {
       adding: false,
       wallets: null,
+      walletData: null,
+      forceRefresh: false,
     };
     this.getWallets = this.getWallets.bind(this);
+    this.getEthObj = this.getEthObj.bind(this);
+    this.getBitcoinObj = this.getBitcoinObj(this);
   }
   backHandle(){
     this.getWallets();
@@ -310,15 +316,143 @@ class HomeScreen extends React.Component {
     let savedWallets = null;
     try{
       savedWallets = await AsyncStorage.getItem(Globals.StorageNames.wallets);
+      if(savedWallets)
+      {
+        await this.setState({wallets: JSON.parse(savedWallets)});
+        this.getData();
+      }
     }
     catch(error)
     {
       console.log(error);
     }
-    if(savedWallets)
-    {
-      this.state.wallets = JSON.parse(savedWallets);
+  }
+  async getData() {
+    try{
+      let savedWalletData = await AsyncStorage.getItem(Globals.StorageNames.walletData)
+      savedWalletData = null;
+      let walletList = this.state.wallets;
+      let curDate = parseInt(new Date().getTime()/1000);
+      savedWalletData = JSON.stringify([{updateTime: 123},{updateTime: 456}]);
+
+      let test = await this.getEthObj(walletList[1], curDate);
+      alert(JSON.stringify(test));
+      return;
+      /*if(savedWalletData)
+      {
+        savedWalletData = JSON.parse(savedWalletData);
+        NetInfo.isConnected.fetch().then(isConnected => {
+          if(!isConnected)
+          {
+            this.setState({walletData: savedWalletData});
+            ToastAndroid.show('No Internet', ToastAndroid.SHORT);
+            return;
+          }
+        })
+        let updateDate = savedWalletData[1].updateTime;
+        if(curDate-updateDate < 300 && !(this.state.forceRefresh))
+        {
+          this.setState({walletData: savedWalletData});
+          ToastAndroid.show('Already Up To Date', ToastAndroid.SHORT);
+          return; 
+        }
+      }*/
+      savedWalletData = [];
+      for(let i = 0; i < walletList.length; i++)
+      {
+        let itemObj = null;
+        switch (walletList[i].coin.toLowerCase()) {
+          case 'ethereum':
+            itemObj = await this.getEthObj(walletList[i], curDate);
+            break;
+          case 'bitcoin':
+            itemObj = await this.getBitcoinObj(walletList[i], curDate);
+            break;
+          default:
+            itemObj = {
+              val: 0,
+              symbol: 0,
+              fiatVal: 0,
+              txCount: 0, 
+              totalIn: 0,
+              totalOut: 0,
+              tokens: 0,
+              updateTime: 0
+            };
+        }
+        savedWalletData.push(itemObj);
+      }
+      this.setState({walletData: savedWalletData});
+      AsyncStorage.setItem(Globals.StorageNames.walletData, JSON.stringify(savedWalletData));
     }
+    catch(error)
+    {
+
+    }
+  }
+  async getEthObj(obj, curDate) {
+    try{
+      let responseObj = null; //Response from Ethplorer
+      let fiatObj = null; //Response from CoinMarketCap
+      let fiatRatio = null; //Ratio from usd to user selected fiat
+      let tokens = null; //Token Object. Made from data from Ethplorer.
+      let returnObj = null; //Object to Return
+      //Does both api calls asynchronously and awaits(faster than doing one after the other)
+      [responseObj, fiatObj] = await Promise.all([
+        fetch('http://memes.alistairfink.com/VidulumApi/ethplorer',{
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            passThrough: 'getAddressInfo/' + obj.address
+          })
+        })
+        .then((response) => response.json()),
+        fetch('https://api.coinmarketcap.com/v1/ticker/Ethereum?convert='+Globals.DefaultSettings.currency,{
+          method: 'GET'
+        })
+        .then((response) => response.json()) 
+      ]);
+      //fiatObj is originally returned as an array (annoying)
+      fiatObj = fiatObj[0];
+      //This is for if the user has a different fiat selected since ethplorer only returns usd
+      fiatRatio = (fiatObj)['price_'+Globals.DefaultSettings.currency.toLowerCase()]/fiatObj.price_usd;
+      //Extracts only wanted info from giant token array
+      if(responseObj.tokens){
+        tokens = [];
+        for(let j = 0; j < responseObj.tokens.length; j++)
+        {
+          let priceInfo = responseObj.tokens[j].tokenInfo.price ? fiatRatio*responseObj.tokens[j].tokenInfo.price.rate : false;
+          let tempObj = {
+            name: responseObj.tokens[j].tokenInfo.name,
+            decimals: responseObj.tokens[j].tokenInfo.deicmals,
+            symbol: responseObj.tokens[j].tokenInfo.symbol,
+            fiatVal: priceInfo,
+            val: responseObj.tokens[j].balance
+          };
+          tokens.push(tempObj);
+        }
+      }
+      //Build object to return from api information
+      returnObj = {
+        val: responseObj.ETH.balance,
+        symbol: "ETH",
+        fiatRate: (fiatObj)['price_'+Globals.DefaultSettings.currency.toLowerCase()],
+        txCount: responseObj.countTxs, 
+        totalIn: responseObj.ETH.totalIn,
+        totalOut: responseObj.ETH.totalOut,
+        tokens: tokens,
+        updateTime: curDate
+      };
+      return returnObj;
+    }
+    catch(error) {
+      console.log(error);
+    }
+  }
+  async getBitcoinObj() {
+
   }
   render() {
     if(this.state.adding)
@@ -354,6 +488,36 @@ class HomeScreen extends React.Component {
               </TouchableOpacity>
             </View>
           </View>
+          {this.state.walletData &&
+            <FlatList
+              data={this.state.wallets}
+              keyExtractor={(x, i) => i.toString()}
+              renderItem={({ item }) => (
+                <View style={[styles.walletCard, {backgroundColor: Globals.DefaultSettings.theme.lightColour}]}>
+                  <View style={[styles.walletCardTop, {backgroundColor: Globals.DefaultSettings.theme.primaryColour}]}>
+                    <View>
+                      <Text style={[styles.walletCardTitleText, {color: Globals.DefaultSettings.theme.textColour}]}>{item.name}</Text>
+                      <Text style={[styles.walletCardText, styles.walletCardAddress, CommonStylesheet.normalText, {color: Globals.DefaultSettings.theme.textColour}]}>{item.address}</Text>
+                    </View>
+                    <View style={{flex: 1, alignItems: 'flex-end'}}>
+                      <TouchableOpacity onPress={() => {
+                          
+                        }}
+                      >
+                        <Image source={require('../assets/cancelIcon.png')} style={[styles.xIcon, {tintColor: Globals.DefaultSettings.theme.textColour}]}/>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                  <View style={[styles.walletCardMiddle]}>
+                    <Text style={[styles.walletCardText, CommonStylesheet.normalText, {color: Globals.DefaultSettings.theme.textColour}]}>{item.description}</Text>
+                  </View>
+                  <View style={[styles.walletCardBottom, {backgroundColor: Globals.DefaultSettings.theme.primaryColour}]}>
+                    <Text style={[styles.walletCardText, CommonStylesheet.normalText, {color: Globals.DefaultSettings.theme.textColour}]}>{item.address}</Text>
+                  </View>
+                </View>
+              )}
+            />
+          }
         </View>
       );
     }
@@ -377,6 +541,44 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center', 
+  },
+  walletCard: {
+    marginRight: 15,
+    marginLeft: 15,
+    marginTop: 15,
+    borderRadius: 5,
+  },
+  walletCardTop: {
+    borderTopLeftRadius: 5,
+    borderTopRightRadius: 5,
+    padding: 10,
+    paddingTop: 5,
+    paddingBottom: 0,
+    paddingRight: 0,
+    flexDirection: 'row', 
+  },
+  walletCardTitleText: {
+    fontSize: 20,
+  },
+  walletCardText: {
+
+  },
+  walletCardMiddle: {
+    padding: 10,
+  },
+  walletCardBottom: {
+    borderBottomLeftRadius: 5,
+    borderBottomRightRadius: 5,
+    padding: 10,
+    paddingTop: 0,
+    paddingBottom: 0,
+  },
+  xIcon: {
+    height: 17,
+    width: 17,
+    marginRight: 10,
+    marginTop: 10,
+    marginBottom: 10,
   },
 });
 

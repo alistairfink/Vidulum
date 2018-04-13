@@ -62,7 +62,7 @@ export default StyleSheet.create({
 		fontWeight: 'bold',
 	},
 	normalText: {
-		fontSize: 15,
+		fontSize: 14,
 		marginBottom: 15,
 		marginLeft: 0,
 	},

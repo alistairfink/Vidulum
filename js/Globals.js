@@ -13,7 +13,7 @@ module.exports = {
           textColour: 'black',
 		},
 		walletLock: false,
-
+		currency: 'USD',
 	},
 	UpdateSettings: function(newSettings) {
 		this.DefaultSettings = newSettings;
@@ -21,5 +21,6 @@ module.exports = {
 	StorageNames: {
 		settings: 'Settings',
 		wallets: 'WalletList',
+		walletData: 'WalletData',
 	},
 };
