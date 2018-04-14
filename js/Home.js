@@ -351,6 +351,17 @@ class HomeScreen extends React.Component {
     }
   }
   async getData() {
+    /*
+    This function was kinda confusing to write so heres the step by step:
+     - All scenarios assuming there is something stored in local it will check internet connection.
+     - After that it will check the following two scenarios:
+        - Outdated and not for refreshing. This happens when the user is manually refreshing. We do not want force refresh for this.
+        - The refreshing state is false. This state is true for every scenario except for the user opening the app and having the
+          reload on open setting set to false OR when the user is navigating back from a different compoenent. The messages
+          are also suppressed in this fashion.
+     - If the function is not returned by this point then it is safe to assume that force refresh is on or the data is outdated.
+     - The function will then retrieve all the data and set force refresh and refreshing to false.
+    */
     try{
       //Retrieves data from local storage
       let savedWalletData = await AsyncStorage.getItem(Globals.StorageNames.walletData);
