@@ -14,9 +14,15 @@ module.exports = {
 		},
 		walletLock: false,
 		currency: 'USD',
+		symbol: '$',
+		reloadOnOpen: true,
 	},
 	UpdateSettings: function(newSettings) {
 		this.DefaultSettings = newSettings;
+	},
+	openingRefresh: true,
+	UpdateOpeningRefresh: function() {
+		this.openingRefresh = false;
 	},
 	StorageNames: {
 		settings: 'Settings',

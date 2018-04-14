@@ -22,6 +22,40 @@ import { Dropdown } from 'react-native-material-dropdown';
 
 const win = Dimensions.get('window');
 
+const fiatData = [
+  {value:'AUD'},
+  {value:'BRL'},
+  {value:'CAD'},
+  {value:'CHF'},
+  {value:'CLP'},
+  {value:'CNY'},
+  {value:'CZK'},
+  {value:'DKK'},
+  {value:'EUR'},
+  {value:'GBP'},
+  {value:'HKD'},
+  {value:'HUF'},
+  {value:'IDR'},
+  {value:'ILS'},
+  {value:'INR'},
+  {value:'JPY'},
+  {value:'KRW'},
+  {value:'MXN'},
+  {value:'MYR'},
+  {value:'NOK'},
+  {value:'NZD'},
+  {value:'PHP'},
+  {value:'PKR'},
+  {value:'PLN'},
+  {value:'RUB'},
+  {value:'SEK'},
+  {value:'SGD'},
+  {value:'THB'},
+  {value:'TRY'},
+  {value:'TWD'},
+  {value:'USD'},
+  {value:'ZAR'},
+];
 var themeData = [
   {value:'Light'},
   {value:'Dark'},
@@ -41,26 +75,100 @@ class Settings extends React.Component {
     this.userSettings = '';
     this.changeTheme = this.changeTheme.bind(this);
     this.save = this.save.bind(this);
+    this.changeFiat = this.changeFiat.bind(this);
   }
   componentWillMount() {
     this.getSettings();
   }
   async getSettings() {
+    //Gets settings from storage and if there are any then it uses that object
     try{
-      savedSettings = await AsyncStorage.getItem(Globals.StorageNames.settings);
+      let savedSettings = await AsyncStorage.getItem(Globals.StorageNames.settings);
       if(savedSettings)
       {
         this.userSettings = JSON.parse(savedSettings);
         return;
       }
-      let savedSettings = Globals.DefaultSettings;
+      savedSettings = Globals.DefaultSettings;
       this.userSettings = savedSettings;
     }
     catch(error){
       console.log(error);
     }
   }
+  changeFiat(text) {
+    //Sets currency and symbol
+    this.userSettings.currency = text;
+    switch(text){
+      case 'BRL':
+        this.userSettings.symbol = 'R$';
+        break;
+      case 'CHF':
+        this.userSettings.symbol = 'CHF';
+        break;
+      case 'CNY':
+      case 'JPY':
+        this.userSettings.symbol = '¥';
+        break;
+      case 'CZK':
+        this.userSettings.symbol = 'Kč';
+        break;
+      case 'DKK':
+        this.userSettings.symbol = 'kr.';
+        break;
+      case 'EUR':
+        this.userSettings.symbol = '€';
+        break;
+      case 'GBP':
+        this.userSettings.symbol = '£';
+        break;
+      case 'HUF':
+        this.userSettings.symbol = 'Ft';
+        break;
+      case 'IDR':
+        this.userSettings.symbol = 'Rp';
+        break;
+      case 'ILS':
+        this.userSettings.symbol = '₪';
+        break;
+      case 'INR':
+        this.userSettings.symbol = '₹';
+        break;
+      case 'KRW':
+        this.userSettings.symbol = '₩';
+        break;
+      case 'MYR':
+        this.userSettings.symbol = 'RM';
+        break;
+      case 'NOK':
+      case 'SEK':
+      case 'TRY':
+        this.userSettings.symbol = 'kr';
+        break;
+      case 'PHP':
+        this.userSettings.symbol = '₱';
+        break;
+      case 'PKR':
+        this.userSettings.symbol = '₨';
+        break;
+      case 'PLN':
+        this.userSettings.symbol = 'zł';
+        break;
+      case 'RUB':
+        this.userSettings.symbol = '₽';
+        break;
+      case 'THB':
+        this.userSettings.symbol = '฿';
+        break;
+      case 'ZAR':
+        this.userSettings.symbol = 'R';
+        break;
+      default:
+        this.userSettings.symbol = '$';
+    }
+  }
   changeTheme(text){
+    //Sets user theme
     switch(text) {
       case "Blue":
         this.userSettings.theme = {
@@ -135,6 +243,7 @@ class Settings extends React.Component {
   }
   async save(){
     try{
+      //Saves settings to local and updates globals then goes back.
       Globals.UpdateSettings(this.userSettings);
       await AsyncStorage.setItem(Globals.StorageNames.settings, JSON.stringify(this.userSettings));
       this.props.navigation.goBack();
@@ -165,6 +274,15 @@ class Settings extends React.Component {
                 label='Theme'
                 data={themeData}
                 onChangeText={this.changeTheme}
+              />
+            </View>
+          </View>
+          <View style={CommonStylesheet.controlBackground}>
+            <View style={CommonStylesheet.controlInner}>
+              <Dropdown
+                label='Fiat Currency'
+                data={fiatData}
+                onChangeText={this.changeFiat}
               />
             </View>
           </View>

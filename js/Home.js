@@ -55,8 +55,10 @@ class Add extends React.Component {
     this.addedWallets = [];
   }
   componentWillMount() {
+    //Starts animation
     this.animateValue = new Animated.Value(0);
     this.getWallets();
+    //Keyboard listening for moving screen up and down when keyboard pops up
     this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardDidShow.bind(this));
     this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide.bind(this));
   }  
@@ -75,6 +77,7 @@ class Add extends React.Component {
     this.keyboardDidHideListener.remove();
   }
   async getWallets() {
+    //Gets wallets from local
     let savedWallets = null;
     try{
       savedWallets = await AsyncStorage.getItem(Globals.StorageNames.wallets);
@@ -89,6 +92,7 @@ class Add extends React.Component {
     }
   }
   async saveFunc() {
+    //Checks all fields are filled out
     for(let item in this.state.wallet)
     {
       if(!(this.state.wallet)[item])
@@ -102,6 +106,7 @@ class Add extends React.Component {
         return;
       }
     }
+    //Checks wallet isn't already added
     for(let i = 0; i < this.addedWallets.length; i++)
     {
       if(this.addedWallets[i].address === this.state.wallet.address)
@@ -116,6 +121,7 @@ class Add extends React.Component {
       }
     }
     let valid = false;
+    //Validates address
     try{
       await fetch('http://memes.alistairfink.com/VidulumApi/validate',{
         method: 'POST',
@@ -147,6 +153,7 @@ class Add extends React.Component {
         return;
     }
     try{
+      //If wallet passes all the cheks then adds and goes back
       this.addedWallets.push(this.state.wallet);
       await AsyncStorage.setItem(Globals.StorageNames.wallets, JSON.stringify(this.addedWallets));
     }
@@ -157,6 +164,7 @@ class Add extends React.Component {
     this.props.handler();
   }
   _keyboardDidShow (e) {
+    //Adds height to bottom of scrollview and scrolls down on that height so the keyboard isn't in the way
     let height = e.endCoordinates.height; 
     this.setState({keyboardHeight: height});
     if(this.addressInput.isFocused()){
@@ -300,25 +308,40 @@ class HomeScreen extends React.Component {
       wallets: null,
       walletData: null,
       forceRefresh: false,
+      refreshing: true,
     };
     this.getWallets = this.getWallets.bind(this);
     this.getEthObj = this.getEthObj.bind(this);
-    this.getBitcoinObj = this.getBitcoinObj(this);
+    this.getBitcoinObj = this.getBitcoinObj.bind(this);
+    this.cardRefresh = this.cardRefresh.bind(this);
+    this.firstLoad = this.firstLoad.bind(this);
   }
   backHandle(){
-    this.getWallets();
-    this.setState({adding: false});
+    //Refreshes after adding card. Consider refactoring so only freshes when adding.
+    this.setState({adding: false, forceRefresh: true, refreshing: true});
+    this.getWallets();    
   }
   componentWillMount() {
-    this.getWallets();
+    this.firstLoad();
+  }
+  async firstLoad() {
+    //Checks if user has refresh on open selected or if they're just coming back to the componet from a different menu.
+    //Handles based on that.
+    if(Globals.DefaultSettings.reloadOnOpen && Globals.openingRefresh)
+      this.setState({forceRefresh: true, refreshing: true});
+    else if((!(Globals.DefaultSettings.reloadOnOpen) && Globals.openingRefresh) || !(Globals.openingRefresh))
+      this.setState({refreshing: false});
+    Globals.UpdateOpeningRefresh();
+    await this.getWallets();
   }
   async getWallets() {
+    //Gets the wallets then calls getData() to get each wallets data.
     let savedWallets = null;
     try{
       savedWallets = await AsyncStorage.getItem(Globals.StorageNames.wallets);
       if(savedWallets)
       {
-        await this.setState({wallets: JSON.parse(savedWallets)});
+        this.setState({wallets: JSON.parse(savedWallets)});
         this.getData();
       }
     }
@@ -329,35 +352,39 @@ class HomeScreen extends React.Component {
   }
   async getData() {
     try{
-      let savedWalletData = await AsyncStorage.getItem(Globals.StorageNames.walletData)
-      savedWalletData = null;
+      //Retrieves data from local storage
+      let savedWalletData = await AsyncStorage.getItem(Globals.StorageNames.walletData);
       let walletList = this.state.wallets;
       let curDate = parseInt(new Date().getTime()/1000);
-      savedWalletData = JSON.stringify([{updateTime: 123},{updateTime: 456}]);
-
-      let test = await this.getEthObj(walletList[1], curDate);
-      alert(JSON.stringify(test));
-      return;
-      /*if(savedWalletData)
+      if(savedWalletData)
       {
         savedWalletData = JSON.parse(savedWalletData);
+        //If theres no internet but theres data
         NetInfo.isConnected.fetch().then(isConnected => {
           if(!isConnected)
           {
             this.setState({walletData: savedWalletData});
-            ToastAndroid.show('No Internet', ToastAndroid.SHORT);
+            if(this.state.refreshing)
+              ToastAndroid.show('No Internet', ToastAndroid.SHORT);
+            this.setState({refreshing: false});
             return;
           }
         })
         let updateDate = savedWalletData[1].updateTime;
-        if(curDate-updateDate < 300 && !(this.state.forceRefresh))
+        //Checks if data is outdated or if user is navigating back from different component
+        if((curDate-updateDate < 300 && !(this.state.forceRefresh)) || 
+          !(this.state.refreshing))
         {
           this.setState({walletData: savedWalletData});
-          ToastAndroid.show('Already Up To Date', ToastAndroid.SHORT);
+          if(this.state.refreshing)
+            ToastAndroid.show('Already Up To Date', ToastAndroid.SHORT);
+          this.setState({refreshing: false});
           return; 
         }
-      }*/
+      }
       savedWalletData = [];
+      //Retrieves data for each wallet.
+      //Consider refactoring to make retrieval of each wallet parallel.
       for(let i = 0; i < walletList.length; i++)
       {
         let itemObj = null;
@@ -382,8 +409,11 @@ class HomeScreen extends React.Component {
         }
         savedWalletData.push(itemObj);
       }
+      //Saves data and updates view
       this.setState({walletData: savedWalletData});
-      AsyncStorage.setItem(Globals.StorageNames.walletData, JSON.stringify(savedWalletData));
+      ToastAndroid.show('Updated', ToastAndroid.SHORT);
+      await AsyncStorage.setItem(Globals.StorageNames.walletData, JSON.stringify(savedWalletData));
+      this.setState({refreshing: false, forceRefresh: false});
     }
     catch(error)
     {
@@ -451,8 +481,47 @@ class HomeScreen extends React.Component {
       console.log(error);
     }
   }
-  async getBitcoinObj() {
-
+  async getBitcoinObj(obj, curDate) {
+    try{
+      let responseObj = null; //Response from Ethplorer
+      let fiatObj = null; //Response from CoinMarketCap
+      let fiatRatio = null; //Ratio from usd to user selected fiat
+      let tokens = null; //Token Object. Made from data from Ethplorer.
+      let returnObj = null; //Object to Return
+      //Does both api calls asynchronously and awaits(faster than doing one after the other)
+      [responseObj, fiatObj] = await Promise.all([
+        fetch('https://blockexplorer.com/api/addr/'+obj.address,{
+          method: 'GET'
+        })
+        .then((response) => response.json()),
+        fetch('https://api.coinmarketcap.com/v1/ticker/Bitcoin?convert='+Globals.DefaultSettings.currency,{
+          method: 'GET'
+        })
+        .then((response) => response.json()) 
+      ]);
+      //fiatObj is originally returned as an array (annoying)
+      fiatObj = fiatObj[0];
+      //Build object to return from api information
+      returnObj = {
+        val: responseObj.balance,
+        symbol: "BTC",
+        fiatRate: (fiatObj)['price_'+Globals.DefaultSettings.currency.toLowerCase()],
+        txCount: responseObj.txApperances, 
+        totalIn: responseObj.totalReceived,
+        totalOut: responseObj.totalSent,
+        tokens: null, //No token data for bitcoin
+        updateTime: curDate
+      };
+      return returnObj;
+    }
+    catch(error) {
+      console.log(error);
+    }
+  }
+  cardRefresh() {
+    //Manually refreshing.
+    this.setState({refreshing: true});
+    this.getWallets();
   }
   render() {
     if(this.state.adding)
@@ -482,40 +551,45 @@ class HomeScreen extends React.Component {
                 <Image source={require('../assets/addIcon.png')} style={[CommonStylesheet.rightIcon, {tintColor: Globals.DefaultSettings.theme.textColour}]}/>
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => {}}
+                onPress={() => {this.cardRefresh()}}
               >
                 <Image source={require('../assets/refreshIcon.png')} style={[CommonStylesheet.rightIcon, {tintColor: Globals.DefaultSettings.theme.textColour}]}/>
               </TouchableOpacity>
             </View>
           </View>
-          {this.state.walletData &&
+          {this.state.wallets &&
             <FlatList
               data={this.state.wallets}
               keyExtractor={(x, i) => i.toString()}
-              renderItem={({ item }) => (
-                <View style={[styles.walletCard, {backgroundColor: Globals.DefaultSettings.theme.lightColour}]}>
-                  <View style={[styles.walletCardTop, {backgroundColor: Globals.DefaultSettings.theme.primaryColour}]}>
-                    <View>
-                      <Text style={[styles.walletCardTitleText, {color: Globals.DefaultSettings.theme.textColour}]}>{item.name}</Text>
-                      <Text style={[styles.walletCardText, styles.walletCardAddress, CommonStylesheet.normalText, {color: Globals.DefaultSettings.theme.textColour}]}>{item.address}</Text>
+              refreshing={this.state.refreshing}
+              onRefresh={this.cardRefresh}
+              renderItem={({ item }) => {
+                if(this.state.walletData)
+                  return (
+                    <View style={[styles.walletCard, {backgroundColor: Globals.DefaultSettings.theme.lightColour}]}>
+                      <View style={[styles.walletCardTop, {backgroundColor: Globals.DefaultSettings.theme.primaryColour}]}>
+                        <View>
+                          <Text style={[styles.walletCardTitleText, {color: Globals.DefaultSettings.theme.textColour}]}>{item.name}</Text>
+                          <Text style={[styles.walletCardText, styles.walletCardAddress, CommonStylesheet.normalText, {color: Globals.DefaultSettings.theme.textColour}]}>{item.address}</Text>
+                        </View>
+                        <View style={{flex: 1, alignItems: 'flex-end'}}>
+                          <TouchableOpacity onPress={() => {
+                              
+                            }}
+                          >
+                            <Image source={require('../assets/cancelIcon.png')} style={[styles.xIcon, {tintColor: Globals.DefaultSettings.theme.textColour}]}/>
+                          </TouchableOpacity>
+                        </View>
+                      </View>
+                      <View style={[styles.walletCardMiddle]}>
+                        <Text style={[styles.walletCardText, CommonStylesheet.normalText, {color: Globals.DefaultSettings.theme.textColour}]}>{item.description}</Text>
+                      </View>
+                      <View style={[styles.walletCardBottom, {backgroundColor: Globals.DefaultSettings.theme.primaryColour}]}>
+                        <Text style={[styles.walletCardText, CommonStylesheet.normalText, {color: Globals.DefaultSettings.theme.textColour}]}>{item.address} {this.state.walletData[1].txCount}</Text>
+                      </View>
                     </View>
-                    <View style={{flex: 1, alignItems: 'flex-end'}}>
-                      <TouchableOpacity onPress={() => {
-                          
-                        }}
-                      >
-                        <Image source={require('../assets/cancelIcon.png')} style={[styles.xIcon, {tintColor: Globals.DefaultSettings.theme.textColour}]}/>
-                      </TouchableOpacity>
-                    </View>
-                  </View>
-                  <View style={[styles.walletCardMiddle]}>
-                    <Text style={[styles.walletCardText, CommonStylesheet.normalText, {color: Globals.DefaultSettings.theme.textColour}]}>{item.description}</Text>
-                  </View>
-                  <View style={[styles.walletCardBottom, {backgroundColor: Globals.DefaultSettings.theme.primaryColour}]}>
-                    <Text style={[styles.walletCardText, CommonStylesheet.normalText, {color: Globals.DefaultSettings.theme.textColour}]}>{item.address}</Text>
-                  </View>
-                </View>
-              )}
+                  );
+              }}
             />
           }
         </View>
