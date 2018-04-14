@@ -70,12 +70,14 @@ class Settings extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      test: '',
+      refreshOnOpen: true,
     };
     this.userSettings = '';
     this.changeTheme = this.changeTheme.bind(this);
     this.save = this.save.bind(this);
     this.changeFiat = this.changeFiat.bind(this);
+    this.getSwitchSettings = this.getSwitchSettings.bind(this);
+    this.setSwitchSettings = this.setSwitchSettings.bind(this);
   }
   componentWillMount() {
     this.getSettings();
@@ -84,9 +86,11 @@ class Settings extends React.Component {
     //Gets settings from storage and if there are any then it uses that object
     try{
       let savedSettings = await AsyncStorage.getItem(Globals.StorageNames.settings);
+      console.log(JSON.parse(savedSettings));
       if(savedSettings)
       {
         this.userSettings = JSON.parse(savedSettings);
+        this.getSwitchSettings();
         return;
       }
       savedSettings = Globals.DefaultSettings;
@@ -241,9 +245,18 @@ class Settings extends React.Component {
         }
     }
   }
+  getSwitchSettings() {
+    this.setState({
+      refreshOnOpen: this.userSettings.reloadOnOpen,
+    });
+  }
+  setSwitchSettings() {
+    this.userSettings.reloadOnOpen = this.state.refreshOnOpen;
+  }
   async save(){
     try{
       //Saves settings to local and updates globals then goes back.
+      this.setSwitchSettings();
       Globals.UpdateSettings(this.userSettings);
       await AsyncStorage.setItem(Globals.StorageNames.settings, JSON.stringify(this.userSettings));
       this.props.navigation.goBack();
@@ -268,6 +281,21 @@ class Settings extends React.Component {
           <Text style={[CommonStylesheet.title, {color: Globals.DefaultSettings.theme.textColour}]}>Settings</Text>
         </View>
         <ScrollView>
+          <View style={CommonStylesheet.controlBackground}>
+            <View style={CommonStylesheet.controlInner, styles.switchInner}>
+              <View style={styles.switchTextSection}>
+                <Text style={[CommonStylesheet.normalText, {color: 'black'}]}>Refresh on opening app.</Text>
+              </View>
+              <View style={styles.switchSwitchSection}>
+                <Switch
+                  value={this.state.refreshOnOpen}
+                  tintColor="darkslategray"
+                  onTintColor={Globals.DefaultSettings.theme.primaryColour}
+                  onValueChange={() => this.setState({refreshOnOpen: !(this.state.refreshOnOpen)})}
+                />
+              </View>
+            </View>
+          </View>
           <View style={CommonStylesheet.controlBackground}>
             <View style={CommonStylesheet.controlInner}>
               <Dropdown
@@ -321,6 +349,19 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center', 
+  },
+  switchTextSection: {
+    margin: 5, 
+    marginBottom: 0, 
+    flex: 1, 
+    paddingTop: 5
+  },
+  switchSwitchSection: {
+    margin: 5, 
+    marginBottom: 0
+  },
+  switchInner: {
+    flexDirection: 'row'
   },
 });
 
