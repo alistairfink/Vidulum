@@ -20,6 +20,7 @@ import {
   FlatList,
   NetInfo,
   ToastAndroid,
+  Clipboard,
 } from 'react-native';
 import Globals from './Globals';
 import CommonStylesheet from './Stylesheet';
@@ -53,6 +54,7 @@ class Add extends React.Component {
       address: 'Wallet Address',
     };
     this.addedWallets = [];
+    this.hitButton = false;
   }
   componentWillMount() {
     //Starts animation
@@ -92,6 +94,8 @@ class Add extends React.Component {
     }
   }
   async saveFunc() {
+    if(this.hitButton) return;
+    this.hitButton = true;
     //Checks all fields are filled out
     for(let item in this.state.wallet)
     {
@@ -103,6 +107,7 @@ class Add extends React.Component {
         [
           {text: 'OK', onPress: () => console.log('OK Pressed')},
         ]);
+        this.hitButton = false;
         return;
       }
     }
@@ -117,6 +122,7 @@ class Add extends React.Component {
         [
           {text: 'OK', onPress: () => console.log('OK Pressed')},
         ]);
+        this.hitButton = false;
         return;
       }
     }
@@ -150,6 +156,7 @@ class Add extends React.Component {
         [
           {text: 'OK'},
         ]);
+        this.hitButton = false;
         return;
     }
     try{
@@ -270,7 +277,7 @@ class Add extends React.Component {
                         name: this.state.wallet.name,
                         description: this.state.wallet.description,
                         coin: this.state.wallet.coin, 
-                        address: value,
+                        address: value.trim(),
                       }
                     })}}
                   />
@@ -315,10 +322,12 @@ class HomeScreen extends React.Component {
     this.getBitcoinObj = this.getBitcoinObj.bind(this);
     this.cardRefresh = this.cardRefresh.bind(this);
     this.firstLoad = this.firstLoad.bind(this);
+    this.writeToClipBoard = this.writeToClipBoard.bind(this);
+    this.alternatingColour = this.alternatingColour.bind(this);
   }
   backHandle(){
     //Refreshes after adding card. Consider refactoring so only freshes when adding.
-    this.setState({adding: false, forceRefresh: true, refreshing: true});
+    this.setState({adding: false, forceRefresh: true, refreshing: true, wallets: null, walletData: null});
     this.getWallets();    
   }
   componentWillMount() {
@@ -382,7 +391,7 @@ class HomeScreen extends React.Component {
             return;
           }
         })
-        let updateDate = savedWalletData[1].updateTime;
+        let updateDate = savedWalletData[0].updateTime;
         //Checks if data is outdated or if user is navigating back from different component
         if((curDate-updateDate < 300 && !(this.state.forceRefresh)) || 
           !(this.state.refreshing))
@@ -469,7 +478,7 @@ class HomeScreen extends React.Component {
           let priceInfo = responseObj.tokens[j].tokenInfo.price ? fiatRatio*responseObj.tokens[j].tokenInfo.price.rate : false;
           let tempObj = {
             name: responseObj.tokens[j].tokenInfo.name,
-            decimals: responseObj.tokens[j].tokenInfo.deicmals,
+            decimals: responseObj.tokens[j].tokenInfo.decimals,
             symbol: responseObj.tokens[j].tokenInfo.symbol,
             fiatVal: priceInfo,
             val: responseObj.tokens[j].balance
@@ -536,6 +545,23 @@ class HomeScreen extends React.Component {
     this.setState({refreshing: true});
     this.getWallets();
   }
+  async writeToClipBoard(addr) {
+    await Clipboard.setString(addr);
+  }
+  alternatingColour(tokenI, walletDataI) {
+    let c = null;
+    let bRadius = 0;
+    c = tokenI%2 === 0 ? 'rgba(0,0,0,0.2)' : 'rgba(0,0,0,0.3)';
+    if(tokenI === this.state.walletData[walletDataI].tokens.length-1)
+    {
+      bRadius = 5;
+    }
+    return {
+      backgroundColor: c,
+      borderBottomLeftRadius: bRadius,
+      borderBottomRightRadius: bRadius,
+    };
+  }
   render() {
     if(this.state.adding)
     {
@@ -576,16 +602,25 @@ class HomeScreen extends React.Component {
               keyExtractor={(x, i) => i.toString()}
               refreshing={this.state.refreshing}
               onRefresh={this.cardRefresh}
-              renderItem={({ item }) => {
+              renderItem={({ item, index }) => {
                 if(this.state.walletData)
                   return (
-                    <View style={[styles.walletCard, {backgroundColor: Globals.DefaultSettings.theme.lightColour}]}>
+                    <View style={[styles.walletCard, {backgroundColor: Globals.DefaultSettings.theme.lightColour, borderWidth: 1, borderColor: Globals.DefaultSettings.theme.darkColour,}]}>
                       <View style={[styles.walletCardTop, {backgroundColor: Globals.DefaultSettings.theme.primaryColour}]}>
                         <View>
-                          <Text style={[styles.walletCardTitleText, {color: Globals.DefaultSettings.theme.textColour}]}>{item.name}</Text>
-                          <Text style={[styles.walletCardText, styles.walletCardAddress, CommonStylesheet.normalText, {color: Globals.DefaultSettings.theme.textColour}]}>{item.address}</Text>
+                          {
+                            (item.coin.toLowerCase() === 'bitcoin') ? (
+                              <Image style={styles.logoImage} source={require('../assets/coins/bitcoin.png')}/>
+                            ):
+                            (
+                              <Image style={styles.logoImage} source={require('../assets/coins/ethereum.png')}/>
+                            )
+                          }
                         </View>
-                        <View style={{flex: 1, alignItems: 'flex-end'}}>
+                        <View>
+                          <Text style={[styles.walletCardTitleText, {color: Globals.DefaultSettings.theme.textColour}]}>{item.name}</Text>
+                        </View>
+                        <View style={styles.xIconOuter}>
                           <TouchableOpacity onPress={() => {
                               
                             }}
@@ -595,10 +630,101 @@ class HomeScreen extends React.Component {
                         </View>
                       </View>
                       <View style={[styles.walletCardMiddle]}>
-                        <Text style={[styles.walletCardText, CommonStylesheet.normalText, {color: Globals.DefaultSettings.theme.textColour}]}>{item.description}</Text>
+                        <View style={styles.descriptionOuter}>
+                          <Text style={[CommonStylesheet.normalText, styles.walletCardText, {color: Globals.DefaultSettings.theme.textColour}]}>{item.description}</Text>
+                        </View>
+                        <View style={styles.balanceHeader}>
+                          <Text style={[CommonStylesheet.normalText, styles.walletCardTextTitle, {color: Globals.DefaultSettings.theme.textColour}]}>Balance</Text>
+                        </View>
+                        <View style={styles.balanceContent}>
+                          <View style={{flex: 0.425}}>
+                            <Text style={[CommonStylesheet.normalText, styles.walletCardText, {color: Globals.DefaultSettings.theme.textColour}]}>{this.state.walletData[index].val} {this.state.walletData[index].symbol}</Text>
+                          </View>
+                          <View style={styles.balanceIcon}>
+                              <Image style={{tintColor: Globals.DefaultSettings.theme.textColour, width: 30, height: 8.38}} source={require('../assets/convertIcon.png')}/>
+                          </View>
+                          <View style={{flex: 0.425, alignItems: 'flex-end'}}>
+                            <Text style={[CommonStylesheet.normalText, styles.walletCardText, {color: Globals.DefaultSettings.theme.textColour}]}>{Globals.DefaultSettings.symbol} {(this.state.walletData[index].val*this.state.walletData[index].fiatRate).toFixed(2)} {Globals.DefaultSettings.currency}</Text>
+                          </View>
+                        </View>
+                        <View>
+                          <View style={{flexDirection: 'row' }}>
+                            <View style={styles.InOutOutter}>
+                              <View style={styles.InOutHeader}>
+                                <Text style={[CommonStylesheet.normalText, styles.walletCardText, {color: Globals.DefaultSettings.theme.textColour}]}>Total In ({this.state.walletData[index].symbol})</Text>
+                              </View>
+                              <View style={styles.InOutContent}>
+                                <Text style={[CommonStylesheet.normalText, styles.walletCardText, {color: Globals.DefaultSettings.theme.textColour}]}>{this.state.walletData[index].totalIn}</Text>
+                              </View>
+                            </View>
+                            <View style={{flex: 0.05}}>
+                            </View>
+                            <View style={styles.InOutOutter}>
+                              <View style={styles.InOutHeader}>
+                                <Text style={[CommonStylesheet.normalText, styles.walletCardText, {color: Globals.DefaultSettings.theme.textColour}]}>Total Out ({this.state.walletData[index].symbol})</Text>
+                              </View>
+                              <View style={styles.InOutContent}>
+                                <Text style={[CommonStylesheet.normalText, styles.walletCardText, {color: Globals.DefaultSettings.theme.textColour}]}>{this.state.walletData[index].totalOut}</Text>
+                              </View>
+                            </View>
+                          </View>
+                        </View>
+                        <View style={{flexDirection: 'row'}}>
+                          <View style={styles.transactionCountBox}>
+                            <Text style={[CommonStylesheet.normalText, styles.walletCardText, {color: Globals.DefaultSettings.theme.textColour}]}>{this.state.walletData[index].txCount} Total Transactions</Text>
+                          </View>
+                        </View>
+                        {this.state.walletData[index].tokens &&
+                          <View>
+                            <View style={styles.tokenListHeader}>
+                              <View style={{flex: 0.33}}>
+                                <Text style={[CommonStylesheet.normalText, styles.walletCardTextTitle, {color: Globals.DefaultSettings.theme.textColour}]}>Token Name</Text>
+                              </View>
+                              <View style={{flex: 0.33, alignItems: 'center'}}>
+                                <Text style={[CommonStylesheet.normalText, styles.walletCardTextTitle, {color: Globals.DefaultSettings.theme.textColour}]}>Balance</Text>
+                              </View>
+                              <View style={{flex: 0.33, alignItems: 'flex-end'}}>
+                                <Text style={[CommonStylesheet.normalText, styles.walletCardTextTitle, {color: Globals.DefaultSettings.theme.textColour}]}>Balance ({Globals.DefaultSettings.currency})</Text>
+                              </View>
+                            </View>
+                            {this.state.walletData[index].tokens.map((token, i) => (
+                              <View key={i} style={[styles.tokeItem, this.alternatingColour(i, index)]}>
+                                <View style={{flex: 0.33}}>
+                                  <Text style={[CommonStylesheet.normalText, styles.walletCardText, {color: Globals.DefaultSettings.theme.textColour}]}>{token.name}</Text>
+                                </View>
+                                <View style={{flex: 0.33, alignItems: 'center'}}>
+                                  <Text style={[CommonStylesheet.normalText, styles.walletCardText, {color: Globals.DefaultSettings.theme.textColour, textAlign: 'center'}]}>{parseFloat((token.val/(Math.pow(10,token.decimals))).toFixed(token.decimals))} {token.symbol}</Text>
+                                </View>
+                                <View style={{flex: 0.33, alignItems: 'flex-end'}}>
+                                  {
+                                    (token.fiatVal) ? (
+                                      <Text style={[CommonStylesheet.normalText, styles.walletCardText, {color: Globals.DefaultSettings.theme.textColour}]}>{Globals.DefaultSettings.symbol} {(parseFloat((token.val/(Math.pow(10,token.decimals))))*token.fiatVal).toFixed(2)}</Text>
+                                    ) : (
+                                      <Text style={[CommonStylesheet.normalText, styles.walletCardText, {color: Globals.DefaultSettings.theme.textColour}]}>N/A</Text>
+                                    )
+                                  }
+                                </View>
+                              </View>
+                            ))}
+                          </View>
+                        }
                       </View>
                       <View style={[styles.walletCardBottom, {backgroundColor: Globals.DefaultSettings.theme.primaryColour}]}>
-                        <Text style={[styles.walletCardText, CommonStylesheet.normalText, {color: Globals.DefaultSettings.theme.textColour}]}>{item.address} {this.state.walletData[1].txCount}</Text>
+                        <Text style={[styles.walletCardText, CommonStylesheet.normalText, {color: Globals.DefaultSettings.theme.textColour}]}>{item.address}</Text>
+                        <View style={{flexDirection: 'row'}}>
+                          <View style={{flex: 0.6, justifyContent: 'flex-end'}}>
+                            <Text style={[CommonStylesheet.normalText, styles.walletCardText, {color: Globals.DefaultSettings.theme.textColour}]}>Last Updated: {(new Date(this.state.walletData[index].updateTime*1000)).toLocaleDateString()} {(new Date(this.state.walletData[index].updateTime*1000)).toLocaleTimeString()}</Text>
+                          </View>
+                          <View style={{flex: 0.4, alignItems: 'flex-end',}}>
+                            <TouchableOpacity 
+                              onPress={() => this.writeToClipBoard(item.address)}
+                            >
+                              <View style={{backgroundColor: Globals.DefaultSettings.theme.lightColour, borderRadius: 5, marginTop: 5, padding: 5,}}>
+                                <Text style={[styles.walletCardText, CommonStylesheet.normalText, {color: Globals.DefaultSettings.theme.textColour, textAlign: 'center', marginRight: 10, marginLeft: 10, }]}>Copy Address</Text>
+                              </View>
+                            </TouchableOpacity>
+                          </View>
+                        </View>
                       </View>
                     </View>
                   );
@@ -630,9 +756,9 @@ const styles = StyleSheet.create({
     alignItems: 'center', 
   },
   walletCard: {
-    marginRight: 15,
-    marginLeft: 15,
-    marginTop: 15,
+    margin: 15,
+    marginTop: 10,
+    marginBottom: 10,
     borderRadius: 5,
   },
   walletCardTop: {
@@ -648,7 +774,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   walletCardText: {
-
+    marginBottom: 0,
   },
   walletCardMiddle: {
     padding: 10,
@@ -657,15 +783,94 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 5,
     borderBottomRightRadius: 5,
     padding: 10,
-    paddingTop: 0,
-    paddingBottom: 0,
   },
   xIcon: {
     height: 17,
     width: 17,
     marginRight: 10,
-    marginTop: 10,
+    marginTop: 5,
     marginBottom: 10,
+  },
+  logoImage: {
+    width: 25,
+    height: 25,
+    marginRight: 8, 
+    marginTop: 1,
+  },
+  xIconOuter: {
+    flex: 1, 
+    alignItems: 'flex-end',
+  },
+  walletCardTextTitle: {
+    marginTop: 5,
+    fontSize: 16,
+    textDecorationLine: 'underline',  
+  },
+  tokenListHeader: {
+    flexDirection: 'row', 
+    backgroundColor: 'rgba(0,0,0,0.5)', 
+    paddingLeft: 5, 
+    paddingRight: 5, 
+    paddingBottom: 5,
+    marginTop: 5,
+    borderTopLeftRadius: 5,
+    borderTopRightRadius: 5,
+  },
+  tokeItem: { 
+    flexDirection: 'row', 
+    paddingLeft: 5, 
+    paddingRight: 5, 
+    paddingTop: 5,
+    paddingBottom: 5,
+  },
+  transactionCountBox: {
+    flex:1, 
+    backgroundColor: 'rgba(0,0,0,0.5)', 
+    alignItems: 'center',
+    borderRadius: 5,
+  },
+  InOutOutter: {
+    flex: 0.475, 
+    marginBottom: 5,
+  },
+  InOutHeader: {
+    alignItems: 'center', 
+    backgroundColor: 'rgba(0,0,0,0.5)', 
+    borderTopLeftRadius: 5, 
+    borderTopRightRadius: 5, 
+    padding: 3,
+  },
+  InOutContent: {
+    alignItems: 'center', 
+    backgroundColor: 'rgba(0,0,0,0.2)', 
+    borderBottomLeftRadius: 5, 
+    borderBottomRightRadius: 5, 
+    padding: 3,
+  },
+  balanceHeader: {
+    flexDirection: 'row', 
+    justifyContent: 'center', 
+    backgroundColor: 'rgba(0,0,0,0.5)', 
+    padding: 5, 
+    borderTopRightRadius: 5, 
+    borderTopLeftRadius: 5,
+  },
+  balanceContent: {
+    flexDirection: 'row', 
+    marginBottom: 5, 
+    backgroundColor: 'rgba(0,0,0,0.2)', 
+    padding: 5,
+  },
+  balanceIcon: {
+    flex: 0.15, 
+    alignItems: 'center', 
+    justifyContent: 'center'
+  },
+  descriptionOuter: {
+    backgroundColor: 'rgba(0,0,0,0.2)', 
+    padding: 5, 
+    marginBottom: 10, 
+    borderRadius: 5,
   },
 });
 

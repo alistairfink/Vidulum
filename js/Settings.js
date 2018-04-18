@@ -354,7 +354,8 @@ const styles = StyleSheet.create({
     margin: 5, 
     marginBottom: 0, 
     flex: 1, 
-    paddingTop: 5
+    paddingTop: 5,
+    paddingBottom: 10,
   },
   switchSwitchSection: {
     margin: 5, 

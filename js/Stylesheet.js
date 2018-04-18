@@ -63,7 +63,5 @@ export default StyleSheet.create({
 	},
 	normalText: {
 		fontSize: 14,
-		marginBottom: 15,
-		marginLeft: 0,
 	},
 });
