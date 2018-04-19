@@ -14,6 +14,8 @@ import {
   AsyncStorage,
   TextInput,
   Linking,
+  Animated,
+  Easing,
   StatusBar,
 } from 'react-native';
 import Globals from './Globals';
@@ -66,13 +68,64 @@ var themeData = [
   {value:'Purple'},
 ];
 
-class lockSettings extends React.Component {
-  constructor(props) {
+class LockSettings extends React.Component {
+  constructor(props){
     super(props);
   }
-  render(){
-    return(
-      <Text>Text</Text>
+  componentWillMount() {
+    //Starts animation
+    this.animateValue = new Animated.Value(win.width);
+  }  
+  componentDidMount() {
+    Animated.timing(               
+      this.animateValue,           
+      {
+        toValue: 0,//win.height-StatusBar.currentHeight,                  
+        duration: 200,
+        easing: Easing.bounce,             
+      }
+    ).start();
+  } 
+  render() {
+    const animatedStyle = {left: this.animateValue}
+    return (
+      <View style={{backgroundColor: Globals.DefaultSettings.theme.backgroundColour, width: win.width, position: 'absolute',}}>
+        <StatusBar
+          backgroundColor={Globals.DefaultSettings.theme.darkColour}
+        />
+        <Animated.View style={animatedStyle}>
+          <View style={[CommonStylesheet.pageBG, {backgroundColor: Globals.DefaultSettings.theme.backgroundColour, height: win.height-StatusBar.currentHeight}]}>
+            <View style={[CommonStylesheet.topBar, {backgroundColor: Globals.DefaultSettings.theme.primaryColour}]}>
+              <TouchableOpacity
+                onPress={this.props.handler}
+              >
+                <Image source={require('../assets/cancelIcon.png')} style={[CommonStylesheet.leftIcon, 
+                  {tintColor: Globals.DefaultSettings.theme.textColour}]}
+                />
+              </TouchableOpacity>
+              <Text style={[CommonStylesheet.title, {color: Globals.DefaultSettings.theme.textColour}]}>Lock Screen Settings</Text>
+            </View>
+            <ScrollView>
+              
+            </ScrollView>
+            <View style={[styles.footer, {backgroundColor: Globals.DefaultSettings.theme.primaryColour}]}>
+              <TouchableOpacity style={styles.footerButton} 
+                onPress={this.props.handler}
+              >
+                <Text style={[styles.footerText, {color: Globals.DefaultSettings.theme.textColour}]}>Cancel</Text>            
+              </TouchableOpacity>
+              <TouchableOpacity 
+                style={[styles.footerButton, 
+                  {borderLeftColor: Globals.DefaultSettings.theme.darkColour, borderLeftWidth: 1}]
+                } 
+                onPress={this.saveFunc}
+              >
+                <Text style={[styles.footerText, {color: Globals.DefaultSettings.theme.textColour}]}>Save</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Animated.View>
+      </View>
     );
   }
 }
@@ -82,14 +135,23 @@ class Settings extends React.Component {
   constructor(props){
     super(props);
     this.state = {
+      refreshPage: false,
       refreshOnOpen: true,
     };
+    this.menuPages = { 
+        lock: {
+          status: false,
+          displayText: 'Lock Screen Settings',
+        },
+      },
     this.userSettings = '';
     this.changeTheme = this.changeTheme.bind(this);
     this.save = this.save.bind(this);
     this.changeFiat = this.changeFiat.bind(this);
     this.getSwitchSettings = this.getSwitchSettings.bind(this);
     this.setSwitchSettings = this.setSwitchSettings.bind(this);
+    this.menuPageHandler = this.menuPageHandler.bind(this);
+    this.backHandle = this.backHandle.bind(this);
   }
   componentWillMount() {
     this.getSettings();
@@ -278,72 +340,112 @@ class Settings extends React.Component {
       console.log(error);
     }
   }
+  menuPageHandler(_name) {
+    //Sets all pages to false then sets the selected to true. To acccount for overlap.
+    for(let page in this.menuPages)
+    {
+      ((this.menuPages)[page]).status = false;
+    }
+    ((this.menuPages)[_name]).status = true;
+    this.setState({refreshPage: !(this.state.refreshPage)});
+  }
+  backHandle(_name) {   
+    ((this.menuPages)[_name]).status = false;
+    this.setState({refreshPage: !(this.state.refreshPage)});
+  }
   render() {
-    return (
-	    <View style={[CommonStylesheet.pageBG, {backgroundColor: Globals.DefaultSettings.theme.backgroundColour}]}>
-        <StatusBar
-          backgroundColor={Globals.DefaultSettings.theme.darkColour}
-        />
-        <View style={[CommonStylesheet.topBar, {backgroundColor: Globals.DefaultSettings.theme.primaryColour}]}>
-          <TouchableOpacity
-            onPress={() => {this.props.navigation.navigate('DrawerOpen'); this.props.navigation.drawerBackground}}
-          >
-            <Image source={require('../assets/menuIcon.png')} style={[CommonStylesheet.leftIcon, {tintColor: Globals.DefaultSettings.theme.textColour}]}/>
-          </TouchableOpacity>
-          <Text style={[CommonStylesheet.title, {color: Globals.DefaultSettings.theme.textColour}]}>Settings</Text>
-        </View>
-        <ScrollView>
-          <View style={CommonStylesheet.controlBackground}>
-            <View style={CommonStylesheet.controlInner, styles.switchInner}>
-              <View style={styles.switchTextSection}>
-                <Text style={[CommonStylesheet.normalText, {color: 'black'}]}>Refresh on opening app.</Text>
+    if(this.menuPages.lock.status)
+    {
+      return(
+        <LockSettings handler={() => this.backHandle('lock')}/>
+      );
+    }
+    else
+    {
+      return (
+  	    <View style={[CommonStylesheet.pageBG, {backgroundColor: Globals.DefaultSettings.theme.backgroundColour}]}>
+          <StatusBar
+            backgroundColor={Globals.DefaultSettings.theme.darkColour}
+          />
+          <View style={[CommonStylesheet.topBar, {backgroundColor: Globals.DefaultSettings.theme.primaryColour}]}>
+            <TouchableOpacity
+              onPress={() => {this.props.navigation.navigate('DrawerOpen'); this.props.navigation.drawerBackground}}
+            >
+              <Image source={require('../assets/menuIcon.png')} style={[CommonStylesheet.leftIcon, {tintColor: Globals.DefaultSettings.theme.textColour}]}/>
+            </TouchableOpacity>
+            <Text style={[CommonStylesheet.title, {color: Globals.DefaultSettings.theme.textColour}]}>Settings</Text>
+          </View>
+          <ScrollView>
+            <View style={CommonStylesheet.controlBackground}>
+              <View style={CommonStylesheet.controlInner, styles.switchInner}>
+                <View style={styles.switchTextSection}>
+                  <Text style={[CommonStylesheet.normalText, {color: 'black'}]}>Refresh on opening app.</Text>
+                </View>
+                <View style={styles.switchSwitchSection}>
+                  <Switch
+                    value={this.state.refreshOnOpen}
+                    tintColor="darkslategray"
+                    onTintColor={Globals.DefaultSettings.theme.primaryColour}
+                    onValueChange={() => this.setState({refreshOnOpen: !(this.state.refreshOnOpen)})}
+                  />
+                </View>
               </View>
-              <View style={styles.switchSwitchSection}>
-                <Switch
-                  value={this.state.refreshOnOpen}
-                  tintColor="darkslategray"
-                  onTintColor={Globals.DefaultSettings.theme.primaryColour}
-                  onValueChange={() => this.setState({refreshOnOpen: !(this.state.refreshOnOpen)})}
+            </View>
+            <View style={CommonStylesheet.controlBackground}>
+              <View style={CommonStylesheet.controlInner}>
+                <Dropdown
+                  label='Theme'
+                  data={themeData}
+                  onChangeText={this.changeTheme}
                 />
               </View>
             </View>
-          </View>
-          <View style={CommonStylesheet.controlBackground}>
-            <View style={CommonStylesheet.controlInner}>
-              <Dropdown
-                label='Theme'
-                data={themeData}
-                onChangeText={this.changeTheme}
-              />
+            <View style={CommonStylesheet.controlBackground}>
+              <View style={CommonStylesheet.controlInner}>
+                <Dropdown
+                  label='Fiat Currency'
+                  data={fiatData}
+                  onChangeText={this.changeFiat}
+                />
+              </View>
             </View>
-          </View>
-          <View style={CommonStylesheet.controlBackground}>
-            <View style={CommonStylesheet.controlInner}>
-              <Dropdown
-                label='Fiat Currency'
-                data={fiatData}
-                onChangeText={this.changeFiat}
-              />
+            <View style={CommonStylesheet.controlBackground}>
+              <View style={CommonStylesheet.controlInner}>
+                {Object.keys(this.menuPages).map((name: 'string') => (
+                  <TouchableOpacity
+                    key={name} 
+                    style={styles.menuPageOuter}
+                    onPress={() => this.menuPageHandler(name)}
+                  >
+                    <View style={styles.menuPageTextOuter}>
+                      <Text style={{color: 'black'}}>{((this.menuPages)[name]).displayText}</Text>
+                    </View>
+                    <View style={styles.menuPageIconOuter}>
+                      <Image source={require('../assets/forwardIcon.png')} style={styles.menuPageIcon}/>
+                    </View>
+                  </TouchableOpacity>
+                ))}
+              </View>
             </View>
+          </ScrollView>
+          <View style={[styles.footer, {backgroundColor: Globals.DefaultSettings.theme.primaryColour}]}>
+            <TouchableOpacity style={styles.footerButton} 
+              onPress={() => {
+                this.props.navigation.goBack();
+            }}>
+              <Text style={[styles.footerText, {color: Globals.DefaultSettings.theme.textColour}]}>Cancel</Text>            
+            </TouchableOpacity>
+            <TouchableOpacity 
+              style={[styles.footerButton, 
+                {borderLeftColor: Globals.DefaultSettings.theme.darkColour, borderLeftWidth: 1}]
+              } 
+              onPress={this.save}>
+              <Text style={[styles.footerText, {color: Globals.DefaultSettings.theme.textColour}]}>Save</Text>
+            </TouchableOpacity>
           </View>
-        </ScrollView>
-        <View style={[styles.footer, {backgroundColor: Globals.DefaultSettings.theme.primaryColour}]}>
-          <TouchableOpacity style={styles.footerButton} 
-            onPress={() => {
-              this.props.navigation.goBack();
-          }}>
-            <Text style={[styles.footerText, {color: Globals.DefaultSettings.theme.textColour}]}>Cancel</Text>            
-          </TouchableOpacity>
-          <TouchableOpacity 
-            style={[styles.footerButton, 
-              {borderLeftColor: Globals.DefaultSettings.theme.darkColour, borderLeftWidth: 1}]
-            } 
-            onPress={this.save}>
-            <Text style={[styles.footerText, {color: Globals.DefaultSettings.theme.textColour}]}>Save</Text>
-          </TouchableOpacity>
         </View>
-      </View>
-    );
+      );
+    }
   }
 }
 
@@ -375,6 +477,28 @@ const styles = StyleSheet.create({
   },
   switchInner: {
     flexDirection: 'row'
+  },
+  menuPageOuter: {
+    flexDirection: 'row', 
+    borderBottomColor: 'rgba(0,0,0,0.3)', 
+    borderBottomWidth: 1
+  },
+  menuPageTextOuter: {
+    padding: 5, 
+    paddingTop: 15, 
+    paddingBottom: 15, 
+    flex: 0.9
+  },
+  menuPageIconOuter: {
+    flex: 0.1, 
+    justifyContent: 'center', 
+    alignItems: 'flex-end'
+  },
+  menuPageIcon: {
+    width: 15, 
+    height: 25.35, 
+    tintColor: 'rgba(0,0,0,0.6)', 
+    marginRight: 5
   },
 });
 

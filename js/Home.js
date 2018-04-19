@@ -69,7 +69,7 @@ class Add extends React.Component {
       this.animateValue,           
       {
         toValue: 0,//win.height-StatusBar.currentHeight,                  
-        duration: 250,
+        duration: 200,
         easing: Easing.bounce,             
       }
     ).start();
@@ -327,7 +327,9 @@ class HomeScreen extends React.Component {
     this.backHandle = this.backHandle.bind(this);
   }
   async backHandle(){
+    //So add screen closes
     this.setState({adding: false});
+    //Gets from storage and compares length with what we already have.
     let savedWallets = await AsyncStorage.getItem(Globals.StorageNames.wallets);
     savedWallets = savedWallets ? JSON.parse(savedWallets) : null;
     if(savedWallets)
@@ -337,7 +339,7 @@ class HomeScreen extends React.Component {
         this.setState({refreshing: false});
       }
       else
-      {
+      {//If length is different then something has been added and wallets need to refresh.
         this.setState({forceRefresh: true, refreshing: true, wallets: null, walletData: null});
       }
     }

@@ -45,6 +45,8 @@ export default StyleSheet.create({
 		marginBottom: 10,
 		borderRadius: 5,
 		backgroundColor: 'white',
+		borderWidth: 1, 
+		borderColor: 'rgba(0,0,0,0.3)',
 	},
 	controlInner: {
 		marginRight: 5, 
