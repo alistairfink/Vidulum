@@ -58,7 +58,7 @@ class Add extends React.Component {
   }
   componentWillMount() {
     //Starts animation
-    this.animateValue = new Animated.Value(0);
+    this.animateValue = new Animated.Value(win.width);
     this.getWallets();
     //Keyboard listening for moving screen up and down when keyboard pops up
     this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardDidShow.bind(this));
@@ -68,8 +68,8 @@ class Add extends React.Component {
     Animated.timing(               
       this.animateValue,           
       {
-        toValue: win.height-StatusBar.currentHeight,                  
-        duration: 800,
+        toValue: 0,//win.height-StatusBar.currentHeight,                  
+        duration: 250,
         easing: Easing.bounce,             
       }
     ).start();
@@ -184,14 +184,14 @@ class Add extends React.Component {
     this.setState({keyboardHeight: 0});
   }
   render() {
-    const animatedStyle = {height: this.animateValue}
+    const animatedStyle = {left: this.animateValue}
     return (
-      <View style={{backgroundColor: Globals.DefaultSettings.theme.primaryColour, flex: 1}}>
+      <View style={{backgroundColor: Globals.DefaultSettings.theme.backgroundColour, width: win.width, position: 'absolute',}}>
         <StatusBar
           backgroundColor={Globals.DefaultSettings.theme.darkColour}
         />
         <Animated.View style={animatedStyle}>
-          <View style={[CommonStylesheet.pageBG, {backgroundColor: Globals.DefaultSettings.theme.backgroundColour}]}>
+          <View style={[CommonStylesheet.pageBG, {backgroundColor: Globals.DefaultSettings.theme.backgroundColour, height: win.height-StatusBar.currentHeight}]}>
             <View style={[CommonStylesheet.topBar, {backgroundColor: Globals.DefaultSettings.theme.primaryColour}]}>
               <TouchableOpacity
                 onPress={this.props.handler}
@@ -324,10 +324,24 @@ class HomeScreen extends React.Component {
     this.firstLoad = this.firstLoad.bind(this);
     this.writeToClipBoard = this.writeToClipBoard.bind(this);
     this.alternatingColour = this.alternatingColour.bind(this);
+    this.backHandle = this.backHandle.bind(this);
   }
-  backHandle(){
-    //Refreshes after adding card. Consider refactoring so only freshes when adding.
-    this.setState({adding: false, forceRefresh: true, refreshing: true, wallets: null, walletData: null});
+  async backHandle(){
+    this.setState({adding: false});
+    let savedWallets = await AsyncStorage.getItem(Globals.StorageNames.wallets);
+    savedWallets = savedWallets ? JSON.parse(savedWallets) : null;
+    if(savedWallets)
+    {
+      if(savedWallets.length === this.state.wallets.length)
+      {
+        this.setState({refreshing: false});
+      }
+      else
+      {
+        this.setState({forceRefresh: true, refreshing: true, wallets: null, walletData: null});
+      }
+    }
+    //Refreshes after adding card. 
     this.getWallets();    
   }
   componentWillMount() {
@@ -566,7 +580,7 @@ class HomeScreen extends React.Component {
     if(this.state.adding)
     {
       return (
-        <Add handler={this.backHandle.bind(this)}/>
+        <Add handler={this.backHandle}/>
       );
     }
     else

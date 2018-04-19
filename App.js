@@ -24,7 +24,7 @@ class navDrawer extends React.Component {
     this.menuItems = [
       {
         displayText: 'Home',
-        name: 'HomeScreen',
+        name: 'Home',
       },
       {
         displayText: 'Settings',

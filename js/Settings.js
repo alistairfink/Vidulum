@@ -72,7 +72,7 @@ class lockSettings extends React.Component {
   }
   render(){
     return(
-
+      <Text>Text</Text>
     );
   }
 }
