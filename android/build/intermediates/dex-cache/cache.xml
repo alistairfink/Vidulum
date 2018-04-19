@@ -3,192 +3,192 @@
 
     <item
         is-multidex="false"
-        jar="E:\AppDev\Github\Vidulum\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.1\jars\classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="23.0.1"
-        sha1="c31e21b53ff2f74664e498248d01453a32e32d48">
-        <dex dex="E:\AppDev\Github\Vidulum\android\app\build\intermediates\pre-dexed\debug\com.android.support-support-v4-23.0.1_3bdb2df8b0d52bc26c0b19c2db2216f459ef903b.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="E:\AppDev\Github\Vidulum\android\app\build\intermediates\exploded-aar\com.facebook.fbui.textlayoutbuilder\textlayoutbuilder\1.0.0\jars\classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="23.0.1"
-        sha1="f90b593491e4044903f0bbf68dc3fa2790b151b9">
-        <dex dex="E:\AppDev\Github\Vidulum\android\app\build\intermediates\pre-dexed\debug\com.facebook.fbui.textlayoutbuilder-textlayoutbuilder-1.0.0_d46fb1d47cfab3c330991be21f7e04e9a4cdc58e.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="E:\AppDev\Github\Vidulum\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline-okhttp3\1.3.0\jars\classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="23.0.1"
-        sha1="c03c08c9934b23c8c09c803345ec51a74119127b">
-        <dex dex="E:\AppDev\Github\Vidulum\android\app\build\intermediates\pre-dexed\debug\com.facebook.fresco-imagepipeline-okhttp3-1.3.0_f759c023597950762d2d1b936dc539f26c618f6d.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="E:\AppDev\Github\Vidulum\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline-base\1.3.0\jars\classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="23.0.1"
-        sha1="72128af126ddd7d6252da9357fe560d3abcdfb0c">
-        <dex dex="E:\AppDev\Github\Vidulum\android\app\build\intermediates\pre-dexed\debug\com.facebook.fresco-imagepipeline-base-1.3.0_b8cf5c8d2ad0caf64566e154f46a7d51ceb8648f.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="E:\AppDev\Github\Vidulum\android\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.0.1\jars\classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="23.0.1"
-        sha1="d86429b0f0b3f3cafbeb78dda1b9d89119ccb05d">
-        <dex dex="E:\AppDev\Github\Vidulum\android\app\build\intermediates\pre-dexed\debug\com.android.support-appcompat-v7-23.0.1_53073ca59c130d0b7b433215b4535c1a6828da11.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="C:\Users\Alistair\.gradle\caches\modules-2\files-2.1\com.google.code.findbugs\jsr305\3.0.0\5871fb60dc68d67da54a663c3fd636a10a532948\jsr305-3.0.0.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="23.0.1"
-        sha1="5871fb60dc68d67da54a663c3fd636a10a532948">
-        <dex dex="E:\AppDev\Github\Vidulum\android\app\build\intermediates\pre-dexed\debug\jsr305-3.0.0_f2b5dcc2b48db80582aab8e43732673d03855d15.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="C:\Users\Alistair\.gradle\caches\modules-2\files-2.1\javax.inject\javax.inject\1\6975da39a7040257bd51d21a231b76c915872d38\javax.inject-1.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="23.0.1"
-        sha1="6975da39a7040257bd51d21a231b76c915872d38">
-        <dex dex="E:\AppDev\Github\Vidulum\android\app\build\intermediates\pre-dexed\debug\javax.inject-1_fac21dec7e176efe365f60fd1b4d3dfab75704c3.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="E:\AppDev\Github\Vidulum\android\app\build\intermediates\exploded-aar\com.facebook.fresco\drawee\1.3.0\jars\classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="23.0.1"
-        sha1="c65a2e39d54023bac3aef64a2f0cff89289c7ff6">
-        <dex dex="E:\AppDev\Github\Vidulum\android\app\build\intermediates\pre-dexed\debug\com.facebook.fresco-drawee-1.3.0_4fabce32849db6bd771d3218b6d2c9676a00fcad.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="E:\AppDev\Github\Vidulum\android\app\build\intermediates\exploded-aar\com.facebook.react\react-native\0.54.2\jars\classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="23.0.1"
-        sha1="112e6935caed6ca1c65d627777c76f0296f62867">
-        <dex dex="E:\AppDev\Github\Vidulum\android\app\build\intermediates\pre-dexed\debug\com.facebook.react-react-native-0.54.2_f5dbe29d839dad52fda311812447f52d04e063c3.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="E:\AppDev\Github\Vidulum\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fresco\1.3.0\jars\classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="23.0.1"
-        sha1="fe85b87215e405f5917d40ae4960488ac9224b74">
-        <dex dex="E:\AppDev\Github\Vidulum\android\app\build\intermediates\pre-dexed\debug\com.facebook.fresco-fresco-1.3.0_3bb161a4158c762aa86289d4721608189ebb6f1c.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="C:\Users\Alistair\.gradle\caches\modules-2\files-2.1\com.parse.bolts\bolts-tasks\1.4.0\d85884acf6810a3bbbecb587f239005cbc846dc4\bolts-tasks-1.4.0.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="23.0.1"
-        sha1="d85884acf6810a3bbbecb587f239005cbc846dc4">
-        <dex dex="E:\AppDev\Github\Vidulum\android\app\build\intermediates\pre-dexed\debug\bolts-tasks-1.4.0_68fa242aba13e01b29511b278ab148debb569146.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="E:\AppDev\Github\Vidulum\android\app\build\intermediates\exploded-aar\com.facebook.react\react-native\0.54.2\jars\libs\infer-annotations-4.0.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="23.0.1"
-        sha1="9809e90be788acdb479b2b44e2112f3295a03068">
-        <dex dex="E:\AppDev\Github\Vidulum\android\app\build\intermediates\pre-dexed\debug\infer-annotations-4.0_d53f7268e6e5eca50d50f4192ead9d25f34f26a3.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="E:\AppDev\Github\Vidulum\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline\1.3.0\jars\classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="23.0.1"
-        sha1="48c7f54c2515a2312d3a4481d10c43fbb807f3af">
-        <dex dex="E:\AppDev\Github\Vidulum\android\app\build\intermediates\pre-dexed\debug\com.facebook.fresco-imagepipeline-1.3.0_c8e916df6737f95107bbd1085ca55c3b5c766e4b.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="E:\AppDev\Github\Vidulum\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.1\jars\libs\internal_impl-23.0.1.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="23.0.1"
-        sha1="aa92916125166649d8ad4ba3940c3dd7515596d3">
-        <dex dex="E:\AppDev\Github\Vidulum\android\app\build\intermediates\pre-dexed\debug\internal_impl-23.0.1_a4053820dbab32833173520ff827e1802469793f.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="E:\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\23.0.1\support-annotations-23.0.1.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="23.0.1"
-        sha1="1fce89a6428c51467090d7f424e4c9c3dbd55f7e">
-        <dex dex="E:\AppDev\Github\Vidulum\android\app\build\intermediates\pre-dexed\debug\support-annotations-23.0.1_e6941ffc9cbf1270b1623cf686ba7082dcc4df08.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="C:\Users\Alistair\.gradle\caches\modules-2\files-2.1\com.squareup.okhttp3\okhttp\3.6.0\69edde9fc4b01c9fd51d25b83428837478c27254\okhttp-3.6.0.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="23.0.1"
-        sha1="69edde9fc4b01c9fd51d25b83428837478c27254">
-        <dex dex="E:\AppDev\Github\Vidulum\android\app\build\intermediates\pre-dexed\debug\okhttp-3.6.0_f1f383636243fd90ce28a893882b3c469f4b1741.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="E:\AppDev\Github\Vidulum\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\1.3.0\jars\classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="23.0.1"
-        sha1="37345de2ed2772f385eaeec37a9c2ff0fea99ad7">
-        <dex dex="E:\AppDev\Github\Vidulum\android\app\build\intermediates\pre-dexed\debug\com.facebook.fresco-fbcore-1.3.0_a15f53c43e53b9127b32c7c2eaa14d6dbb5b0d27.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="C:\Users\Alistair\.gradle\caches\modules-2\files-2.1\com.squareup.okio\okio\1.13.0\a9283170b7305c8d92d25aff02a6ab7e45d06cbe\okio-1.13.0.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="23.0.1"
-        sha1="a9283170b7305c8d92d25aff02a6ab7e45d06cbe">
-        <dex dex="E:\AppDev\Github\Vidulum\android\app\build\intermediates\pre-dexed\debug\okio-1.13.0_591140f41b21fc5f9f0ca4c1037551dd9335fad8.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="C:\Users\Alistair\.gradle\caches\modules-2\files-2.1\com.facebook.fbui.textlayoutbuilder\staticlayout-proxy\1.0\f162442a19fff13995fbd51ba414d9ee05579080\staticlayout-proxy-1.0.jar"
+        jar="C:\Users\Alistair Fink\.gradle\caches\modules-2\files-2.1\com.facebook.fbui.textlayoutbuilder\staticlayout-proxy\1.0\f162442a19fff13995fbd51ba414d9ee05579080\staticlayout-proxy-1.0.jar"
         jumboMode="false"
         optimize="true"
         revision="23.0.1"
         sha1="f162442a19fff13995fbd51ba414d9ee05579080">
-        <dex dex="E:\AppDev\Github\Vidulum\android\app\build\intermediates\pre-dexed\debug\staticlayout-proxy-1.0_fd0579c1564585d5c7b02450b30645474221b097.jar" />
+        <dex dex="C:\Users\Alistair Fink\Desktop\AppDev\Github\Vidulum\android\app\build\intermediates\pre-dexed\debug\staticlayout-proxy-1.0_fc730468bafefda6ac0a39120621270b7fbc4b7a.jar" />
     </item>
     <item
         is-multidex="false"
-        jar="C:\Users\Alistair\.gradle\caches\modules-2\files-2.1\com.squareup.okhttp3\okhttp-urlconnection\3.6.0\3f9b16b774f2c36cfd86dd2053d0b3059531dacc\okhttp-urlconnection-3.6.0.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="23.0.1"
-        sha1="3f9b16b774f2c36cfd86dd2053d0b3059531dacc">
-        <dex dex="E:\AppDev\Github\Vidulum\android\app\build\intermediates\pre-dexed\debug\okhttp-urlconnection-3.6.0_7eb30d9e485fa02242075e16151ff3183354a8fd.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="E:\AppDev\Github\Vidulum\android\app\build\intermediates\exploded-aar\com.facebook.soloader\soloader\0.1.0\jars\classes.jar"
+        jar="C:\Users\Alistair Fink\Desktop\AppDev\Github\Vidulum\android\app\build\intermediates\exploded-aar\com.facebook.soloader\soloader\0.1.0\jars\classes.jar"
         jumboMode="false"
         optimize="true"
         revision="23.0.1"
         sha1="8f615bca00639150c9eb6175d4b5471193f70794">
-        <dex dex="E:\AppDev\Github\Vidulum\android\app\build\intermediates\pre-dexed\debug\com.facebook.soloader-soloader-0.1.0_93e3f3d6e1229c52fb828b6e0d5c751f6578f6a0.jar" />
+        <dex dex="C:\Users\Alistair Fink\Desktop\AppDev\Github\Vidulum\android\app\build\intermediates\pre-dexed\debug\com.facebook.soloader-soloader-0.1.0_fd46f2a64ccca541c4d4d788f444d7253ce91510.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Alistair Fink\.gradle\caches\modules-2\files-2.1\javax.inject\javax.inject\1\6975da39a7040257bd51d21a231b76c915872d38\javax.inject-1.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="6975da39a7040257bd51d21a231b76c915872d38">
+        <dex dex="C:\Users\Alistair Fink\Desktop\AppDev\Github\Vidulum\android\app\build\intermediates\pre-dexed\debug\javax.inject-1_230a901e684ff51080afa29f77b8d8f4a621322e.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Alistair Fink\.gradle\caches\modules-2\files-2.1\com.squareup.okhttp3\okhttp\3.6.0\69edde9fc4b01c9fd51d25b83428837478c27254\okhttp-3.6.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="69edde9fc4b01c9fd51d25b83428837478c27254">
+        <dex dex="C:\Users\Alistair Fink\Desktop\AppDev\Github\Vidulum\android\app\build\intermediates\pre-dexed\debug\okhttp-3.6.0_99a1f0b38484c7d0ff099aff760c9a0d5532bfc2.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Alistair Fink\AppData\Local\Android\Sdk\extras\android\m2repository\com\android\support\support-annotations\23.0.1\support-annotations-23.0.1.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="1fce89a6428c51467090d7f424e4c9c3dbd55f7e">
+        <dex dex="C:\Users\Alistair Fink\Desktop\AppDev\Github\Vidulum\android\app\build\intermediates\pre-dexed\debug\support-annotations-23.0.1_a03c91c8800f2b88996509363a2b283111d28cb5.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Alistair Fink\Desktop\AppDev\Github\Vidulum\android\app\build\intermediates\exploded-aar\com.facebook.react\react-native\0.54.2\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="112e6935caed6ca1c65d627777c76f0296f62867">
+        <dex dex="C:\Users\Alistair Fink\Desktop\AppDev\Github\Vidulum\android\app\build\intermediates\pre-dexed\debug\com.facebook.react-react-native-0.54.2_5f1d6aeee1c888ed7276ad42f9cec4e0062e4e17.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Alistair Fink\Desktop\AppDev\Github\Vidulum\android\app\build\intermediates\exploded-aar\com.facebook.react\react-native\0.54.2\jars\libs\infer-annotations-4.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="9809e90be788acdb479b2b44e2112f3295a03068">
+        <dex dex="C:\Users\Alistair Fink\Desktop\AppDev\Github\Vidulum\android\app\build\intermediates\pre-dexed\debug\infer-annotations-4.0_cbbc85849828bb7d01f11b8c6ac1a5d7196f49f2.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Alistair Fink\.gradle\caches\modules-2\files-2.1\com.squareup.okio\okio\1.13.0\a9283170b7305c8d92d25aff02a6ab7e45d06cbe\okio-1.13.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="a9283170b7305c8d92d25aff02a6ab7e45d06cbe">
+        <dex dex="C:\Users\Alistair Fink\Desktop\AppDev\Github\Vidulum\android\app\build\intermediates\pre-dexed\debug\okio-1.13.0_cd506976dfc823a9766769d53fa4dbeec5f92084.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Alistair Fink\Desktop\AppDev\Github\Vidulum\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline\1.3.0\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="48c7f54c2515a2312d3a4481d10c43fbb807f3af">
+        <dex dex="C:\Users\Alistair Fink\Desktop\AppDev\Github\Vidulum\android\app\build\intermediates\pre-dexed\debug\com.facebook.fresco-imagepipeline-1.3.0_1a5181275f7cedda8cc1fec93af36a85e175bd2f.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Alistair Fink\.gradle\caches\modules-2\files-2.1\com.squareup.okhttp3\okhttp-urlconnection\3.6.0\3f9b16b774f2c36cfd86dd2053d0b3059531dacc\okhttp-urlconnection-3.6.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="3f9b16b774f2c36cfd86dd2053d0b3059531dacc">
+        <dex dex="C:\Users\Alistair Fink\Desktop\AppDev\Github\Vidulum\android\app\build\intermediates\pre-dexed\debug\okhttp-urlconnection-3.6.0_0646c5919dde343a82ebf6741aacf087d854a60e.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Alistair Fink\Desktop\AppDev\Github\Vidulum\android\app\build\intermediates\exploded-aar\com.facebook.fresco\drawee\1.3.0\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="c65a2e39d54023bac3aef64a2f0cff89289c7ff6">
+        <dex dex="C:\Users\Alistair Fink\Desktop\AppDev\Github\Vidulum\android\app\build\intermediates\pre-dexed\debug\com.facebook.fresco-drawee-1.3.0_6cf8bfd3bfbe608d6ccd044b658d1a0d1617ba01.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Alistair Fink\Desktop\AppDev\Github\Vidulum\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fresco\1.3.0\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="fe85b87215e405f5917d40ae4960488ac9224b74">
+        <dex dex="C:\Users\Alistair Fink\Desktop\AppDev\Github\Vidulum\android\app\build\intermediates\pre-dexed\debug\com.facebook.fresco-fresco-1.3.0_9a096596c91392cafca9912bb1020fcde589f25c.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Alistair Fink\Desktop\AppDev\Github\Vidulum\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\1.3.0\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="37345de2ed2772f385eaeec37a9c2ff0fea99ad7">
+        <dex dex="C:\Users\Alistair Fink\Desktop\AppDev\Github\Vidulum\android\app\build\intermediates\pre-dexed\debug\com.facebook.fresco-fbcore-1.3.0_2a1f47ecbe7e3297e92a6136b9c5368023411bf4.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Alistair Fink\Desktop\AppDev\Github\Vidulum\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline-okhttp3\1.3.0\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="c03c08c9934b23c8c09c803345ec51a74119127b">
+        <dex dex="C:\Users\Alistair Fink\Desktop\AppDev\Github\Vidulum\android\app\build\intermediates\pre-dexed\debug\com.facebook.fresco-imagepipeline-okhttp3-1.3.0_a4390c49f98df76f3e2903065533830fe2a8011c.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Alistair Fink\Desktop\AppDev\Github\Vidulum\android\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.0.1\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="d86429b0f0b3f3cafbeb78dda1b9d89119ccb05d">
+        <dex dex="C:\Users\Alistair Fink\Desktop\AppDev\Github\Vidulum\android\app\build\intermediates\pre-dexed\debug\com.android.support-appcompat-v7-23.0.1_f087a4f7a7a496af430875b02769942ac69c69fa.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Alistair Fink\Desktop\AppDev\Github\Vidulum\android\app\build\intermediates\exploded-aar\com.facebook.fbui.textlayoutbuilder\textlayoutbuilder\1.0.0\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="f90b593491e4044903f0bbf68dc3fa2790b151b9">
+        <dex dex="C:\Users\Alistair Fink\Desktop\AppDev\Github\Vidulum\android\app\build\intermediates\pre-dexed\debug\com.facebook.fbui.textlayoutbuilder-textlayoutbuilder-1.0.0_47ddded0c1e39ed17d72fedc025f8e6dc701abbf.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Alistair Fink\.gradle\caches\modules-2\files-2.1\com.parse.bolts\bolts-tasks\1.4.0\d85884acf6810a3bbbecb587f239005cbc846dc4\bolts-tasks-1.4.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="d85884acf6810a3bbbecb587f239005cbc846dc4">
+        <dex dex="C:\Users\Alistair Fink\Desktop\AppDev\Github\Vidulum\android\app\build\intermediates\pre-dexed\debug\bolts-tasks-1.4.0_c25574d159b8d6c69de5339816f6ea56057c4166.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Alistair Fink\Desktop\AppDev\Github\Vidulum\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.1\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="c31e21b53ff2f74664e498248d01453a32e32d48">
+        <dex dex="C:\Users\Alistair Fink\Desktop\AppDev\Github\Vidulum\android\app\build\intermediates\pre-dexed\debug\com.android.support-support-v4-23.0.1_912544f129178add55908a5ad84a381acc749950.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Alistair Fink\.gradle\caches\modules-2\files-2.1\com.google.code.findbugs\jsr305\3.0.0\5871fb60dc68d67da54a663c3fd636a10a532948\jsr305-3.0.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="5871fb60dc68d67da54a663c3fd636a10a532948">
+        <dex dex="C:\Users\Alistair Fink\Desktop\AppDev\Github\Vidulum\android\app\build\intermediates\pre-dexed\debug\jsr305-3.0.0_ee4a2731d9b5cd5fd86c1d6fc48c26b5a98f1b6b.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Alistair Fink\Desktop\AppDev\Github\Vidulum\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.1\jars\libs\internal_impl-23.0.1.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="aa92916125166649d8ad4ba3940c3dd7515596d3">
+        <dex dex="C:\Users\Alistair Fink\Desktop\AppDev\Github\Vidulum\android\app\build\intermediates\pre-dexed\debug\internal_impl-23.0.1_b00d6edcaf6e1621f4caf5a81627f40af1806627.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Alistair Fink\Desktop\AppDev\Github\Vidulum\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline-base\1.3.0\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="72128af126ddd7d6252da9357fe560d3abcdfb0c">
+        <dex dex="C:\Users\Alistair Fink\Desktop\AppDev\Github\Vidulum\android\app\build\intermediates\pre-dexed\debug\com.facebook.fresco-imagepipeline-base-1.3.0_e455231f25df0711b7c701d80a10452ddfaf47db.jar" />
     </item>
 
 </items>

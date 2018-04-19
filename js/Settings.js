@@ -66,6 +66,18 @@ var themeData = [
   {value:'Purple'},
 ];
 
+class lockSettings extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+  render(){
+    return(
+
+    );
+  }
+}
+
+
 class Settings extends React.Component {
   constructor(props){
     super(props);

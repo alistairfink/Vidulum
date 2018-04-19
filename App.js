@@ -1,18 +1,63 @@
 import React, { Component } from 'react';
 import { 
   DrawerNavigator,
+  NavigationActions,
 } from 'react-navigation';
 import { 
   Text,
   AsyncStorage,
   View,
   StyleSheet,
+  ScrollView,
+  TouchableOpacity,
 } from 'react-native';
 
 import HomeScreen from './js/Home';
 import Settings from './js/Settings';
 
 import Globals from './js/Globals';
+import CommonStylesheet from './js/Stylesheet';
+
+class navDrawer extends React.Component {
+  constructor(props){
+    super(props);
+    this.menuItems = [
+      {
+        displayText: 'Home',
+        name: 'HomeScreen',
+      },
+      {
+        displayText: 'Settings',
+        name: 'Settings',
+      },
+    ];
+  }
+  navigateToScreen = (route) => () => {
+    const navigateAction = NavigationActions.navigate({
+      routeName: route
+    });
+    this.props.navigation.dispatch(navigateAction);
+  }
+  render() {
+    return(
+      <ScrollView style={{backgroundColor: Globals.DefaultSettings.theme.primaryColour}}>
+        <View style={styles.drawerHeader}>
+
+        </View>
+        {this.menuItems.map((item, index) => (
+          <View key={index} style={{}}>
+            <TouchableOpacity
+              onPress={this.navigateToScreen(item.name)}
+              style={styles.drawerItem}
+            > 
+              <Text style={[styles.menuText, {color: Globals.DefaultSettings.theme.textColour}]}>{item.displayText}</Text>
+            </TouchableOpacity>
+          </View>
+        ))}
+      </ScrollView>
+    );
+  }
+}
 
 //Navigator for pages
 let RootStack = DrawerNavigator(
@@ -28,12 +73,7 @@ let RootStack = DrawerNavigator(
     headerMode: 'none',
     //transitionConfig: getSlideFromRightTransition,//Right to left transition
     initialRouteName: 'Home',//Initial page
-    drawerBackgroundColor: '#8c8c8c',
-    contentOptions: {
-      activeTintColor: 'white',
-      activeBackgroundColor: '#515151',
-      inactiveTintColor: 'white',
-    }
+    contentComponent: navDrawer,
   }
 );
 
@@ -86,5 +126,20 @@ const styles = StyleSheet.create({
   loadingText: {
     fontSize: 20,
     color: 'white',
+  },
+  menuText: {
+    fontSize: 20,
+  },
+  drawerHeader: {
+    flex:1, 
+    height: 150, 
+    borderBottomWidth: 1, 
+    borderBottomColor: 'rgba(0,0,0,0.3)'
+  },
+  drawerItem: {
+    flex: 1, 
+    padding: 15, 
+    borderBottomColor: 'rgba(0,0,0,0.3)', 
+    borderBottomWidth: 1
   },
 });
