@@ -1,2 +1,5 @@
-React Navigation
-
+coinmarketcap api
+ethplorer api
+chasing coins api
+blockexplorer api
+hadrien - multimedia element set - icons

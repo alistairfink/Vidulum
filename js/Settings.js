@@ -495,8 +495,8 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end'
   },
   menuPageIcon: {
-    width: 15, 
-    height: 25.35, 
+    width: 8, 
+    height: 13.52, 
     tintColor: 'rgba(0,0,0,0.6)', 
     marginRight: 5
   },

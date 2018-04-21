@@ -10,6 +10,8 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
+  Image,
+  ImageBackground,
 } from 'react-native';
 
 import HomeScreen from './js/Home';
@@ -25,10 +27,12 @@ class navDrawer extends React.Component {
       {
         displayText: 'Home',
         name: 'Home',
+        icon: require('./assets/homeIcon.png'),
       },
       {
         displayText: 'Settings',
         name: 'Settings',
+        icon: require('./assets/settingsIcon.png'),
       },
     ];
   }
@@ -41,16 +45,23 @@ class navDrawer extends React.Component {
   render() {
     return(
       <ScrollView style={{backgroundColor: Globals.DefaultSettings.theme.primaryColour}}>
-        <View style={styles.drawerHeader}>
-
-        </View>
+        <ImageBackground source={require('./assets/background.jpg')} style={styles.drawerHeader}>
+        
+        </ImageBackground>
         {this.menuItems.map((item, index) => (
-          <View key={index} style={{}}>
+          <View key={index}>
             <TouchableOpacity
               onPress={this.navigateToScreen(item.name)}
               style={styles.drawerItem}
             > 
-              <Text style={[styles.menuText, {color: Globals.DefaultSettings.theme.textColour}]}>{item.displayText}</Text>
+              <View style={{flexDirection: 'row' }}>
+                <View>
+                  <Image source={item.icon} style={[styles.menuIcon, {tintColor: Globals.DefaultSettings.theme.textColour}]}/>
+                </View>
+                <View style={styles.menuTextOutter}>
+                  <Text style={[styles.menuText, {color: Globals.DefaultSettings.theme.textColour}]}>{item.displayText}</Text>
+                </View>
+              </View>
             </TouchableOpacity>
           </View>
         ))}
@@ -132,14 +143,18 @@ const styles = StyleSheet.create({
   },
   drawerHeader: {
     flex:1, 
-    height: 150, 
-    borderBottomWidth: 1, 
-    borderBottomColor: 'rgba(0,0,0,0.3)'
+    height: 160,
   },
   drawerItem: {
     flex: 1, 
     padding: 15, 
-    borderBottomColor: 'rgba(0,0,0,0.3)', 
-    borderBottomWidth: 1
+  },
+  menuIcon: {
+    height:35, 
+    width:35,
+  },
+  menuTextOutter: {
+    marginLeft: 30, 
+    justifyContent: 'center'
   },
 });
