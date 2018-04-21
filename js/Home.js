@@ -105,7 +105,7 @@ class Add extends React.Component {
           'Error',
           (this.userFriendlyNames)[item]+' Must Have a Value', 
         [
-          {text: 'OK', onPress: () => console.log('OK Pressed')},
+          {text: 'OK'},
         ]);
         this.hitButton = false;
         return;
@@ -120,7 +120,7 @@ class Add extends React.Component {
           'Error',
           'Wallet already added.', 
         [
-          {text: 'OK', onPress: () => console.log('OK Pressed')},
+          {text: 'OK'},
         ]);
         this.hitButton = false;
         return;
@@ -163,12 +163,12 @@ class Add extends React.Component {
       //If wallet passes all the cheks then adds and goes back
       this.addedWallets.push(this.state.wallet);
       await AsyncStorage.setItem(Globals.StorageNames.wallets, JSON.stringify(this.addedWallets));
+      this.props.handler();
     }
     catch(error)
     {
       console.log(error);
     }
-    this.props.handler();
   }
   _keyboardDidShow (e) {
     //Adds height to bottom of scrollview and scrolls down on that height so the keyboard isn't in the way
@@ -325,6 +325,7 @@ class HomeScreen extends React.Component {
     this.writeToClipBoard = this.writeToClipBoard.bind(this);
     this.alternatingColour = this.alternatingColour.bind(this);
     this.backHandle = this.backHandle.bind(this);
+    this.deleteCard = this.deleteCard.bind(this);
   }
   async backHandle(){
     //So add screen closes
@@ -578,6 +579,24 @@ class HomeScreen extends React.Component {
       borderBottomRightRadius: bRadius,
     };
   }
+  async deleteCard(index) {
+    Alert.alert(
+      'Are You Sure?',
+      'Are you sure you want to delete the \'' + this.state.wallets[index].name + '\' wallet? This operation cannot be reversed.', 
+    [
+      {text: 'Confirm', onPress: async() => {
+        let walletData = this.state.walletData;
+        let walletList = this.state.wallets;
+        walletData.splice(index, 1);
+        walletList.splice(index, 1);
+        await AsyncStorage.setItem(Globals.StorageNames.wallets, JSON.stringify(walletList));
+        await AsyncStorage.setItem(Globals.StorageNames.walletData, JSON.stringify(walletData));
+        this.setState({forceRefresh: true, refreshing: true, wallets: null, walletData: null});
+        this.getWallets();
+      }},
+      {text: 'Cancel'},
+    ]);
+  }
   render() {
     if(this.state.adding)
     {
@@ -638,7 +657,7 @@ class HomeScreen extends React.Component {
                         </View>
                         <View style={styles.xIconOuter}>
                           <TouchableOpacity onPress={() => {
-                              
+                              this.deleteCard(index);
                             }}
                           >
                             <Image source={require('../assets/cancelIcon.png')} style={[styles.xIcon, {tintColor: Globals.DefaultSettings.theme.textColour}]}/>
@@ -667,7 +686,7 @@ class HomeScreen extends React.Component {
                           <View style={{flexDirection: 'row' }}>
                             <View style={styles.InOutOutter}>
                               <View style={styles.InOutHeader}>
-                                <Text style={[CommonStylesheet.normalText, styles.walletCardText, {color: Globals.DefaultSettings.theme.textColour}]}>Total In ({this.state.walletData[index].symbol})</Text>
+                                <Text style={[CommonStylesheet.normalText, styles.walletCardTextTitle, {color: Globals.DefaultSettings.theme.textColour}]}>Total In ({this.state.walletData[index].symbol})</Text>
                               </View>
                               <View style={styles.InOutContent}>
                                 <Text style={[CommonStylesheet.normalText, styles.walletCardText, {color: Globals.DefaultSettings.theme.textColour}]}>{this.state.walletData[index].totalIn}</Text>
@@ -677,7 +696,7 @@ class HomeScreen extends React.Component {
                             </View>
                             <View style={styles.InOutOutter}>
                               <View style={styles.InOutHeader}>
-                                <Text style={[CommonStylesheet.normalText, styles.walletCardText, {color: Globals.DefaultSettings.theme.textColour}]}>Total Out ({this.state.walletData[index].symbol})</Text>
+                                <Text style={[CommonStylesheet.normalText, styles.walletCardTextTitle, {color: Globals.DefaultSettings.theme.textColour}]}>Total Out ({this.state.walletData[index].symbol})</Text>
                               </View>
                               <View style={styles.InOutContent}>
                                 <Text style={[CommonStylesheet.normalText, styles.walletCardText, {color: Globals.DefaultSettings.theme.textColour}]}>{this.state.walletData[index].totalOut}</Text>
@@ -687,7 +706,7 @@ class HomeScreen extends React.Component {
                         </View>
                         <View style={{flexDirection: 'row'}}>
                           <View style={styles.transactionCountBox}>
-                            <Text style={[CommonStylesheet.normalText, styles.walletCardText, {color: Globals.DefaultSettings.theme.textColour}]}>{this.state.walletData[index].txCount} Total Transactions</Text>
+                            <Text style={[CommonStylesheet.normalText, styles.walletCardTextTitle, {color: Globals.DefaultSettings.theme.textColour}]}>{this.state.walletData[index].txCount} Total Transactions</Text>
                           </View>
                         </View>
                         {this.state.walletData[index].tokens &&
@@ -820,7 +839,7 @@ const styles = StyleSheet.create({
   walletCardTextTitle: {
     marginTop: 5,
     fontSize: 16,
-    textDecorationLine: 'underline',  
+    //textDecorationLine: 'underline',  
   },
   tokenListHeader: {
     flexDirection: 'row', 
