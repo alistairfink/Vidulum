@@ -46,7 +46,7 @@ class navDrawer extends React.Component {
     return(
       <ScrollView style={{backgroundColor: Globals.DefaultSettings.theme.primaryColour}}>
         <ImageBackground source={require('./assets/background.jpg')} style={styles.drawerHeader}>
-        
+
         </ImageBackground>
         {this.menuItems.map((item, index) => (
           <View key={index}>

@@ -28,5 +28,6 @@ module.exports = {
 		settings: 'Settings',
 		wallets: 'WalletList',
 		walletData: 'WalletData',
+		pass: 'PasswordPin',
 	},
 };

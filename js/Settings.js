@@ -17,6 +17,8 @@ import {
   Animated,
   Easing,
   StatusBar,
+  Alert,
+  TouchableNativeFeedback,
 } from 'react-native';
 import Globals from './Globals';
 import CommonStylesheet from './Stylesheet';
@@ -71,9 +73,19 @@ var themeData = [
 class LockSettings extends React.Component {
   constructor(props){
     super(props);
+    this.state = {
+      enableLock: true,
+      hiddenPass: '',
+    };
+    this.pass = '',
+    this.lockToggle = this.lockToggle.bind(this);
+    this.pinInput = this.pinInput.bind(this);
+    this.savePin = this.savePin.bind(this);
+    this.loadInPin = this.loadInPin.bind(this);
   }
   componentWillMount() {
     //Starts animation
+    this.loadInPin();
     this.animateValue = new Animated.Value(win.width);
   }  
   componentDidMount() {
@@ -86,6 +98,67 @@ class LockSettings extends React.Component {
       }
     ).start();
   } 
+  async loadInPin() {
+    this.setState({enableLock: Globals.DefaultSettings.walletLock});
+    if(Globals.DefaultSettings.walletLock)
+    {
+      this.pass = await AsyncStorage.getItem(Globals.StorageNames.pass); 
+      for(let i = 0; i < this.pass.length; i++)
+      {
+        this.setState({hiddenPass: this.state.hiddenPass + "* "});
+      }     
+      this.setState({hiddenPass: this.state.hiddenPass.trim()});
+    }
+  }
+  async lockToggle() {
+    if(!(this.state.enableLock))
+    {
+      this.setState({enableLock: true});
+      return;
+    }
+    Alert.alert(
+      'Are You Sure?',
+      'Disabling lock screen will wipe all lock screen settings. This data cannot be recovered and the lock screen settings will need to be re-entered.', 
+    [
+      {text: 'Confirm', onPress: async() => {
+        this.setState({enableLock: false});
+      }},
+      {text: 'Cancel'},
+    ]);
+  }
+  pinInput(input) {
+    if(input === '-')
+    {
+      this.setState({hiddenPass: this.state.hiddenPass.substring(0, this.state.hiddenPass.length-2)});
+      this.pass = this.pass.substring(0, this.pass.length-1);
+      return;
+    }
+    this.setState({hiddenPass: this.state.hiddenPass.length > 0 ? this.state.hiddenPass + ' *' : '*'});
+    this.pass = this.pass+input;
+  }
+  savePin() {
+    if(!(this.state.enableLock))
+    {
+      this.props.lockUpdate(this.state.enableLock, '-');
+      this.props.handler();
+      return;
+    }
+    else
+    {
+      if(!(this.pass))
+      {
+        Alert.alert(
+          'Error',
+          'A pin must be entered.', 
+        [
+          {text: 'OK'},
+        ]);
+        return;
+      }
+      this.props.lockUpdate(this.state.enableLock, this.pass);
+      this.props.handler();
+    }
+  }
   render() {
     const animatedStyle = {left: this.animateValue}
     return (
@@ -99,14 +172,157 @@ class LockSettings extends React.Component {
               <TouchableOpacity
                 onPress={this.props.handler}
               >
-                <Image source={require('../assets/cancelIcon.png')} style={[CommonStylesheet.leftIcon, 
+                <Image source={require('../assets/backIcon.png')} style={[CommonStylesheet.leftIcon, 
                   {tintColor: Globals.DefaultSettings.theme.textColour}]}
                 />
               </TouchableOpacity>
               <Text style={[CommonStylesheet.title, {color: Globals.DefaultSettings.theme.textColour}]}>Lock Screen Settings</Text>
             </View>
             <ScrollView>
-              
+              <View style={CommonStylesheet.controlBackground}>
+                <View style={CommonStylesheet.controlInner, styles.switchInner}>
+                  <View style={styles.switchTextSection}>
+                    <Text style={[CommonStylesheet.normalText, {color: 'black'}]}>Refresh on opening app.</Text>
+                  </View>
+                  <View style={styles.switchSwitchSection}>
+                    <Switch
+                      value={this.state.enableLock}
+                      tintColor="darkslategray"
+                      onTintColor={Globals.DefaultSettings.theme.primaryColour}
+                      onValueChange={() => this.lockToggle()}
+                    />
+                  </View>
+                </View>
+              </View>
+              {this.state.enableLock &&
+                <View>
+                  <View style={CommonStylesheet.controlBackground}>
+                    <View style={styles.numpadDisplayOutter}>
+                      <Text style={styles.numpadDisplay}>{this.state.hiddenPass}</Text>
+                    </View>
+                    <View style={styles.numpadRowOutter}>
+                      <View style={styles.numpadItemOutter}>
+                        <TouchableNativeFeedback
+                          style={styles.numpadNativeFeedback}
+                          onPress={() => this.pinInput('1')}
+                        >
+                          <View style={styles.numpadItem}>
+                            <Text style={{color: 'black'}}>1</Text>
+                          </View>
+                        </TouchableNativeFeedback>
+                      </View>
+                      <View style={styles.numpadItemOutter}>
+                        <TouchableNativeFeedback
+                          style={styles.numpadNativeFeedback}
+                          onPress={() => this.pinInput('2')}
+                        >
+                          <View style={styles.numpadItem}>
+                            <Text style={{color: 'black'}}>2</Text>
+                          </View>
+                        </TouchableNativeFeedback>
+                      </View>
+                      <View style={styles.numpadItemOutter}>
+                        <TouchableNativeFeedback
+                          style={styles.numpadNativeFeedback}
+                          onPress={() => this.pinInput('3')}
+                        >
+                          <View style={styles.numpadItem}>
+                            <Text style={{color: 'black'}}>3</Text>
+                          </View>
+                        </TouchableNativeFeedback>
+                      </View>
+                    </View>
+                    <View style={styles.numpadRowOutter}>
+                      <View style={styles.numpadItemOutter}>
+                        <TouchableNativeFeedback
+                          style={styles.numpadNativeFeedback}
+                          onPress={() => this.pinInput('4')}
+                        >
+                          <View style={styles.numpadItem}>
+                            <Text style={{color: 'black'}}>4</Text>
+                          </View>
+                        </TouchableNativeFeedback>
+                      </View>
+                      <View style={styles.numpadItemOutter}>
+                        <TouchableNativeFeedback
+                          style={styles.numpadNativeFeedback}
+                          onPress={() => this.pinInput('5')}
+                        >
+                          <View style={styles.numpadItem}>
+                            <Text style={{color: 'black'}}>5</Text>
+                          </View>
+                        </TouchableNativeFeedback>
+                      </View>
+                      <View style={styles.numpadItemOutter}>
+                        <TouchableNativeFeedback
+                          style={styles.numpadNativeFeedback}
+                          onPress={() => this.pinInput('6')}
+                        >
+                          <View style={styles.numpadItem}>
+                            <Text style={{color: 'black'}}>6</Text>
+                          </View>
+                        </TouchableNativeFeedback>
+                      </View>
+                    </View>
+                    <View style={styles.numpadRowOutter}>
+                      <View style={styles.numpadItemOutter}>
+                        <TouchableNativeFeedback
+                          style={styles.numpadNativeFeedback}
+                          onPress={() => this.pinInput('7')}
+                        >
+                          <View style={styles.numpadItem}>
+                            <Text style={{color: 'black'}}>7</Text>
+                          </View>
+                        </TouchableNativeFeedback>
+                      </View>
+                      <View style={styles.numpadItemOutter}>
+                        <TouchableNativeFeedback
+                          style={styles.numpadNativeFeedback}
+                          onPress={() => this.pinInput('8')}
+                        >
+                          <View style={styles.numpadItem}>
+                            <Text style={{color: 'black'}}>8</Text>
+                          </View>
+                        </TouchableNativeFeedback>
+                      </View>
+                      <View style={styles.numpadItemOutter}>
+                        <TouchableNativeFeedback
+                          style={styles.numpadNativeFeedback}
+                          onPress={() => this.pinInput('9')}
+                        >
+                          <View style={styles.numpadItem}>
+                            <Text style={{color: 'black'}}>9</Text>
+                          </View>
+                        </TouchableNativeFeedback>
+                      </View>
+                    </View>
+                    <View style={styles.numpadRowOutter}>
+                      <View style={styles.numpadItemOutter}>
+                      </View>
+                      <View style={styles.numpadItemOutter}>
+                        <TouchableNativeFeedback
+                          style={styles.numpadNativeFeedback}
+                          onPress={() => this.pinInput('0')}
+                        >
+                          <View style={styles.numpadItem}>
+                            <Text style={{color: 'black'}}>0</Text>
+                          </View>
+                        </TouchableNativeFeedback>
+                      </View>
+                      <View style={styles.numpadItemOutter}>
+                        <TouchableNativeFeedback
+                          style={styles.numpadNativeFeedback}
+                          onPress={() => this.pinInput('-')}
+                        >
+                          <View style={styles.numpadItem}>
+                            <Image source={require('../assets/numpadDeleteIcon.png')} style={styles.numpadDeleteIcon}/>
+                          </View>
+                        </TouchableNativeFeedback>
+                      </View>
+                    </View>
+                  </View>
+                </View>
+              }
             </ScrollView>
             <View style={[styles.footer, {backgroundColor: Globals.DefaultSettings.theme.primaryColour}]}>
               <TouchableOpacity style={styles.footerButton} 
@@ -118,7 +334,7 @@ class LockSettings extends React.Component {
                 style={[styles.footerButton, 
                   {borderLeftColor: Globals.DefaultSettings.theme.darkColour, borderLeftWidth: 1}]
                 } 
-                onPress={this.saveFunc}
+                onPress={() => this.savePin()}
               >
                 <Text style={[styles.footerText, {color: Globals.DefaultSettings.theme.textColour}]}>Save</Text>
               </TouchableOpacity>
@@ -145,6 +361,7 @@ class Settings extends React.Component {
         },
       },
     this.userSettings = '';
+    this.pin = '';
     this.changeTheme = this.changeTheme.bind(this);
     this.save = this.save.bind(this);
     this.changeFiat = this.changeFiat.bind(this);
@@ -152,6 +369,7 @@ class Settings extends React.Component {
     this.setSwitchSettings = this.setSwitchSettings.bind(this);
     this.menuPageHandler = this.menuPageHandler.bind(this);
     this.backHandle = this.backHandle.bind(this);
+    this.lockUpdate = this.lockUpdate.bind(this);
   }
   componentWillMount() {
     this.getSettings();
@@ -329,6 +547,14 @@ class Settings extends React.Component {
   }
   async save(){
     try{
+      if(this.pin === '-')
+      {
+        await AsyncStorage.setItem(Globals.StorageNames.pass, '');
+      }
+      else if(this.pin)
+      {
+        await AsyncStorage.setItem(Globals.StorageNames.pass, this.pin);
+      }
       //Saves settings to local and updates globals then goes back.
       this.setSwitchSettings();
       Globals.UpdateSettings(this.userSettings);
@@ -353,11 +579,15 @@ class Settings extends React.Component {
     ((this.menuPages)[_name]).status = false;
     this.setState({refreshPage: !(this.state.refreshPage)});
   }
+  lockUpdate(enabled, pin) {
+    this.userSettings.walletLock = enabled;
+    this.pin = pin; 
+  }
   render() {
     if(this.menuPages.lock.status)
     {
       return(
-        <LockSettings handler={() => this.backHandle('lock')}/>
+        <LockSettings handler={() => this.backHandle('lock')} lockUpdate={(var1, var2) => this.lockUpdate(var1, var2)}/>
       );
     }
     else
@@ -499,6 +729,36 @@ const styles = StyleSheet.create({
     height: 13.52, 
     tintColor: 'rgba(0,0,0,0.6)', 
     marginRight: 5
+  },
+  numpadItemOutter: {
+    flex: 0.33,
+  },
+  numpadRowOutter: {
+    flexDirection: 'row', 
+    justifyContent:  'center',
+  },
+  numpadItem: {
+    flex: 1, 
+    padding: 20, 
+    justifyContent: 'center', 
+    alignItems: 'center',
+  },
+  numpadNativeFeedback: {
+    flex: 1,
+  },
+  numpadDisplay: {
+    color: 'black', 
+    fontSize: 20,
+  },
+  numpadDisplayOutter: {
+    height: 70,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  numpadDeleteIcon: {
+    height: 20,
+    width: 20*2.09,
+    tintColor: 'black',
   },
 });
 
