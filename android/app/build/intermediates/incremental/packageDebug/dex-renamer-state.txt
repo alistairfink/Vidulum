@@ -1,4 +1,4 @@
-#Wed Apr 18 21:06:14 EDT 2018
+#Mon Apr 23 01:22:03 EDT 2018
 base.0=C\:\\Users\\Alistair Fink\\Desktop\\AppDev\\Github\\Vidulum\\android\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\1f\\main
 renamed.0=classes.dex
 file.0=C\:\\Users\\Alistair Fink\\Desktop\\AppDev\\Github\\Vidulum\\android\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\1f\\main\\classes.dex

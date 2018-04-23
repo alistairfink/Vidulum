@@ -325,18 +325,13 @@ class LockSettings extends React.Component {
               }
             </ScrollView>
             <View style={[styles.footer, {backgroundColor: Globals.DefaultSettings.theme.primaryColour}]}>
-              <TouchableOpacity style={styles.footerButton} 
-                onPress={this.props.handler}
-              >
-                <Text style={[styles.footerText, {color: Globals.DefaultSettings.theme.textColour}]}>Cancel</Text>            
-              </TouchableOpacity>
               <TouchableOpacity 
                 style={[styles.footerButton, 
                   {borderLeftColor: Globals.DefaultSettings.theme.darkColour, borderLeftWidth: 1}]
                 } 
                 onPress={() => this.savePin()}
               >
-                <Text style={[styles.footerText, {color: Globals.DefaultSettings.theme.textColour}]}>Save</Text>
+                <Text style={[styles.footerText, {color: Globals.DefaultSettings.theme.textColour}]}>Done</Text>
               </TouchableOpacity>
             </View>
           </View>
