@@ -20,6 +20,8 @@ import {
 
 import HomeScreen from './js/Home';
 import Settings from './js/Settings';
+import Donate from './js/Donate';
+import Feedback from './js/Feedback';
 
 import Globals from './js/Globals';
 import CommonStylesheet from './js/Stylesheet';
@@ -32,6 +34,16 @@ class navDrawer extends React.Component {
         displayText: 'Home',
         name: 'Home',
         icon: require('./assets/homeIcon.png'),
+      },
+      {
+        displayText: 'Donate',
+        name: 'Donate',
+        icon: require('./assets/donateIcon.png'),
+      },
+      {
+        displayText: 'Feedback',
+        name: 'Feedback',
+        icon: require('./assets/sendIcon.png'),
       },
       {
         displayText: 'Settings',
@@ -82,6 +94,12 @@ let RootStack = DrawerNavigator(
     },
     Settings: {
       screen: Settings,
+    },
+    Donate: {
+      screen: Donate,
+    },
+    Feedback: {
+      screen: Feedback,
     },
   },
   {

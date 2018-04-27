@@ -3,3 +3,5 @@ ethplorer api
 chasing coins api
 blockexplorer api
 hadrien - multimedia element set - icons
+freepik - Androd app - icons
+freepik - charity icons - icons

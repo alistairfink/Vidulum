@@ -10,7 +10,7 @@ module.exports = {
           lightColour: '#efefef',
           darkColour: '#8d8d8d',
           backgroundColour: 'white',
-          textColour: 'black',
+          textColour: '#000000',
 		},
 		walletLock: false,
 		currency: 'USD',

@@ -468,7 +468,7 @@ class Settings extends React.Component {
           lightColour: '#5472d3',
           darkColour: '#002171',
           backgroundColour: 'black',
-          textColour: 'white',
+          textColour: '#FFFFFF',
         }
         break;
       case "Red":
@@ -478,7 +478,7 @@ class Settings extends React.Component {
           lightColour: '#f05545',
           darkColour: '#7f0000',
           backgroundColour: 'black',
-          textColour: 'white',
+          textColour: '#FFFFFF',
         }
         break;
       case "Green":
@@ -488,7 +488,7 @@ class Settings extends React.Component {
           lightColour: '#4c8c4a',
           darkColour: '#003300',
           backgroundColour: 'black',
-          textColour: 'white',
+          textColour: '#FFFFFF',
         }
         break;
       case "Dark":
@@ -498,7 +498,7 @@ class Settings extends React.Component {
           lightColour: '#484848',
           darkColour: '#000000',
           backgroundColour: 'black',
-          textColour: 'white',
+          textColour: '#FFFFFF',
         }
         break;
       case "Orange":
@@ -508,7 +508,7 @@ class Settings extends React.Component {
           lightColour: '#ff833a',
           darkColour: '#ac1900',
           backgroundColour: 'black',
-          textColour: 'white',
+          textColour: '#FFFFFF',
         }
         break;
       case "Purple":
@@ -518,7 +518,7 @@ class Settings extends React.Component {
           lightColour: '#7c43bd',
           darkColour: '#12005e',
           backgroundColour: 'black',
-          textColour: 'white',
+          textColour: '#FFFFFF',
         }
         break;
       default:
@@ -528,7 +528,7 @@ class Settings extends React.Component {
           lightColour: '#ffffff',
           darkColour: '#aeaeae',
           backgroundColour: 'white',
-          textColour: 'black',
+          textColour: '#000000',
         }
     }
   }
