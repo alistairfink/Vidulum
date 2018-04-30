@@ -36,7 +36,7 @@ class navDrawer extends React.Component {
         icon: require('./assets/homeIcon.png'),
       },
       {
-        displayText: 'Donate',
+        displayText: 'Support Me',
         name: 'Donate',
         icon: require('./assets/donateIcon.png'),
       },

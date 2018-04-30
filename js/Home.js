@@ -25,6 +25,7 @@ import {
 import Globals from './Globals';
 import CommonStylesheet from './Stylesheet';
 import { Dropdown } from 'react-native-material-dropdown';
+import WalletInfo from './WalletInfo';
 const win = Dimensions.get('window');
 
 var walletListData = [
@@ -316,6 +317,7 @@ class HomeScreen extends React.Component {
       walletData: null,
       forceRefresh: false,
       refreshing: null,
+      walletInfo: null,
     };
     this.getWallets = this.getWallets.bind(this);
     this.getEthObj = this.getEthObj.bind(this);
@@ -326,6 +328,7 @@ class HomeScreen extends React.Component {
     this.alternatingColour = this.alternatingColour.bind(this);
     this.backHandle = this.backHandle.bind(this);
     this.deleteCard = this.deleteCard.bind(this);
+    this.walletInfoBackHandle = this.walletInfoBackHandle.bind(this);
   }
   async backHandle(){
     //So add screen closes
@@ -346,6 +349,9 @@ class HomeScreen extends React.Component {
     }
     //Refreshes after adding card. 
     this.getWallets();    
+  }
+  async walletInfoBackHandle(){
+    this.setState({walletInfo: null});
   }
   componentWillMount() {
     this.firstLoad();
@@ -604,6 +610,12 @@ class HomeScreen extends React.Component {
         <Add handler={this.backHandle}/>
       );
     }
+    else if(this.state.walletInfo)
+    {
+      return (
+        <WalletInfo handler={this.walletInfoBackHandle} test={this.state.walletInfo}/>
+      );
+    }
     else
     {
       return (
@@ -652,9 +664,9 @@ class HomeScreen extends React.Component {
                             )
                           }
                         </View>
-                        <View>
+                        <TouchableOpacity onPress={() => this.setState({walletInfo: item})}>
                           <Text style={[styles.walletCardTitleText, {color: Globals.DefaultSettings.theme.textColour}]}>{item.name}</Text>
-                        </View>
+                        </TouchableOpacity>
                         <View style={styles.xIconOuter}>
                           <TouchableOpacity onPress={() => {
                               this.deleteCard(index);

@@ -42,7 +42,7 @@ class Donate extends React.Component {
           >
             <Image source={require('../assets/menuIcon.png')} style={[CommonStylesheet.leftIcon, {tintColor: Globals.DefaultSettings.theme.textColour}]}/>
           </TouchableOpacity>
-          <Text style={[CommonStylesheet.title, {color: Globals.DefaultSettings.theme.textColour}]}>Donate</Text>
+          <Text style={[CommonStylesheet.title, {color: Globals.DefaultSettings.theme.textColour}]}>Support Me</Text>
         </View>
         <ScrollView>
 
