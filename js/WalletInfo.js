@@ -57,7 +57,8 @@ class WalletInfo extends React.Component {
     setTimeout(() => this.props.handler(), 100);
   }
   getEth() {
-
+    let walletI = this.props.wallet;
+    
   }
   getBtc() {
 
