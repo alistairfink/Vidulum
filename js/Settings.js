@@ -93,8 +93,7 @@ class LockSettings extends React.Component {
       this.animateValue,           
       {
         toValue: 0,//win.height-StatusBar.currentHeight,                  
-        duration: 200,
-        easing: Easing.bounce,             
+        duration: 100,          
       }
     ).start();
   } 
@@ -140,8 +139,6 @@ class LockSettings extends React.Component {
     if(!(this.state.enableLock))
     {
       this.props.lockUpdate(this.state.enableLock, '-');
-      this.props.handler();
-      return;
     }
     else
     {
@@ -156,8 +153,18 @@ class LockSettings extends React.Component {
         return;
       }
       this.props.lockUpdate(this.state.enableLock, this.pass);
-      this.props.handler();
     }
+    this.exit();
+  }
+  exit() {
+    Animated.timing(
+      this.animateValue,
+      {
+        toValue: win.width,
+        duration: 100,
+      }
+    ).start();
+    setTimeout(() => this.props.handler(), 100);
   }
   render() {
     const animatedStyle = {left: this.animateValue}
@@ -170,7 +177,7 @@ class LockSettings extends React.Component {
           <View style={[CommonStylesheet.pageBG, {backgroundColor: Globals.DefaultSettings.theme.backgroundColour, height: win.height-StatusBar.currentHeight}]}>
             <View style={[CommonStylesheet.topBar, {backgroundColor: Globals.DefaultSettings.theme.primaryColour}]}>
               <TouchableOpacity
-                onPress={this.props.handler}
+                onPress={() => this.exit()}
               >
                 <Image source={require('../assets/backIcon.png')} style={[CommonStylesheet.leftIcon, 
                   {tintColor: Globals.DefaultSettings.theme.textColour}]}

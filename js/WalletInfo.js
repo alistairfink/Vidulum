@@ -28,21 +28,40 @@ const win = Dimensions.get('window');
 class WalletInfo extends React.Component {
   constructor(props){
     super(props);
+
+    this.getEth = this.getEth.bind(this);
+    this.getBtc = this.getBtc.bind(this);
   }
   componentWillMount() {
     //Starts animation
     this.animateValue = new Animated.Value(win.width);
+
   } 
   componentDidMount() {
     Animated.timing(               
       this.animateValue,           
       {
         toValue: 0,//win.height-StatusBar.currentHeight,                  
-        duration: 200,
-        easing: Easing.bounce,             
+        duration: 100,           
       }
     ).start();
   }  
+  exit() {
+    Animated.timing(
+      this.animateValue,
+      {
+        toValue: win.width,
+        duration: 100,
+      }
+    ).start();
+    setTimeout(() => this.props.handler(), 100);
+  }
+  getEth() {
+
+  }
+  getBtc() {
+
+  }
   render() {
     const animatedStyle = {left: this.animateValue}
     return (
@@ -54,18 +73,16 @@ class WalletInfo extends React.Component {
           <View style={[CommonStylesheet.pageBG, {backgroundColor: Globals.DefaultSettings.theme.backgroundColour, height: win.height-StatusBar.currentHeight}]}>
             <View style={[CommonStylesheet.topBar, {backgroundColor: Globals.DefaultSettings.theme.primaryColour}]}>
               <TouchableOpacity
-                onPress={this.props.handler}
+                onPress={() => this.exit()}
               >
                 <Image source={require('../assets/cancelIcon.png')} style={[CommonStylesheet.leftIcon, 
                   {tintColor: Globals.DefaultSettings.theme.textColour}]}
                 />
               </TouchableOpacity>
-              <Text style={[CommonStylesheet.title, {color: Globals.DefaultSettings.theme.textColour}]}>Add Wallet</Text>
+              <Text style={[CommonStylesheet.title, {color: Globals.DefaultSettings.theme.textColour}]}>{this.props.wallet.name ? this.props.wallet.name : this.props.wallet.address}</Text>
             </View>
-            <ScrollView
-              ref={scrollView => this.mainScroll = scrollView}
-            >
-              <Text style={{color: 'white'}}>this.props.test</Text>
+            <ScrollView>
+              <Text style={{color: 'white'}}>{JSON.stringify(this.props.wallet)}</Text>
             </ScrollView>
           </View>
         </Animated.View>

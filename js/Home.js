@@ -70,8 +70,7 @@ class Add extends React.Component {
       this.animateValue,           
       {
         toValue: 0,//win.height-StatusBar.currentHeight,                  
-        duration: 200,
-        easing: Easing.bounce,             
+        duration: 100,         
       }
     ).start();
   }   
@@ -164,7 +163,7 @@ class Add extends React.Component {
       //If wallet passes all the cheks then adds and goes back
       this.addedWallets.push(this.state.wallet);
       await AsyncStorage.setItem(Globals.StorageNames.wallets, JSON.stringify(this.addedWallets));
-      this.props.handler();
+      this.exit();
     }
     catch(error)
     {
@@ -184,6 +183,16 @@ class Add extends React.Component {
   _keyboardDidHide () {
     this.setState({keyboardHeight: 0});
   }
+  exit() {
+    Animated.timing(
+      this.animateValue,
+      {
+        toValue: win.width,
+        duration: 100,
+      }
+    ).start();
+    setTimeout(() => this.props.handler(), 100);
+  }
   render() {
     const animatedStyle = {left: this.animateValue}
     return (
@@ -195,7 +204,7 @@ class Add extends React.Component {
           <View style={[CommonStylesheet.pageBG, {backgroundColor: Globals.DefaultSettings.theme.backgroundColour, height: win.height-StatusBar.currentHeight}]}>
             <View style={[CommonStylesheet.topBar, {backgroundColor: Globals.DefaultSettings.theme.primaryColour}]}>
               <TouchableOpacity
-                onPress={this.props.handler}
+                onPress={() => this.exit()}
               >
                 <Image source={require('../assets/cancelIcon.png')} style={[CommonStylesheet.leftIcon, 
                   {tintColor: Globals.DefaultSettings.theme.textColour}]}
@@ -288,7 +297,7 @@ class Add extends React.Component {
             </ScrollView>
             <View style={[styles.footer, {backgroundColor: Globals.DefaultSettings.theme.primaryColour}]}>
               <TouchableOpacity style={styles.footerButton} 
-                onPress={this.props.handler}
+                onPress={() => this.exit()}
               >
                 <Text style={[styles.footerText, {color: Globals.DefaultSettings.theme.textColour}]}>Cancel</Text>            
               </TouchableOpacity>
@@ -613,7 +622,7 @@ class HomeScreen extends React.Component {
     else if(this.state.walletInfo)
     {
       return (
-        <WalletInfo handler={this.walletInfoBackHandle} test={this.state.walletInfo}/>
+        <WalletInfo handler={this.walletInfoBackHandle} wallet={this.state.walletInfo}/>
       );
     }
     else
@@ -764,7 +773,10 @@ class HomeScreen extends React.Component {
                           </View>
                           <View style={{flex: 0.4, alignItems: 'flex-end',}}>
                             <TouchableOpacity 
-                              onPress={() => this.writeToClipBoard(item.address)}
+                              onPress={() => {
+                                this.writeToClipBoard(item.address);
+                                ToastAndroid.show('Address Copied', ToastAndroid.SHORT);
+                              }}
                             >
                               <View style={{backgroundColor: Globals.DefaultSettings.theme.lightColour, borderRadius: 5, marginTop: 5, padding: 5,}}>
                                 <Text style={[styles.walletCardText, CommonStylesheet.normalText, {color: Globals.DefaultSettings.theme.textColour, textAlign: 'center', marginRight: 10, marginLeft: 10, }]}>Copy Address</Text>
