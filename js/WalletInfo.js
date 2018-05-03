@@ -307,7 +307,7 @@ class WalletInfo extends React.Component {
                         ))}
                         <View style={[styles.headChild, {backgroundColor: Globals.DefaultSettings.theme.lightColour}]}>
                           <TouchableOpacity style={styles.loadMoreButton} onPress={() => this.setState({showToken: !(this.state.showToken)})}>
-                            <Text style={[CommonStylesheet.normalText, styles.headTitle, {color: Globals.DefaultSettings.theme.textColour}]}>{this.state.showToken ? 'Hide Tokens' : 'Show Tokens'}</Text>
+                            <Text style={[CommonStylesheet.normalText, styles.headTitle, {color: Globals.DefaultSettings.theme.textColour}]}>Tap to {this.state.showToken ? 'Hide Tokens' : 'Show Tokens'}</Text>
                           </TouchableOpacity>
                         </View>
                       </View>
