@@ -327,6 +327,7 @@ class HomeScreen extends React.Component {
       forceRefresh: false,
       refreshing: null,
       walletInfo: null,
+      walletDataI: null,
     };
     this.getWallets = this.getWallets.bind(this);
     this.getEthObj = this.getEthObj.bind(this);
@@ -360,7 +361,7 @@ class HomeScreen extends React.Component {
     this.getWallets();    
   }
   async walletInfoBackHandle(){
-    this.setState({walletInfo: null});
+    this.setState({walletInfo: null, walletDataI: null});
   }
   componentWillMount() {
     this.firstLoad();
@@ -513,7 +514,10 @@ class HomeScreen extends React.Component {
             decimals: responseObj.tokens[j].tokenInfo.decimals,
             symbol: responseObj.tokens[j].tokenInfo.symbol,
             fiatVal: priceInfo,
-            val: responseObj.tokens[j].balance
+            val: responseObj.tokens[j].balance,
+            totalIn: responseObj.tokens[j].totalIn,
+            totalOut: responseObj.tokens[j].totalOut,
+            address: responseObj.tokens[j].tokenInfo.address,
           };
           tokens.push(tempObj);
         }
@@ -622,7 +626,9 @@ class HomeScreen extends React.Component {
     else if(this.state.walletInfo)
     {
       return (
-        <WalletInfo handler={this.walletInfoBackHandle} wallet={this.state.walletInfo}/>
+        <WalletInfo handler={this.walletInfoBackHandle} wallet={
+         /* {name: null, description: null, coin: "Ethereum", address: "0x242D0C57a9ff0391FF7fD3A050cf7Edb4f821050"}*/
+        this.state.walletInfo} walletData={this.state.walletDataI}/>
       );
     }
     else
@@ -673,7 +679,9 @@ class HomeScreen extends React.Component {
                             )
                           }
                         </View>
-                        <TouchableOpacity onPress={() => this.setState({walletInfo: item})}>
+                        <TouchableOpacity onPress={() => {
+                          this.setState({walletInfo: item, walletDataI: this.state.walletData[index]});
+                        }}>
                           <Text style={[styles.walletCardTitleText, {color: Globals.DefaultSettings.theme.textColour}]}>{item.name}</Text>
                         </TouchableOpacity>
                         <View style={styles.xIconOuter}>
