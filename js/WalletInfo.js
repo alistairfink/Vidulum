@@ -19,6 +19,7 @@ import {
   Alert,
   TouchableNativeFeedback,
   Keyboard,
+  Clipboard,
 } from 'react-native';
 import Globals from './Globals';
 import CommonStylesheet from './Stylesheet';
@@ -49,6 +50,7 @@ class WalletInfo extends React.Component {
     this.onLoad();
   } 
   componentDidMount() {
+    //Open animation These animations are the same as all the other pages.
     Animated.timing(               
       this.animateValue,           
       {
@@ -58,6 +60,7 @@ class WalletInfo extends React.Component {
     ).start();
   }  
   exit() {
+    //Exit animation
     Animated.timing(
       this.animateValue,
       {
@@ -68,13 +71,14 @@ class WalletInfo extends React.Component {
     setTimeout(() => this.props.handler(), 100);
   }
   onLoad() {
+    //when this page loads in it checks if there is a data object and if there is it sets the walletdata state which will cause a rerender then it will fetch the transactions.
     let walletI = this.props.wallet;
     if(this.props.walletData)
     {
       this.setState({walletData: this.props.walletData});
     }
-    switch(walletI.coin) {
-      case 'Bitcoin':
+    switch(walletI.coin.toLowerCase()) {
+      case 'bitcoin':
         this.getBtc(walletI);
         break;
       default://Ethereum
@@ -85,8 +89,11 @@ class WalletInfo extends React.Component {
     let transactionInfo = null;
     //Gets address info and transaction info then sets in state.
     if(!(this.props.walletData))
-    {
-      [addrInfo, transactionInfo] = await Promise.all([
+    {//This should only happen when searching an address.
+      let curDate = parseInt(new Date().getTime()/1000);
+      let addrInfo = null;
+      let fiatObj = null;
+      [addrInfo, transactionInfo, fiatObj] = await Promise.all([
         fetch('http://memes.alistairfink.com/VidulumApi/ethplorer',{
           method: 'POST',
           headers: {
@@ -107,11 +114,50 @@ class WalletInfo extends React.Component {
             options: 'limit=50'
           })
         })
-        .then((response) => response.json())
+        .then((response) => response.json()),
+        fetch('https://api.coinmarketcap.com/v1/ticker/Ethereum?convert='+Globals.DefaultSettings.currency,{
+          method: 'GET'
+        })
+        .then((response) => response.json()) 
       ]);
+      //fiatObj is originally returned as an array (annoying)
+      fiatObj = fiatObj[0];
+      //This is for if the user has a different fiat selected since ethplorer only returns usd
+      fiatRatio = (fiatObj)['price_'+Globals.DefaultSettings.currency.toLowerCase()]/fiatObj.price_usd;
+      //Extracts only wanted info from giant token array
+      if(addrInfo.tokens){
+        tokens = [];
+        for(let j = 0; j < addrInfo.tokens.length; j++)
+        {
+          let priceInfo = addrInfo.tokens[j].tokenInfo.price ? fiatRatio*addrInfo.tokens[j].tokenInfo.price.rate : false;
+          let tempObj = {
+            name: addrInfo.tokens[j].tokenInfo.name,
+            decimals: addrInfo.tokens[j].tokenInfo.decimals,
+            symbol: addrInfo.tokens[j].tokenInfo.symbol,
+            fiatVal: priceInfo,
+            val: addrInfo.tokens[j].balance,
+            totalIn: addrInfo.tokens[j].totalIn,
+            totalOut: addrInfo.tokens[j].totalOut,
+            address: addrInfo.tokens[j].tokenInfo.address,
+          };
+          tokens.push(tempObj);
+        }
+      }
+      //Build object to return from api information
+      returnObj = {
+        val: addrInfo.ETH.balance,
+        symbol: "ETH",
+        fiatRate: (fiatObj)['price_'+Globals.DefaultSettings.currency.toLowerCase()],
+        txCount: addrInfo.countTxs, 
+        totalIn: addrInfo.ETH.totalIn,
+        totalOut: addrInfo.ETH.totalOut,
+        tokens: tokens,
+        updateTime: curDate
+      };
+      this.setState({walletData: returnObj});
     }
     else 
-    {
+    {//Happens when we already have data(from home screen). Only need to get 
       transactionInfo = await fetch('http://memes.alistairfink.com/VidulumApi/ethplorer',{
           method: 'POST',
           headers: {
@@ -126,21 +172,122 @@ class WalletInfo extends React.Component {
     }
     let _transactionInfo = [];
     for(let i = 0; i<transactionInfo.length; i++)
-    {
+    {//Goes through all the transactions and sorts them. Array stuff and out is mostly so i can use the same render code for both bitcoin and ethereum.
+      //This array functionality isnt rly used in ethereum so arrays here are of size 1
+      let toArr = [];
+      let fromArr = [];
+      toArr.push(transactionInfo[i].to);
+      fromArr.push(transactionInfo[i].from);
+      let out = transactionInfo[i].to.toLowerCase().trim() === this.props.wallet.address.toLowerCase().trim() ? false : true;
       let tempObj = {
         timestamp: transactionInfo[i].timestamp,
-        from: transactionInfo[i].from,
-        to:transactionInfo[i].to,
+        from: fromArr,
+        to: toArr,
         transactionID: transactionInfo[i].hash,
         amount: transactionInfo[i].value,
+        out: out, //Check Address for ether -> Check Out-In for BTC
       };
       _transactionInfo.push(tempObj);
     }
     this.allTransactions = _transactionInfo;
     this.setState({transactionsShow: this.allTransactions.slice(0, this.state.numTransactions), transactionsLoaded: true});
   }
-  getBtc(walletI) {
-
+  async getBtc(walletI) {
+    let transactionInfo = null; //response from bitcoinchain
+    if(!(this.props.walletData))
+    {//Only happens when searching. same as above.
+      let curDate = parseInt(new Date().getTime()/1000); //when getting data
+      let responseObj = null; //Response from blockexplorer
+      let fiatObj = null; //Response from CoinMarketCap
+      let tokens = null; //Token Object. Made from data from Ethplorer.
+      let returnObj = null; //Object to Return
+      //Does both api calls asynchronously and awaits(faster than doing one after the other)
+      [responseObj, fiatObj, transactionInfo] = await Promise.all([
+        fetch('https://blockexplorer.com/api/addr/'+walletI.address,{
+          method: 'GET'
+        })
+        .then((response) => response.json()),
+        fetch('https://api.coinmarketcap.com/v1/ticker/Bitcoin?convert='+Globals.DefaultSettings.currency,{
+          method: 'GET'
+        })
+        .then((response) => response.json()),
+        fetch('https://api-r.bitcoinchain.com/v1/address/txs/' + walletI.address + '?limit=50',{
+          method: 'GET',
+        })
+        .then((response) => response.json())
+      ]);
+      //fiatObj is originally returned as an array (annoying)
+      fiatObj = fiatObj[0];
+      //Build object to return from api information
+      returnObj = {
+        val: responseObj.balance,
+        symbol: "BTC",
+        fiatRate: (fiatObj)['price_'+Globals.DefaultSettings.currency.toLowerCase()],
+        txCount: responseObj.txApperances, 
+        totalIn: responseObj.totalReceived,
+        totalOut: responseObj.totalSent,
+        tokens: null, //No token data for bitcoin
+        updateTime: curDate
+      };
+      this.setState({walletData: returnObj});    
+    }
+    else
+    {//Same as above but for btc apis
+      transactionInfo = await fetch('https://api-r.bitcoinchain.com/v1/address/txs/' + walletI.address + '?limit=50',{
+          method: 'GET',
+        })
+        .then((response) => response.json())
+    }
+    let _transactionInfo = [];
+    transactionInfo = transactionInfo[0];
+    for(let i = 0; i < transactionInfo.length; i++)
+    {
+      if(!(transactionInfo[i].tx)) continue;//If there are unconfirmed transactions we don't care about it and should continue to the next one.
+      /*
+        input = sender.
+        output = receiver.
+      */
+      let toArr = [];
+      let fromArr = [];
+      let val = null;
+      let out = null;
+      //Goes through inputs and adds to array. Same for outputs.
+      //If it finds address in one of these then thats the one we're looking for and we know its in/out and thats the transaction val.
+      for(let j = 0; j < transactionInfo[i].tx.inputs.length; j++)
+      {        if(transactionInfo[i].tx.inputs[j].sender.toLowerCase() === walletI.address.toLowerCase())
+        {
+          fromArr = [transactionInfo[i].tx.inputs[j].sender];
+          val = transactionInfo[i].tx.inputs[j].value;
+          out = true;
+          break;
+        }
+        fromArr.push(transactionInfo[i].tx.inputs[j].sender);
+      }
+      for(let j = 0; j < transactionInfo[i].tx.outputs.length; j++)
+      {
+        if(transactionInfo[i].tx.outputs[j].receiver.toLowerCase() === walletI.address.toLowerCase())
+        {
+          toArr = [transactionInfo[i].tx.outputs[j].receiver];
+          val = transactionInfo[i].tx.outputs[j].value;
+          out = false;
+          break;
+        }
+        toArr.push(transactionInfo[i].tx.outputs[j].receiver);
+      }
+      let tempObj = {
+        timestamp: transactionInfo[i].tx.rec_time,
+        from: fromArr,
+        to: toArr,
+        transactionID: transactionInfo[i].tx.blocks[0],
+        amount: val,
+        out: out, 
+      };
+      //For array of all transactions
+      _transactionInfo.push(tempObj);
+    }
+    //Renders transactions after this.
+    this.allTransactions = _transactionInfo;
+    this.setState({transactionsShow: this.allTransactions.slice(0, this.state.numTransactions), transactionsLoaded: true});
   }
   alternatingColour(index) {
     //Same as home component
@@ -162,8 +309,9 @@ class WalletInfo extends React.Component {
     let num = this.state.numTransactions + 5;
     this.setState({transactionsShow: this.allTransactions.slice(0, num), numTransactions: num});
   }
-  arrowTint(toAddr, walletAddr) {
-    let colour = toAddr.toLowerCase() === walletAddr.toLowerCase() ? 'limegreen' : 'red';
+  arrowTint(out) {
+    //Sees out var of current object and sets colour approriately. This is set when transaction data is loaded in.
+    let colour = !out ? 'limegreen' : 'red';
     return {
       tintColor: colour
     };
@@ -211,6 +359,18 @@ class WalletInfo extends React.Component {
                         </View>
                       </View>
                     }
+                    <View style={[styles.head, {backgroundColor: Globals.DefaultSettings.theme.primaryColour, borderWidth: 1, borderColor: Globals.DefaultSettings.theme.darkColour}]}> 
+                      <Text style={[CommonStylesheet.titleText, styles.headTitle, {color: Globals.DefaultSettings.theme.textColour}]}>Address</Text>
+                      <View style={[styles.headChild, {backgroundColor: Globals.DefaultSettings.theme.lightColour, padding: 10}]}>
+                        <Text style={[CommonStylesheet.normalText, {color: Globals.DefaultSettings.theme.textColour}]}>{this.props.wallet.address}</Text>
+                      <TouchableOpacity style={styles.loadMoreButton} onPress={async() => {
+                        await Clipboard.setString(this.props.wallet.address);
+                        ToastAndroid.show('Address Copied', ToastAndroid.SHORT);
+                      }}>
+                        <Text style={[CommonStylesheet.normalText, styles.headTitle, {color: Globals.DefaultSettings.theme.textColour}]}>Tap to Copy Address</Text>
+                      </TouchableOpacity>
+                      </View>
+                    </View>
                     <View style={[styles.head, {backgroundColor: Globals.DefaultSettings.theme.primaryColour, borderWidth: 1, borderColor: Globals.DefaultSettings.theme.darkColour,}]}> 
                       <Text style={[CommonStylesheet.titleText, styles.headTitle, {color: Globals.DefaultSettings.theme.textColour}]}>Wallet Info</Text>
                       <View style={[styles.headChild, {backgroundColor: Globals.DefaultSettings.theme.lightColour, padding: 10}]}>
@@ -322,13 +482,17 @@ class WalletInfo extends React.Component {
                                 <Text numberOfLines={1} style={[CommonStylesheet.normalText, {color: Globals.DefaultSettings.theme.textColour}]}>{transaction.transactionID}</Text>
                                 <View style={styles.transactionRow}>
                                   <View style={[styles.transactionRowItem, styles.transactionRowItemLeft]}>
-                                    <Text numberOfLines={1} ellipsizeMode='middle' style={[CommonStylesheet.normalText, {color: Globals.DefaultSettings.theme.textColour}]}>{transaction.from}</Text>
+                                    {transaction.from.map((fromAddr, j) => (
+                                      <Text key={j}numberOfLines={1} ellipsizeMode='middle' style={[CommonStylesheet.normalText, {color: Globals.DefaultSettings.theme.textColour}]}>{fromAddr}</Text>
+                                    ))}
                                   </View>
                                   <View style={[styles.transactionRowItem, styles.transactionRowItemMiddle]}>
-                                    <Image source={require('../assets/TransactionIcon.png')} style={[styles.transactionIcon, this.arrowTint(transaction.to, this.props.wallet.address)]}/>
+                                    <Image source={require('../assets/TransactionIcon.png')} style={[styles.transactionIcon, this.arrowTint(transaction.out)]}/>
                                   </View>
                                   <View style={[styles.transactionRowItem, styles.transactionRowItemRight]}>
-                                    <Text numberOfLines={1} ellipsizeMode='middle' style={[CommonStylesheet.normalText, {color: Globals.DefaultSettings.theme.textColour}]}>{transaction.to}</Text>
+                                    {transaction.to.map((toAddr, k) => (
+                                      <Text key={k} numberOfLines={1} ellipsizeMode='middle' style={[CommonStylesheet.normalText, {color: Globals.DefaultSettings.theme.textColour}]}>{toAddr}</Text>
+                                    ))}
                                   </View>
                                 </View>
                                 <View style={{flexDirection: 'row',}}>
