@@ -30,4 +30,12 @@ module.exports = {
 		walletData: 'WalletData',
 		pass: 'PasswordPin',
 	},
+	ApiEndPoints: {
+		ethplorer: 'http://memes.alistairfink.com/VidulumApi/ethplorer',
+		validate: 'http://memes.alistairfink.com/VidulumApi/validate',
+		feedback: 'http://memes.alistairfink.com/VidulumApi/feedback',
+		coinMarketCap: 'https://api.coinmarketcap.com/v1/ticker/',
+		blockExplorer: 'https://blockexplorer.com/api/addr/',
+		bitcoinChain: 'https://api-r.bitcoinchain.com/v1/address/txs/',
+	}
 };

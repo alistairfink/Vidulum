@@ -94,7 +94,7 @@ class WalletInfo extends React.Component {
       let addrInfo = null;
       let fiatObj = null;
       [addrInfo, transactionInfo, fiatObj] = await Promise.all([
-        fetch('http://memes.alistairfink.com/VidulumApi/ethplorer',{
+        fetch(Globals.ApiEndPoints.ethplorer,{
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -104,7 +104,7 @@ class WalletInfo extends React.Component {
           })
         })
         .then((response) => response.json()),
-        fetch('http://memes.alistairfink.com/VidulumApi/ethplorer',{
+        fetch(Globals.ApiEndPoints.ethplorer,{
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -115,7 +115,7 @@ class WalletInfo extends React.Component {
           })
         })
         .then((response) => response.json()),
-        fetch('https://api.coinmarketcap.com/v1/ticker/Ethereum?convert='+Globals.DefaultSettings.currency,{
+        fetch(Globals.ApiEndPoints.coinMarketCap + 'Ethereum?convert='+ Globals.DefaultSettings.currency,{
           method: 'GET'
         })
         .then((response) => response.json()) 
@@ -158,7 +158,7 @@ class WalletInfo extends React.Component {
     }
     else 
     {//Happens when we already have data(from home screen). Only need to get 
-      transactionInfo = await fetch('http://memes.alistairfink.com/VidulumApi/ethplorer',{
+      transactionInfo = await fetch(Globals.ApiEndPoints.ethplorer,{
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -203,15 +203,15 @@ class WalletInfo extends React.Component {
       let returnObj = null; //Object to Return
       //Does both api calls asynchronously and awaits(faster than doing one after the other)
       [responseObj, fiatObj, transactionInfo] = await Promise.all([
-        fetch('https://blockexplorer.com/api/addr/'+walletI.address,{
+        fetch(Globals.ApiEndPoints.blockExplorer+walletI.address,{
           method: 'GET'
         })
         .then((response) => response.json()),
-        fetch('https://api.coinmarketcap.com/v1/ticker/Bitcoin?convert='+Globals.DefaultSettings.currency,{
+        fetch(Globals.ApiEndPoints.coinMarketCap + 'Bitcoin?convert='+Globals.DefaultSettings.currency,{
           method: 'GET'
         })
         .then((response) => response.json()),
-        fetch('https://api-r.bitcoinchain.com/v1/address/txs/' + walletI.address + '?limit=50',{
+        fetch(Globals.ApiEndPoints.bitcoinChain + walletI.address + '?limit=50',{
           method: 'GET',
         })
         .then((response) => response.json())
@@ -233,7 +233,7 @@ class WalletInfo extends React.Component {
     }
     else
     {//Same as above but for btc apis
-      transactionInfo = await fetch('https://api-r.bitcoinchain.com/v1/address/txs/' + walletI.address + '?limit=50',{
+      transactionInfo = await fetch(Globals.ApiEndPoints.bitcoinChain + walletI.address + '?limit=50',{
           method: 'GET',
         })
         .then((response) => response.json())

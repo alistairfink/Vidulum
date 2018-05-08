@@ -81,7 +81,7 @@ class Feedback extends React.Component {
       return;
     }
     let key = 'EPd2dg&]#g_dCe+(2mc_b~/X';
-    fetch('http://memes.alistairfink.com/VidulumApi/feedback',{
+    fetch(Globals.ApiEndPoints.feedback,{
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

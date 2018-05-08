@@ -129,7 +129,7 @@ class Add extends React.Component {
     let valid = false;
     //Validates address
     try{
-      await fetch('http://memes.alistairfink.com/VidulumApi/validate',{
+      await fetch(Globals.ApiEndPoints.validate,{
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -484,7 +484,7 @@ class HomeScreen extends React.Component {
       let returnObj = null; //Object to Return
       //Does both api calls asynchronously and awaits(faster than doing one after the other)
       [responseObj, fiatObj] = await Promise.all([
-        fetch('http://memes.alistairfink.com/VidulumApi/ethplorer',{
+        fetch(Globals.ApiEndPoints.ethplorer,{
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -494,7 +494,7 @@ class HomeScreen extends React.Component {
           })
         })
         .then((response) => response.json()),
-        fetch('https://api.coinmarketcap.com/v1/ticker/Ethereum?convert='+Globals.DefaultSettings.currency,{
+        fetch(Globals.ApiEndPoints.coinMarketCap + 'Ethereum?convert=' + Globals.DefaultSettings.currency,{
           method: 'GET'
         })
         .then((response) => response.json()) 
@@ -548,11 +548,11 @@ class HomeScreen extends React.Component {
       let returnObj = null; //Object to Return
       //Does both api calls asynchronously and awaits(faster than doing one after the other)
       [responseObj, fiatObj] = await Promise.all([
-        fetch('https://blockexplorer.com/api/addr/'+obj.address,{
+        fetch(Globals.ApiEndPoints.blockExplorer+obj.address,{
           method: 'GET'
         })
         .then((response) => response.json()),
-        fetch('https://api.coinmarketcap.com/v1/ticker/Bitcoin?convert='+Globals.DefaultSettings.currency,{
+        fetch(Globals.ApiEndPoints.coinMarketCap+'Bitcoin?convert='+Globals.DefaultSettings.currency,{
           method: 'GET'
         })
         .then((response) => response.json()) 
