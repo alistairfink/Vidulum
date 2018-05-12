@@ -395,6 +395,10 @@ class Settings extends React.Component {
     }
   }
   changeFiat(text) {
+    if(!Globals.currChanged)
+    {
+      Globals.changeCurr();
+    }
     //Sets currency and symbol
     this.userSettings.currency = text;
     switch(text){

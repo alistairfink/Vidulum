@@ -407,11 +407,15 @@ class HomeScreen extends React.Component {
     try{
       //Retrieves data from local storage
       let savedWalletData = await AsyncStorage.getItem(Globals.StorageNames.walletData);
+      savedWalletData = savedWalletData ? JSON.parse(savedWalletData) : '';
       let walletList = this.state.wallets;
       let curDate = parseInt(new Date().getTime()/1000);
-      if(savedWalletData)
+      if(Globals.currChanged)
       {
-        savedWalletData = JSON.parse(savedWalletData);
+        this.setState({refreshing: true});
+      }
+      if(savedWalletData && savedWalletData.length === walletList.length && !Globals.currChanged)
+      {
         //If theres no internet but theres data
         NetInfo.isConnected.fetch().then(isConnected => {
           if(!isConnected)
@@ -469,6 +473,10 @@ class HomeScreen extends React.Component {
       ToastAndroid.show('Updated', ToastAndroid.SHORT);
       await AsyncStorage.setItem(Globals.StorageNames.walletData, JSON.stringify(savedWalletData));
       this.setState({refreshing: false, forceRefresh: false});
+      if(Globals.currChanged)
+      {
+        Globals.changeCurr();
+      }
     }
     catch(error)
     {

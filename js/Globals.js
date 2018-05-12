@@ -24,6 +24,10 @@ module.exports = {
 	UpdateOpeningRefresh: function() {
 		this.openingRefresh = false;
 	},
+	currChanged: false,
+	changeCurr: function() {
+		this.currChanged = !this.currChanged;
+	},
 	StorageNames: {
 		settings: 'Settings',
 		wallets: 'WalletList',

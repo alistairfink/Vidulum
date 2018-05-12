@@ -145,7 +145,8 @@ class LockScreen extends React.Component{
       this.props.unlock();
       return;
     }
-    Vibration.vibrate(1000);
+    Vibration.vibrate(100);
+    setTimeout(() => Vibration.vibrate(100), 120);
   }
   render() {
     return(
