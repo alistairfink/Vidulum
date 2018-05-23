@@ -12,21 +12,21 @@
     </item>
     <item
         is-multidex="false"
-        jar="E:\AppDev\Github\Vidulum\android\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.0.1\jars\classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="23.0.1"
-        sha1="d86429b0f0b3f3cafbeb78dda1b9d89119ccb05d">
-        <dex dex="E:\AppDev\Github\Vidulum\android\app\build\intermediates\pre-dexed\debug\com.android.support-appcompat-v7-23.0.1_53073ca59c130d0b7b433215b4535c1a6828da11.jar" />
-    </item>
-    <item
-        is-multidex="false"
         jar="C:\Users\Alistair\.gradle\caches\modules-2\files-2.1\com.google.code.findbugs\jsr305\3.0.0\5871fb60dc68d67da54a663c3fd636a10a532948\jsr305-3.0.0.jar"
         jumboMode="false"
         optimize="true"
         revision="23.0.1"
         sha1="5871fb60dc68d67da54a663c3fd636a10a532948">
         <dex dex="E:\AppDev\Github\Vidulum\android\app\build\intermediates\pre-dexed\debug\jsr305-3.0.0_f2b5dcc2b48db80582aab8e43732673d03855d15.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\AppDev\Github\Vidulum\android\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.0.1\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="d86429b0f0b3f3cafbeb78dda1b9d89119ccb05d">
+        <dex dex="E:\AppDev\Github\Vidulum\android\app\build\intermediates\pre-dexed\debug\com.android.support-appcompat-v7-23.0.1_53073ca59c130d0b7b433215b4535c1a6828da11.jar" />
     </item>
     <item
         is-multidex="false"

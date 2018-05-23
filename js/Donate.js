@@ -19,9 +19,17 @@ import {
   StatusBar,
   Alert,
   TouchableNativeFeedback,
+  Platform,
 } from 'react-native';
 import Globals from './Globals';
 import CommonStylesheet from './Stylesheet';
+import * as RNIap from 'react-native-iap';
+
+const itemSkus = Platform.select({
+  android: [
+    'test',
+  ],
+});
 
 const win = Dimensions.get('window');
 
@@ -29,6 +37,20 @@ class Donate extends React.Component {
   constructor(props){
     super(props);
 
+  }
+  componentWillMount() {
+    this.prepare();
+  }
+  async prepare() {
+    try {
+      await RNIap.prepare();
+      let products = await RNIap.getProducts(itemSkus);
+      alert(JSON.stringify(products)); 
+    }
+    catch(err)
+    {
+      console.log(err);
+    }
   }
   render() {
     return (

@@ -2,7 +2,7 @@
 manifest
 ADDED from E:\AppDev\Github\Vidulum\android\app\src\main\AndroidManifest.xml:1:1-29:12
 	package
-		ADDED from E:\AppDev\Github\Vidulum\android\app\src\main\AndroidManifest.xml:2:5-26
+		ADDED from E:\AppDev\Github\Vidulum\android\app\src\main\AndroidManifest.xml:2:5-39
 		INJECTED from E:\AppDev\Github\Vidulum\android\app\src\main\AndroidManifest.xml
 		INJECTED from E:\AppDev\Github\Vidulum\android\app\src\main\AndroidManifest.xml
 	android:versionName
@@ -53,7 +53,7 @@ MERGED from [org.webkit:android-jsc:r174650] E:\AppDev\Github\Vidulum\android\ap
 		ADDED from E:\AppDev\Github\Vidulum\android\app\src\main\AndroidManifest.xml:15:7-38
 	android:name
 		ADDED from E:\AppDev\Github\Vidulum\android\app\src\main\AndroidManifest.xml:11:7-38
-activity#com.vidulum.MainActivity
+activity#com.alistairfink.vidulum.MainActivity
 ADDED from E:\AppDev\Github\Vidulum\android\app\src\main\AndroidManifest.xml:16:7-25:18
 	android:label
 		ADDED from E:\AppDev\Github\Vidulum\android\app\src\main\AndroidManifest.xml:18:9-41

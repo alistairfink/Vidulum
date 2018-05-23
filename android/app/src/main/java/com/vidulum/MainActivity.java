@@ -1,4 +1,4 @@
-package com.vidulum;
+package com.alistairfink.vidulum;
 
 import com.facebook.react.ReactActivity;
 
