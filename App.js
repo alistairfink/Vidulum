@@ -26,6 +26,20 @@ import Feedback from './js/Feedback';
 import Globals from './js/Globals';
 import CommonStylesheet from './js/Stylesheet';
 
+class AccountHandling extends React.Component {
+  constructor(props) {
+    super(props);
+
+  }
+  render() {
+    return(
+      <View style={{flex: 1, flexDirection: 'row', alignItems: 'flex-end' }}>
+          <Text style={{color: 'black', fontSize: 20}}>Test</Text>
+      </View>
+    );
+  }
+}
+
 class navDrawer extends React.Component {
   constructor(props){
     super(props);
@@ -62,7 +76,7 @@ class navDrawer extends React.Component {
     return(
       <ScrollView style={{backgroundColor: Globals.DefaultSettings.theme.primaryColour}}>
         <ImageBackground source={require('./assets/background.jpg')} style={styles.drawerHeader}>
-
+          <AccountHandling/>
         </ImageBackground>
         {this.menuItems.map((item, index) => (
           <View key={index}>

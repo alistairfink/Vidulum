@@ -139,7 +139,7 @@ class Add extends React.Component {
           address: this.state.wallet.address
         })
       })
-      .then((response) => response.json()) 
+      .then((response) => response.json() ) 
       .then((responseJson) => {
         valid = responseJson.valid;
       })
