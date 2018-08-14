@@ -387,8 +387,9 @@ class Settings extends React.Component {
         this.getSwitchSettings();
         return;
       }
-      savedSettings = Globals.DefaultSettings;
-      this.userSettings = savedSettings;
+      await AsyncStorage.setItem(Globals.StorageNames.settings, JSON.stringify(Globals.DefaultSettings));
+      savedSettings = await AsyncStorage.getItem(Globals.StorageNames.settings);
+      this.userSettings = JSON.parse(savedSettings);
     }
     catch(error){
       console.log(error);

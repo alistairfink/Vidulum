@@ -22,19 +22,27 @@ import HomeScreen from './js/Home';
 import Settings from './js/Settings';
 import Donate from './js/Donate';
 import Feedback from './js/Feedback';
+import LogIn from './js/LogIn';
 
 import Globals from './js/Globals';
 import CommonStylesheet from './js/Stylesheet';
 
 class AccountHandling extends React.Component {
-  constructor(props) {
-    super(props);
-
-  }
   render() {
     return(
-      <View style={{flex: 1, flexDirection: 'row', alignItems: 'flex-end' }}>
-          <Text style={{color: 'black', fontSize: 20}}>Test</Text>
+      <View style={styles.headerBlock}>
+        <TouchableOpacity 
+          style={styles.headerBottom}
+          onPress={() => this.props.openLogin()}
+        >
+          {
+            (!Globals.DefaultSettings.loggedIn) ? (
+              <Text style={styles.headerText}>Log In</Text>
+            ) : (
+              <Text style={styles.headerText}>{Globals.DefaultSettings.email}</Text>
+            )
+          }
+        </TouchableOpacity>
       </View>
     );
   }
@@ -76,7 +84,7 @@ class navDrawer extends React.Component {
     return(
       <ScrollView style={{backgroundColor: Globals.DefaultSettings.theme.primaryColour}}>
         <ImageBackground source={require('./assets/background.jpg')} style={styles.drawerHeader}>
-          <AccountHandling/>
+          <AccountHandling openLogin={this.navigateToScreen('LogIn')}/>
         </ImageBackground>
         {this.menuItems.map((item, index) => (
           <View key={index}>
@@ -115,11 +123,14 @@ let RootStack = DrawerNavigator(
     Feedback: {
       screen: Feedback,
     },
+    LogIn: {
+      screen: LogIn,
+    },
   },
   {
     headerMode: 'none',
     //transitionConfig: getSlideFromRightTransition,//Right to left transition
-    initialRouteName: 'Home',//Initial page
+    initialRouteName: 'LogIn',//'Home',//Initial page
     contentComponent: navDrawer,
   }
 );
@@ -401,4 +412,21 @@ const styles = StyleSheet.create({
   numpadDisplay: {
     fontSize: 20,
   },
+  headerBlock: {
+    flex: 1, 
+    flexDirection: 'column', 
+    justifyContent: 'flex-end', 
+  },
+  headerTop: {
+    padding: 10,
+    paddingBottom: 5,
+  },
+  headerBottom: {
+    padding: 10,
+    paddingTop: 5,
+  },
+  headerText: {
+    fontSize: 18,
+    color: 'black',
+  }
 });
