@@ -23,6 +23,7 @@ import {
 } from 'react-native';
 import Globals from './Globals';
 import CommonStylesheet from './Stylesheet';
+var hash = require('hash.js');
 
 const win = Dimensions.get('window');
 
@@ -59,7 +60,7 @@ class LogIn extends React.Component {
     {
       try{
         //Hashes Pass
-        
+        let passSend = hash.sha256().update(this.state.pass).digest('hex');
         //Sends to server
         await fetch(Globals.ApiEndPoints.alistairFinkSignUp,{
           method: 'POST',
@@ -69,7 +70,7 @@ class LogIn extends React.Component {
           body: JSON.stringify({
             apiKey: Globals.alistairfinkApiKey,
             email: this.state.email,
-            pass: this.state.pass
+            pass: passSend
           })
         })
         .then((response) => response.json() ) 
