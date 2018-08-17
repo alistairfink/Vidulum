@@ -325,6 +325,8 @@ export default class App extends React.Component{
       let savedSettings = await AsyncStorage.getItem(Globals.StorageNames.settings);
       if(savedSettings)
         Globals.UpdateSettings(JSON.parse(savedSettings));
+      else 
+        await AsyncStorage.setItem(Globals.StorageNames.settings, JSON.stringify(Globals.DefaultSettings));
       if(!(Globals.DefaultSettings.walletLock))
       {
         this.setState({locked: false});

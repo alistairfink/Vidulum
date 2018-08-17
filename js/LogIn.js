@@ -47,7 +47,46 @@ class LogIn extends React.Component {
   async loginButton() {
     if(this.state.email.length > 0 && this.state.pass.length > 0)
     {
-
+      try{
+        //Hashes Pass
+        let passSend = hash.sha256().update(this.state.pass).digest('hex');
+        //Sends to server
+        await fetch(Globals.ApiEndPoints.alistairFinkSignIn,{
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            apiKey: Globals.alistairfinkApiKey,
+            email: this.state.email,
+            pass: passSend
+          })
+        })
+        .then((response) => response.json() ) 
+        .then(async (responseJson) => {
+          //If receive error display error.
+          if(responseJson.error)
+          {
+            alert(responseJson.error);
+            return;
+          }
+          //Successfully created account so set token to local storage.
+          await AsyncStorage.setItem(Globals.StorageNames.key, responseJson.token);
+          alert('Login Successful!');
+          //Update settings with email and such
+          let savedSettings = await AsyncStorage.getItem(Globals.StorageNames.settings);
+          savedSettings = JSON.parse(savedSettings);
+          savedSettings.loggedIn = true;
+          savedSettings.email = this.state.email;
+          Globals.UpdateSettings(savedSettings);
+          await AsyncStorage.setItem(Globals.StorageNames.settings, JSON.stringify(savedSettings));
+          this.setState({pass: ''});
+        })
+      }
+      catch(error)
+      {
+        console.log(error);
+      }
     }
     else
     {
@@ -91,7 +130,7 @@ class LogIn extends React.Component {
           savedSettings.email = this.state.email;
           Globals.UpdateSettings(savedSettings);
           await AsyncStorage.setItem(Globals.StorageNames.settings, JSON.stringify(savedSettings));
-          this.setState({});
+          this.setState({pass: ''});
         })
       }
       catch(error)
@@ -103,6 +142,17 @@ class LogIn extends React.Component {
     {
       alert('E-Mail and Password Fields Required.')
     }
+  }
+  async backupButton() {
+  	alert('backup');
+  }
+  async restoreButton() { 
+
+  	alert('restore');
+  }
+  async logOutButton() {
+
+  	alert('logout');
   }
   render() {
     const animatedStyle = {left: this.animateValue}
@@ -128,7 +178,29 @@ class LogIn extends React.Component {
             <View style={[CommonStylesheet.pageBG, {backgroundColor: Globals.DefaultSettings.theme.backgroundColour}]}>
               {
                 (Globals.DefaultSettings.loggedIn) ? (
-                  <Text style={[CommonStylesheet.normalText, {color: Globals.DefaultSettings.theme.textColour}]}>Test2</Text>
+                	<View>
+                    <View style={[styles.header, {backgroundColor: Globals.DefaultSettings.theme.primaryColour, borderWidth: 1, borderColor: Globals.DefaultSettings.theme.darkColour}]}>
+                      <Text style={[CommonStylesheet.normalText, styles.headerText, {color: Globals.DefaultSettings.theme.textColour}]}>{Globals.DefaultSettings.email}</Text>
+                    </View>
+                    <TouchableOpacity
+                    	style={[styles.loggedInButton, {backgroundColor: Globals.DefaultSettings.theme.lightColour}]}
+                    	onPress={() => this.backupButton()}
+                    >
+                      <Text style={[CommonStylesheet.normalText, styles.subHeaderText, {color: Globals.DefaultSettings.theme.textColour}]}>Backup Wallets List</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                    	style={[styles.loggedInButton, {backgroundColor: Globals.DefaultSettings.theme.lightColour}]}
+                    	onPress={() => this.restoreButton()}
+                    >
+                      <Text style={[CommonStylesheet.normalText, styles.subHeaderText, {color: Globals.DefaultSettings.theme.textColour}]}>Restore Wallets List</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                    	style={[styles.loggedInButton, {backgroundColor: Globals.DefaultSettings.theme.lightColour}]}
+                    	onPress={() => this.logOutButton()}
+                    >
+                      <Text style={[CommonStylesheet.normalText, styles.subHeaderText, {color: Globals.DefaultSettings.theme.textColour}]}>Log Out</Text>
+                    </TouchableOpacity>
+                	</View>
                 ) : (
                   <View>
                     <View style={[styles.header, {backgroundColor: Globals.DefaultSettings.theme.lightColour, borderWidth: 1, borderColor: Globals.DefaultSettings.theme.darkColour}]}>
@@ -229,6 +301,13 @@ const styles = StyleSheet.create({
   buttonText: {
     margin: 15,
     fontSize: 16,
+  },
+  loggedInButton: {
+  	padding: 15,
+  	margin: 15,
+  	marginLeft: 50,
+  	marginRight: 50,
+  	borderRadius: 5,
   },
 });
 
