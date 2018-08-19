@@ -39,7 +39,10 @@ class AccountHandling extends React.Component {
             (!Globals.DefaultSettings.loggedIn) ? (
               <Text style={styles.headerText}>Log In</Text>
             ) : (
-              <Text style={styles.headerText}>{Globals.DefaultSettings.email}</Text>
+              <View style={{flexDirection: 'row'}}>
+                <Image style={{width:50, height: 50}} source={require('./assets/profile.png')}/>
+                <Text style={[styles.headerText, {alignSelf: 'center'}]}>{'   '}{Globals.DefaultSettings.email}</Text>
+              </View>
             )
           }
         </TouchableOpacity>
@@ -130,7 +133,7 @@ let RootStack = DrawerNavigator(
   {
     headerMode: 'none',
     //transitionConfig: getSlideFromRightTransition,//Right to left transition
-    initialRouteName: 'LogIn',//'Home',//Initial page
+    initialRouteName: 'Home',//Initial page
     contentComponent: navDrawer,
   }
 );

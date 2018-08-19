@@ -72,7 +72,12 @@ class LogIn extends React.Component {
           }
           //Successfully created account so set token to local storage.
           await AsyncStorage.setItem(Globals.StorageNames.key, responseJson.token);
-          alert('Login Successful!');
+			    Alert.alert(
+			      'Success',
+			      'Login Successful!', 
+			    [
+			      {text: 'Close'},
+			    ]);
           //Update settings with email and such
           let savedSettings = await AsyncStorage.getItem(Globals.StorageNames.settings);
           savedSettings = JSON.parse(savedSettings);
@@ -90,8 +95,13 @@ class LogIn extends React.Component {
     }
     else
     {
-      alert('E-Mail and Password Fields Required.')
-    }
+	    Alert.alert(
+	      'Error',
+	      'E-Mail and Password Fields Required', 
+	    [
+	      {text: 'Close'},
+	    ]);
+	  }
   }
   async createButton() {
     //Checks pass and email fields aren't blank
@@ -122,7 +132,12 @@ class LogIn extends React.Component {
           }
           //Successfully created account so set token to local storage.
           await AsyncStorage.setItem(Globals.StorageNames.key, responseJson.token);
-          alert('Account successfully created!');
+			    Alert.alert(
+			      'Success',
+			      'Account successfully created!', 
+			    [
+			      {text: 'Close'},
+			    ]);
           //Update settings with email and such
           let savedSettings = await AsyncStorage.getItem(Globals.StorageNames.settings);
           savedSettings = JSON.parse(savedSettings);
@@ -140,19 +155,148 @@ class LogIn extends React.Component {
     }
     else
     {
-      alert('E-Mail and Password Fields Required.')
+	    Alert.alert(
+	      'Error',
+	      'E-Mail and Password Fields Required', 
+	    [
+	      {text: 'Close'},
+	    ]);
     }
   }
   async backupButton() {
-  	alert('backup');
+  	let savedWallets = await AsyncStorage.getItem(Globals.StorageNames.wallets);
+  	if(savedWallets)
+  	{
+  		try{
+  		 	//Retrieves key
+        let token = await AsyncStorage.getItem(Globals.StorageNames.key);
+        //Sends to server
+        await fetch(Globals.ApiEndPoints.alistairFinkBackup,{
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            apiKey: Globals.alistairfinkApiKey,
+            email: Globals.DefaultSettings.email,
+            key: token,
+            wallets: savedWallets
+          })
+        })
+        .then((response) => response.json() ) 
+        .then(async (responseJson) => {
+          //If receive error display error.
+          if(responseJson.error)
+          {
+            alert(responseJson.error);
+            return;
+          }
+          //Save new token and display alert
+          await AsyncStorage.setItem(Globals.StorageNames.key, responseJson.token);
+			    Alert.alert(
+			      'Success',
+			      'Backup Successful!', 
+			    [
+			      {text: 'Close'},
+			    ]);
+        })
+      }
+      catch(error)
+      {
+        console.log(error);
+      }
+  	}
+  	else
+  	{
+  		alert('There are no saved wallets to backup.')
+  	}
   }
   async restoreButton() { 
-
-  	alert('restore');
+  	try{
+  		 	//Retrieves key
+        let token = await AsyncStorage.getItem(Globals.StorageNames.key);
+        //Sends to server
+        await fetch(Globals.ApiEndPoints.alistairFinkRestore,{
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            apiKey: Globals.alistairfinkApiKey,
+            email: Globals.DefaultSettings.email,
+            key: token
+          })
+        })
+        .then((response) => response.json() ) 
+        .then(async (responseJson) => {
+          //If receive error display error.
+          if(responseJson.error)
+          {
+            alert(responseJson.error);
+            return;
+          }
+          //Successfully retrieved backup so save new token and wallets.
+          await AsyncStorage.setItem(Globals.StorageNames.key, responseJson.token);
+          let retrievedWallets = JSON.parse(responseJson.wallets);
+      		await AsyncStorage.setItem(Globals.StorageNames.wallets, JSON.stringify(retrievedWallets));
+			    Alert.alert(
+			      'Success',
+			      'Restore Successful!', 
+			    [
+			      {text: 'Close'},
+			    ]);
+        })
+  	}
+  	catch(error)
+  	{
+  		console.log(error);
+  	}
   }
   async logOutButton() {
-
-  	alert('logout');
+  	try{
+  		 	//Retrieves key
+        let token = await AsyncStorage.getItem(Globals.StorageNames.key);
+        //Sends to server
+        await fetch(Globals.ApiEndPoints.alistairFinkSignOut,{
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            apiKey: Globals.alistairfinkApiKey,
+            email: Globals.DefaultSettings.email,
+            key: token
+          })
+        })
+        .then((response) => response.json() ) 
+        .then(async (responseJson) => {
+          //If receive error display error.
+          if(responseJson.error)
+          {
+            alert(responseJson.error);
+            return;
+          }
+          //Successfully logged out so reset everything and refresh page
+          await AsyncStorage.setItem(Globals.StorageNames.key, '');
+          let savedSettings = await AsyncStorage.getItem(Globals.StorageNames.settings);
+          savedSettings = JSON.parse(savedSettings);
+          savedSettings.loggedIn = false;
+          savedSettings.email = '';
+          Globals.UpdateSettings(savedSettings);
+          await AsyncStorage.setItem(Globals.StorageNames.settings, JSON.stringify(savedSettings));
+          this.setState({});
+			    Alert.alert(
+			      'Success',
+			      'Log Out Successful!', 
+			    [
+			      {text: 'Close'},
+			    ]);
+        })
+  	}
+  	catch(error)
+  	{
+  		console.log(error);
+  	}
   }
   render() {
     const animatedStyle = {left: this.animateValue}
@@ -183,19 +327,19 @@ class LogIn extends React.Component {
                       <Text style={[CommonStylesheet.normalText, styles.headerText, {color: Globals.DefaultSettings.theme.textColour}]}>{Globals.DefaultSettings.email}</Text>
                     </View>
                     <TouchableOpacity
-                    	style={[styles.loggedInButton, {backgroundColor: Globals.DefaultSettings.theme.lightColour}]}
+                    	style={[styles.loggedInButton, {backgroundColor: Globals.DefaultSettings.theme.lightColour, borderWidth: 1, borderColor: Globals.DefaultSettings.theme.darkColour}]}
                     	onPress={() => this.backupButton()}
                     >
                       <Text style={[CommonStylesheet.normalText, styles.subHeaderText, {color: Globals.DefaultSettings.theme.textColour}]}>Backup Wallets List</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
-                    	style={[styles.loggedInButton, {backgroundColor: Globals.DefaultSettings.theme.lightColour}]}
+                    	style={[styles.loggedInButton, {backgroundColor: Globals.DefaultSettings.theme.lightColour, borderWidth: 1, borderColor: Globals.DefaultSettings.theme.darkColour}]}
                     	onPress={() => this.restoreButton()}
                     >
                       <Text style={[CommonStylesheet.normalText, styles.subHeaderText, {color: Globals.DefaultSettings.theme.textColour}]}>Restore Wallets List</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
-                    	style={[styles.loggedInButton, {backgroundColor: Globals.DefaultSettings.theme.lightColour}]}
+                    	style={[styles.loggedInButton, {backgroundColor: Globals.DefaultSettings.theme.lightColour, borderWidth: 1, borderColor: Globals.DefaultSettings.theme.darkColour}]}
                     	onPress={() => this.logOutButton()}
                     >
                       <Text style={[CommonStylesheet.normalText, styles.subHeaderText, {color: Globals.DefaultSettings.theme.textColour}]}>Log Out</Text>
