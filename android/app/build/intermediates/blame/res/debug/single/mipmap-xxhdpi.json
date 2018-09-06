@@ -1,5 +1,9 @@
 [
     {
+        "merged": "C:\\Users\\Alistair Fink\\Desktop\\AppDev\\Github\\Vidulum\\android\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxhdpi\\ic_launcher.png",
+        "source": "C:\\Users\\Alistair Fink\\Desktop\\AppDev\\Github\\Vidulum\\android\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher.png"
+    },
+    {
         "merged": "E:\\AppDev\\Github\\Vidulum\\android\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxhdpi\\ic_launcher.png",
         "source": "E:\\AppDev\\Github\\Vidulum\\android\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher.png"
     }
