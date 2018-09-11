@@ -32,12 +32,12 @@ ADDED from C:\Users\Alistair Fink\Desktop\AppDev\Github\Vidulum\android\app\src\
 		ADDED from C:\Users\Alistair Fink\Desktop\AppDev\Github\Vidulum\android\app\src\main\AndroidManifest.xml:7:19-60
 uses-permission#com.android.vending.BILLING
 ADDED from C:\Users\Alistair Fink\Desktop\AppDev\Github\Vidulum\android\app\src\main\AndroidManifest.xml:8:2-64
-MERGED from [com.android.billingclient:billing:1.0] C:\Users\Alistair Fink\Desktop\AppDev\Github\Vidulum\android\app\build\intermediates\exploded-aar\com.android.billingclient\billing\1.0\AndroidManifest.xml:9:5-67
+MERGED from [com.android.billingclient:billing:1.1] C:\Users\Alistair Fink\Desktop\AppDev\Github\Vidulum\android\app\build\intermediates\exploded-aar\com.android.billingclient\billing\1.1\AndroidManifest.xml:10:5-67
 	android:name
 		ADDED from C:\Users\Alistair Fink\Desktop\AppDev\Github\Vidulum\android\app\src\main\AndroidManifest.xml:8:19-61
 application
 ADDED from C:\Users\Alistair Fink\Desktop\AppDev\Github\Vidulum\android\app\src\main\AndroidManifest.xml:10:5-27:19
-MERGED from [com.android.billingclient:billing:1.0] C:\Users\Alistair Fink\Desktop\AppDev\Github\Vidulum\android\app\build\intermediates\exploded-aar\com.android.billingclient\billing\1.0\AndroidManifest.xml:11:5-16:19
+MERGED from [com.android.billingclient:billing:1.1] C:\Users\Alistair Fink\Desktop\AppDev\Github\Vidulum\android\app\build\intermediates\exploded-aar\com.android.billingclient\billing\1.1\AndroidManifest.xml:12:5-17:19
 MERGED from [com.facebook.react:react-native:0.54.2] C:\Users\Alistair Fink\Desktop\AppDev\Github\Vidulum\android\app\build\intermediates\exploded-aar\com.facebook.react\react-native\0.54.2\AndroidManifest.xml:13:5-20
 MERGED from [com.android.support:appcompat-v7:23.0.1] C:\Users\Alistair Fink\Desktop\AppDev\Github\Vidulum\android\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.0.1\AndroidManifest.xml:22:5-20
 MERGED from [com.android.support:support-v4:23.0.1] C:\Users\Alistair Fink\Desktop\AppDev\Github\Vidulum\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.1\AndroidManifest.xml:22:5-20
@@ -80,7 +80,7 @@ ADDED from C:\Users\Alistair Fink\Desktop\AppDev\Github\Vidulum\android\app\src\
 uses-sdk
 INJECTED from C:\Users\Alistair Fink\Desktop\AppDev\Github\Vidulum\android\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
 MERGED from [Vidulum:react-native-iap:unspecified] C:\Users\Alistair Fink\Desktop\AppDev\Github\Vidulum\android\app\build\intermediates\exploded-aar\Vidulum\react-native-iap\unspecified\AndroidManifest.xml:7:5-9:41
-MERGED from [com.android.billingclient:billing:1.0] C:\Users\Alistair Fink\Desktop\AppDev\Github\Vidulum\android\app\build\intermediates\exploded-aar\com.android.billingclient\billing\1.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.billingclient:billing:1.1] C:\Users\Alistair Fink\Desktop\AppDev\Github\Vidulum\android\app\build\intermediates\exploded-aar\com.android.billingclient\billing\1.1\AndroidManifest.xml:6:5-8:41
 MERGED from [com.facebook.react:react-native:0.54.2] C:\Users\Alistair Fink\Desktop\AppDev\Github\Vidulum\android\app\build\intermediates\exploded-aar\com.facebook.react\react-native\0.54.2\AndroidManifest.xml:7:5-9:41
 MERGED from [com.android.support:appcompat-v7:23.0.1] C:\Users\Alistair Fink\Desktop\AppDev\Github\Vidulum\android\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.0.1\AndroidManifest.xml:20:5-43
 MERGED from [com.android.support:support-v4:23.0.1] C:\Users\Alistair Fink\Desktop\AppDev\Github\Vidulum\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.1\AndroidManifest.xml:20:5-43
@@ -99,13 +99,13 @@ MERGED from [com.facebook.soloader:soloader:0.1.0] C:\Users\Alistair Fink\Deskto
 		INJECTED from C:\Users\Alistair Fink\Desktop\AppDev\Github\Vidulum\android\app\src\main\AndroidManifest.xml
 		INJECTED from C:\Users\Alistair Fink\Desktop\AppDev\Github\Vidulum\android\app\src\main\AndroidManifest.xml
 activity#com.android.billingclient.api.ProxyBillingActivity
-ADDED from [com.android.billingclient:billing:1.0] C:\Users\Alistair Fink\Desktop\AppDev\Github\Vidulum\android\app\build\intermediates\exploded-aar\com.android.billingclient\billing\1.0\AndroidManifest.xml:12:9-15:75
+ADDED from [com.android.billingclient:billing:1.1] C:\Users\Alistair Fink\Desktop\AppDev\Github\Vidulum\android\app\build\intermediates\exploded-aar\com.android.billingclient\billing\1.1\AndroidManifest.xml:13:9-16:75
 	android:configChanges
-		ADDED from [com.android.billingclient:billing:1.0] C:\Users\Alistair Fink\Desktop\AppDev\Github\Vidulum\android\app\build\intermediates\exploded-aar\com.android.billingclient\billing\1.0\AndroidManifest.xml:14:13-96
+		ADDED from [com.android.billingclient:billing:1.1] C:\Users\Alistair Fink\Desktop\AppDev\Github\Vidulum\android\app\build\intermediates\exploded-aar\com.android.billingclient\billing\1.1\AndroidManifest.xml:15:13-96
 	android:theme
-		ADDED from [com.android.billingclient:billing:1.0] C:\Users\Alistair Fink\Desktop\AppDev\Github\Vidulum\android\app\build\intermediates\exploded-aar\com.android.billingclient\billing\1.0\AndroidManifest.xml:15:13-72
+		ADDED from [com.android.billingclient:billing:1.1] C:\Users\Alistair Fink\Desktop\AppDev\Github\Vidulum\android\app\build\intermediates\exploded-aar\com.android.billingclient\billing\1.1\AndroidManifest.xml:16:13-72
 	android:name
-		ADDED from [com.android.billingclient:billing:1.0] C:\Users\Alistair Fink\Desktop\AppDev\Github\Vidulum\android\app\build\intermediates\exploded-aar\com.android.billingclient\billing\1.0\AndroidManifest.xml:13:13-78
+		ADDED from [com.android.billingclient:billing:1.1] C:\Users\Alistair Fink\Desktop\AppDev\Github\Vidulum\android\app\build\intermediates\exploded-aar\com.android.billingclient\billing\1.1\AndroidManifest.xml:14:13-78
 android:uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
 IMPLIED from C:\Users\Alistair Fink\Desktop\AppDev\Github\Vidulum\android\app\src\main\AndroidManifest.xml:1:1-29:12 reason: org.webkit.android_jsc has a targetSdkVersion < 4
 android:uses-permission#android.permission.READ_PHONE_STATE

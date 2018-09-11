@@ -28,37 +28,41 @@ import * as RNIap from 'react-native-iap';
 
 const itemSkus = Platform.select({
   android: [
-    'test',
-  ],
+    'android.test.purchased',
+    'android.test.canceled',
+    'android.test.item_unavailable'
+  ]
 });
 
 const win = Dimensions.get('window');
-const cryptoAddrs = {
-  Bitcoin: "1JVwvYNWFnsxfM4CukvMyU8NxxjeY5FNoE",
-  Ethereum: "0xAD54cB2fD6d207CBee71524632748B9a51e8793D",
-  Litecoin: "LePq7JCwnLaEmy2wooJuhiWhiu1vuuDCwx",
-  Dogecoin: "DHY7dKDHmutA4NRNzwTzjkpQHCKdVdQG2z",
-}
 
 class Donate extends React.Component {
   constructor(props){
     super(props);
+    this.state = {
+      products: 'null',
+    };
     this.writeToClipBoard = this.writeToClipBoard.bind(this);
     this.alternatingColour = this.alternatingColour.bind(this);
   }
-  componentWillMount() {
+  componentDidMount() {
     this.prepare();
   }
   async prepare() {
-    try {
-      await RNIap.prepare();
-      let products = await RNIap.getProducts(itemSkus);
-      alert(JSON.stringify(products)); 
+    try {      
+      await RNIap.initConnection();
+      const products = await RNIap.getProducts(itemSkus);
+      this.setState({ products });
+     /* let products = await RNIap.getProducts(itemSkus);
+      alert(JSON.stringify(products));*/ 
     }
     catch(err)
     {
       console.log(err);
     }
+  }
+  componentWillUnmount() {
+    RNIap.endConnection();
   }
   async writeToClipBoard(addr) {
     await Clipboard.setString(addr);
@@ -73,6 +77,9 @@ class Donate extends React.Component {
   async writeToClipBoard(addr) {
     await Clipboard.setString(addr);
     ToastAndroid.show('Address Copied', ToastAndroid.SHORT);
+  }
+  async handlePurchase(purchase) {
+    const purchased = await RNIap.buyProduct(purchase);
   }
   render() {
     return (
@@ -93,9 +100,9 @@ class Donate extends React.Component {
             <View style={[styles.header, {backgroundColor: Globals.DefaultSettings.theme.primaryColour, borderWidth: 1, borderColor: Globals.DefaultSettings.theme.darkColour}]}>
               <Text style={[CommonStylesheet.normalText, styles.headerText, {color: Globals.DefaultSettings.theme.textColour}]}>Crypto Addresses</Text>
               <View style={[styles.subHeaderGrid, {backgroundColor: Globals.DefaultSettings.theme.lightColour}]}>
-                {Object.keys(cryptoAddrs).map((key, i) => (
+                {Object.keys(Globals.cryptoAddrs).map((key, i) => (
                   <TouchableOpacity key={key} style={[styles.subHeaderGridItem, this.alternatingColour(i)]}
-                    onPress={()=>this.writeToClipBoard(cryptoAddrs[key])}
+                    onPress={()=>this.writeToClipBoard(Globals.cryptoAddrs[key])}
                   >
                     <View style={[styles.subHeaderGridItemLeft]}>
                       <Text style={[CommonStylesheet.normalText, styles.addrText, {color: Globals.DefaultSettings.theme.textColour}]}>
@@ -104,7 +111,7 @@ class Donate extends React.Component {
                     </View>
                     <View style={[styles.subHeaderGridItemRight]}>
                       <Text numberOfLines={1} style={[CommonStylesheet.normalText, styles.addrText, {color: Globals.DefaultSettings.theme.textColour}]}>
-                        {cryptoAddrs[key]}
+                        {Globals.cryptoAddrs[key]}
                       </Text>
                     </View>
                   </TouchableOpacity> 
@@ -116,11 +123,33 @@ class Donate extends React.Component {
                 </Text>
               </View>
             </View>
+            {this.state.products &&
+              <View style={[styles.header, {backgroundColor: Globals.DefaultSettings.theme.primaryColour, borderWidth: 1, borderColor: Globals.DefaultSettings.theme.darkColour}]}>
+                <Text style={[CommonStylesheet.normalText, styles.headerText, {color: Globals.DefaultSettings.theme.textColour}]}>Google Play</Text>
+                <View style={[styles.subHeader, styles.gPlayPurchases, {backgroundColor: Globals.DefaultSettings.theme.lightColour}]}>
+                  <TouchableOpacity style={[styles.gPlayPurchase]}
+                    onPress={() => this.handlePurchase('android.test.purchased')}
+                  >
+                    <Text style={[CommonStylesheet.normalText, styles.text, {color: Globals.DefaultSettings.theme.textColour}]}>$1</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={[styles.gPlayPurchase, {borderLeftWidth: 1, borderRightWidth: 1, borderColor: Globals.DefaultSettings.theme.primaryColour}]}
+                    onPress={() => this.handlePurchase('android.test.canceled')}
+                  >
+                    <Text style={[CommonStylesheet.normalText, styles.text, {color: Globals.DefaultSettings.theme.textColour}]}>$5</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={[styles.gPlayPurchase]}
+                    onPress={() => this.handlePurchase('android.test.item_unavailable')}
+                  >
+                    <Text style={[CommonStylesheet.normalText, styles.text, {color: Globals.DefaultSettings.theme.textColour}]}>$10</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            }
             <View style={[styles.header, {backgroundColor: Globals.DefaultSettings.theme.primaryColour, borderWidth: 1, borderColor: Globals.DefaultSettings.theme.darkColour}]}>
               <Text style={[CommonStylesheet.normalText, styles.headerText, {color: Globals.DefaultSettings.theme.textColour}]}>Why Donate?</Text>
               <View style={[styles.subHeader, {backgroundColor: Globals.DefaultSettings.theme.lightColour}]}>
                 <Text style={[CommonStylesheet.normalText, styles.text, {color: Globals.DefaultSettings.theme.textColour}]}>
-                  Parts of this application are hosted on my own servers. 
+                  Portions of this application are hosted on my own servers. 
                   This means that the computing that occurs as a result of this application on my own server comes out of my own pocket.
                   By donating you'll help me to keep this project up and running for as long as possible!
                 </Text>
@@ -140,7 +169,8 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   subHeader: {
-    
+    borderBottomLeftRadius: 5,
+    borderBottomRightRadius: 5,
   },
   headerText: {
     fontSize: 16,
@@ -168,6 +198,14 @@ const styles = StyleSheet.create({
   },
   helpTextView: {
     alignItems: 'center',
+  },
+  gPlayPurchases: {
+    flexDirection: 'row', 
+  },
+  gPlayPurchase: {
+    flex: 0.33,
+    justifyContent: 'center',
+    alignItems: 'center',  
   },
 });
 

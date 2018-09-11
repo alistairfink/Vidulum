@@ -38,6 +38,12 @@ module.exports = {
 		pass: 'PasswordPin',
 		key: 'Key',
 	},
+	cryptoAddrs: {
+	  Bitcoin: "1JVwvYNWFnsxfM4CukvMyU8NxxjeY5FNoE",
+	  Ethereum: "0xAD54cB2fD6d207CBee71524632748B9a51e8793D",
+	  Litecoin: "LePq7JCwnLaEmy2wooJuhiWhiu1vuuDCwx",
+	  Dogecoin: "DHY7dKDHmutA4NRNzwTzjkpQHCKdVdQG2z",
+	},
 	ApiEndPoints: {
 		ethplorer: 'http://memes.alistairfink.com/VidulumApi/ethplorer',
 		validate: 'http://memes.alistairfink.com/VidulumApi/validate',

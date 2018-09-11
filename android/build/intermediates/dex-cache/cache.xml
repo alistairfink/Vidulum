@@ -30,6 +30,15 @@
     </item>
     <item
         is-multidex="false"
+        jar="C:\Users\Alistair Fink\Desktop\AppDev\Github\Vidulum\android\app\build\intermediates\exploded-aar\com.android.billingclient\billing\1.1\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="27449818215a3bdb2474176e69206e98b617f8bc">
+        <dex dex="C:\Users\Alistair Fink\Desktop\AppDev\Github\Vidulum\android\app\build\intermediates\pre-dexed\debug\com.android.billingclient-billing-1.1_9e43d67842be47939595f70e086ecb9e1929e6a3.jar" />
+    </item>
+    <item
+        is-multidex="false"
         jar="C:\Users\Alistair Fink\.gradle\caches\modules-2\files-2.1\com.squareup.okhttp3\okhttp\3.6.0\69edde9fc4b01c9fd51d25b83428837478c27254\okhttp-3.6.0.jar"
         jumboMode="false"
         optimize="true"
@@ -124,7 +133,7 @@
         jumboMode="false"
         optimize="true"
         revision="23.0.1"
-        sha1="c791fd2956754566b8f373cf05d58ae90294788d">
+        sha1="5eee432603ea5a5458b49353cc7cd268091c0186">
         <dex dex="C:\Users\Alistair Fink\Desktop\AppDev\Github\Vidulum\android\app\build\intermediates\pre-dexed\debug\Vidulum-react-native-iap-unspecified_a8fe764cefee108c443e8a1aa6ea91ec3d2530c2.jar" />
     </item>
     <item
@@ -135,15 +144,6 @@
         revision="23.0.1"
         sha1="d86429b0f0b3f3cafbeb78dda1b9d89119ccb05d">
         <dex dex="C:\Users\Alistair Fink\Desktop\AppDev\Github\Vidulum\android\app\build\intermediates\pre-dexed\debug\com.android.support-appcompat-v7-23.0.1_f087a4f7a7a496af430875b02769942ac69c69fa.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="C:\Users\Alistair Fink\Desktop\AppDev\Github\Vidulum\android\app\build\intermediates\exploded-aar\com.android.billingclient\billing\1.0\jars\classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="23.0.1"
-        sha1="d79b3dd1b26bcaf6b9d5f545c04907ad3168f3d2">
-        <dex dex="C:\Users\Alistair Fink\Desktop\AppDev\Github\Vidulum\android\app\build\intermediates\pre-dexed\debug\com.android.billingclient-billing-1.0_aa860453c11f5d6ef2b870562e78c1386a40b9b0.jar" />
     </item>
     <item
         is-multidex="false"

@@ -133,7 +133,7 @@ let RootStack = DrawerNavigator(
   {
     headerMode: 'none',
     //transitionConfig: getSlideFromRightTransition,//Right to left transition
-    initialRouteName: 'Donate',//Initial page
+    initialRouteName: 'Home',//Initial page
     contentComponent: navDrawer,
   }
 );

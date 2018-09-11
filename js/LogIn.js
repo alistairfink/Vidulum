@@ -82,7 +82,7 @@ class LogIn extends React.Component {
           let savedSettings = await AsyncStorage.getItem(Globals.StorageNames.settings);
           savedSettings = JSON.parse(savedSettings);
           savedSettings.loggedIn = true;
-          savedSettings.email = this.state.email;
+          savedSettings.email = this.state.email.toLowerCase();
           Globals.UpdateSettings(savedSettings);
           await AsyncStorage.setItem(Globals.StorageNames.settings, JSON.stringify(savedSettings));
           this.setState({pass: ''});
@@ -142,7 +142,7 @@ class LogIn extends React.Component {
           let savedSettings = await AsyncStorage.getItem(Globals.StorageNames.settings);
           savedSettings = JSON.parse(savedSettings);
           savedSettings.loggedIn = true;
-          savedSettings.email = this.state.email;
+          savedSettings.email = this.state.email.toLowerCase();
           Globals.UpdateSettings(savedSettings);
           await AsyncStorage.setItem(Globals.StorageNames.settings, JSON.stringify(savedSettings));
           this.setState({pass: ''});
