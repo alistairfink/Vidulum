@@ -49,12 +49,11 @@ class Donate extends React.Component {
     this.prepare();
   }
   async prepare() {
+    //Prepares billing
     try {      
       await RNIap.initConnection();
       const products = await RNIap.getProducts(itemSkus);
-      this.setState({ products });
-     /* let products = await RNIap.getProducts(itemSkus);
-      alert(JSON.stringify(products));*/ 
+      this.setState({ products }); 
     }
     catch(err)
     {
@@ -62,12 +61,11 @@ class Donate extends React.Component {
     }
   }
   componentWillUnmount() {
+    //Closes billing connection.
     RNIap.endConnection();
   }
-  async writeToClipBoard(addr) {
-    await Clipboard.setString(addr);
-  }
   alternatingColour(index) {
+    //Alternate colours. See other components
     let c = null;
     c = index%2 === 0 ? 'rgba(0,0,0,0.2)' : 'rgba(0,0,0,0.3)';
     return {
@@ -75,10 +73,12 @@ class Donate extends React.Component {
     };
   }
   async writeToClipBoard(addr) {
+    //WRites to clipboard.
     await Clipboard.setString(addr);
     ToastAndroid.show('Address Copied', ToastAndroid.SHORT);
   }
   async handlePurchase(purchase) {
+    //Actual purchasing of item
     const purchased = await RNIap.buyProduct(purchase);
   }
   render() {
@@ -128,17 +128,17 @@ class Donate extends React.Component {
                 <Text style={[CommonStylesheet.normalText, styles.headerText, {color: Globals.DefaultSettings.theme.textColour}]}>Google Play</Text>
                 <View style={[styles.subHeader, styles.gPlayPurchases, {backgroundColor: Globals.DefaultSettings.theme.lightColour}]}>
                   <TouchableOpacity style={[styles.gPlayPurchase]}
-                    onPress={() => this.handlePurchase('android.test.purchased')}
+                    onPress={() => this.handlePurchase('com.alistairfink.vidulum.one')}
                   >
                     <Text style={[CommonStylesheet.normalText, styles.text, {color: Globals.DefaultSettings.theme.textColour}]}>$1</Text>
                   </TouchableOpacity>
                   <TouchableOpacity style={[styles.gPlayPurchase, {borderLeftWidth: 1, borderRightWidth: 1, borderColor: Globals.DefaultSettings.theme.primaryColour}]}
-                    onPress={() => this.handlePurchase('android.test.canceled')}
+                    onPress={() => this.handlePurchase('com.alistairfink.vidulum.five')}
                   >
                     <Text style={[CommonStylesheet.normalText, styles.text, {color: Globals.DefaultSettings.theme.textColour}]}>$5</Text>
                   </TouchableOpacity>
                   <TouchableOpacity style={[styles.gPlayPurchase]}
-                    onPress={() => this.handlePurchase('android.test.item_unavailable')}
+                    onPress={() => this.handlePurchase('com.alistairfink.vidulum.ten')}
                   >
                     <Text style={[CommonStylesheet.normalText, styles.text, {color: Globals.DefaultSettings.theme.textColour}]}>$10</Text>
                   </TouchableOpacity>
