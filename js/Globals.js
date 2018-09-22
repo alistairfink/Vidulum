@@ -30,7 +30,7 @@ module.exports = {
 	changeCurr: function() {
 		this.currChanged = !this.currChanged;
 	},
-	alistairfinkApiKey: '06763955-cbfa-4c94-b5be-49284712944a',
+	alistairfinkApiKey: '',
 	StorageNames: {
 		settings: 'Settings',
 		wallets: 'WalletList',
@@ -45,16 +45,16 @@ module.exports = {
 	  Dogecoin: "DHY7dKDHmutA4NRNzwTzjkpQHCKdVdQG2z",
 	},
 	ApiEndPoints: {
-		ethplorer: 'http://memes.alistairfink.com/VidulumApi/ethplorer',
-		validate: 'http://memes.alistairfink.com/VidulumApi/validate',
-		feedback: 'http://memes.alistairfink.com/VidulumApi/feedback',
+		ethplorer: 'http://api.alistairfink.com/vidulum/ethplorer',
+		validate: 'http://api.alistairfink.com/vidulum/validate',
+		feedback: 'http://api.alistairfink.com/vidulum/feedback',
 		coinMarketCap: 'https://api.coinmarketcap.com/v1/ticker/',
 		blockExplorer: 'https://blockexplorer.com/api/addr/',
 		bitcoinChain: 'https://api-r.bitcoinchain.com/v1/address/txs/',
-		alistairFinkSignUp: 'http://memes.alistairfink.com/VidulumApi/signUp',
-		alistairFinkSignIn: 'http://memes.alistairfink.com/VidulumApi/signIn',
-		alistairFinkSignOut: 'http://memes.alistairfink.com/VidulumApi/signOut',
-		alistairFinkBackup: 'http://memes.alistairfink.com/VidulumApi/backup',
-		alistairFinkRestore: 'http://memes.alistairfink.com/VidulumApi/restore',
+		alistairFinkSignUp: 'http://api.alistairfink.com/vidulum/signUp',
+		alistairFinkSignIn: 'http://api.alistairfink.com/vidulum/signIn',
+		alistairFinkSignOut: 'http://api.alistairfink.com/vidulum/signOut',
+		alistairFinkBackup: 'http://api.alistairfink.com/vidulum/backup',
+		alistairFinkRestore: 'http://api.alistairfink.com/vidulum/restore',
 	}
 };

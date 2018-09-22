@@ -80,7 +80,7 @@ class Feedback extends React.Component {
       ]);
       return;
     }
-    let key = 'EPd2dg&]#g_dCe+(2mc_b~/X';
+    let key = '';
     fetch(Globals.ApiEndPoints.feedback,{
       method: 'POST',
       headers: {

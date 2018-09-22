@@ -12,12 +12,12 @@
         "source": "C:\\Users\\Alistair Fink\\Desktop\\AppDev\\Github\\Vidulum\\android\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.0.1\\res\\layout\\abc_expanded_menu_layout.xml"
     },
     {
-        "merged": "C:\\Users\\Alistair Fink\\Desktop\\AppDev\\Github\\Vidulum\\android\\app\\build\\intermediates\\res\\merged\\debug\\layout\\select_dialog_item_material.xml",
-        "source": "C:\\Users\\Alistair Fink\\Desktop\\AppDev\\Github\\Vidulum\\android\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.0.1\\res\\layout\\select_dialog_item_material.xml"
-    },
-    {
         "merged": "C:\\Users\\Alistair Fink\\Desktop\\AppDev\\Github\\Vidulum\\android\\app\\build\\intermediates\\res\\merged\\debug\\layout\\fps_view.xml",
         "source": "C:\\Users\\Alistair Fink\\Desktop\\AppDev\\Github\\Vidulum\\android\\app\\build\\intermediates\\exploded-aar\\com.facebook.react\\react-native\\0.54.2\\res\\layout\\fps_view.xml"
+    },
+    {
+        "merged": "C:\\Users\\Alistair Fink\\Desktop\\AppDev\\Github\\Vidulum\\android\\app\\build\\intermediates\\res\\merged\\debug\\layout\\select_dialog_item_material.xml",
+        "source": "C:\\Users\\Alistair Fink\\Desktop\\AppDev\\Github\\Vidulum\\android\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.0.1\\res\\layout\\select_dialog_item_material.xml"
     },
     {
         "merged": "C:\\Users\\Alistair Fink\\Desktop\\AppDev\\Github\\Vidulum\\android\\app\\build\\intermediates\\res\\merged\\debug\\layout\\abc_action_mode_close_item_material.xml",
