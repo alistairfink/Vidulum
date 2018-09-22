@@ -4,3 +4,5 @@ android/app/my-release-key\.keystore
 android/gradle\.properties
 
 android/app/gradle\.properties
+
+android/\.gradle/gradle\.properties

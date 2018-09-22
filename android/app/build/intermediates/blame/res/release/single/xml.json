@@ -1,5 +1,9 @@
 [
     {
+        "merged": "C:\\Users\\Alistair Fink\\Desktop\\AppDev\\Github\\Vidulum\\android\\app\\build\\intermediates\\res\\merged\\release\\xml\\preferences.xml",
+        "source": "C:\\Users\\Alistair Fink\\Desktop\\AppDev\\Github\\Vidulum\\android\\app\\build\\intermediates\\exploded-aar\\com.facebook.react\\react-native\\0.54.2\\res\\xml\\preferences.xml"
+    },
+    {
         "merged": "E:\\AppDev\\Github\\Vidulum\\android\\app\\build\\intermediates\\res\\merged\\release\\xml\\preferences.xml",
         "source": "E:\\AppDev\\Github\\Vidulum\\android\\app\\build\\intermediates\\exploded-aar\\com.facebook.react\\react-native\\0.54.2\\res\\xml\\preferences.xml"
     }

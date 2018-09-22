@@ -174,21 +174,21 @@
     </item>
     <item
         is-multidex="false"
-        jar="C:\Users\Alistair Fink\Desktop\AppDev\Github\Vidulum\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.1\jars\classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="23.0.1"
-        sha1="c31e21b53ff2f74664e498248d01453a32e32d48">
-        <dex dex="C:\Users\Alistair Fink\Desktop\AppDev\Github\Vidulum\android\app\build\intermediates\pre-dexed\debug\com.android.support-support-v4-23.0.1_912544f129178add55908a5ad84a381acc749950.jar" />
-    </item>
-    <item
-        is-multidex="false"
         jar="C:\Users\Alistair Fink\.gradle\caches\modules-2\files-2.1\com.google.code.findbugs\jsr305\3.0.0\5871fb60dc68d67da54a663c3fd636a10a532948\jsr305-3.0.0.jar"
         jumboMode="false"
         optimize="true"
         revision="23.0.1"
         sha1="5871fb60dc68d67da54a663c3fd636a10a532948">
         <dex dex="C:\Users\Alistair Fink\Desktop\AppDev\Github\Vidulum\android\app\build\intermediates\pre-dexed\debug\jsr305-3.0.0_ee4a2731d9b5cd5fd86c1d6fc48c26b5a98f1b6b.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Alistair Fink\Desktop\AppDev\Github\Vidulum\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.1\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="c31e21b53ff2f74664e498248d01453a32e32d48">
+        <dex dex="C:\Users\Alistair Fink\Desktop\AppDev\Github\Vidulum\android\app\build\intermediates\pre-dexed\debug\com.android.support-support-v4-23.0.1_912544f129178add55908a5ad84a381acc749950.jar" />
     </item>
     <item
         is-multidex="false"
