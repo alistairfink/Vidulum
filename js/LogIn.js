@@ -50,7 +50,6 @@ class LogIn extends React.Component {
       try{
         //Hashes Pass
         let passSend = hash.sha256().update(this.state.pass).digest('hex');
-        console.log(passSend);
         //Sends to server
         await fetch(Globals.ApiEndPoints.alistairFinkSignIn,{
           method: 'POST',
@@ -111,7 +110,6 @@ class LogIn extends React.Component {
       try{
         //Hashes Pass
         let passSend = hash.sha256().update(this.state.pass).digest('hex');
-        console.log(passSend);
         //Sends to server
         await fetch(Globals.ApiEndPoints.alistairFinkSignUp,{
           method: 'POST',
