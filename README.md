@@ -2,6 +2,8 @@
 	<img src="./logo/Vidulum-Banner.png" height="250px"/>
 </p>
 
+NOTE: This has no relation to the other crypto currency wallet app of the same name
+
 # Vidulum: Crpytocurrency Wallet Checker
 The purpose of this application is to provide a quick and easy "at a glance" view of any bitcoin or Ethereum wallet. This app uses various APIs such as [Ethplorer](https://ethplorer.io/), [Coin Market Cap](https://coinmarketcap.com/), [Block Explorer](https://blockexplorer.com/), and [Bitcoin Chain](https://bitcoinchain.com/) as well as back end APIs written by myself which are included in this repo. 
 
