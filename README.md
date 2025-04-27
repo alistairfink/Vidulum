@@ -7,6 +7,8 @@ NOTE: This has no relation to the other crypto currency wallet app of the same n
 # Vidulum: Crpytocurrency Wallet Checker
 The purpose of this application is to provide a quick and easy "at a glance" view of any bitcoin or Ethereum wallet. This app uses various APIs such as [Ethplorer](https://ethplorer.io/), [Coin Market Cap](https://coinmarketcap.com/), [Block Explorer](https://blockexplorer.com/), and [Bitcoin Chain](https://bitcoinchain.com/) as well as back end APIs written by myself which are included in this repo. 
 
+For more details see this app's landing page: https://vidulum.alistairfink.com/
+
 ## Main Screen
 
 The main screen of Vidulum features an at a glance view of an added wallet. The user can then choose to view more in depth information by simply tapping the title of the wallet. Here the user is able to view in depth information such as transaction history or even token balances in the case of Ethereum.
